@@ -34,40 +34,55 @@ export default function Home() {
   );
 
   function handleDragEnd(event) {
-    const { active, over, delta } = event;
+    const { active, over } = event;
     const activeData = active.data.current;
-
-    // Se o componente foi solto na área do canvas
+  
     if (over && over.id === "canvas") {
-      if (!activeData.inCanvas) {
-        // Adicionar novo componente ao canvas
-        const sourceComponent = availableComponents.find(c => c.id === active.id);
+      const sourceComponent = availableComponents.find(c => c.id === active.id);
+  
+      // Obtém o bounding box do canvas
+      const canvasElement = document.getElementById("canvas-area");
+      const canvasRect = canvasElement.getBoundingClientRect();
+      
+       // Pega o tamanho real do elemento arrastado
+      const draggedNode = active.node;
+      const elementWidth = draggedNode?.offsetWidth || 200;
+      const elementHeight = draggedNode?.offsetHeight || 40;
 
+      // Pega a posição do mouse no fim do drag
+      const dropX = event.delta.x + event.activatorEvent.clientX;
+      const dropY = event.delta.y + event.activatorEvent.clientY;
+  
+      // Posição relativa ao canvas
+      const relativeX = dropX - canvasRect.left - elementWidth / 2;
+      const relativeY = dropY - canvasRect.top - elementHeight / 2;
+  
+      if (!activeData.inCanvas) {
         if (sourceComponent) {
           const newComponent = {
             id: `${sourceComponent.type}-${idCounter}`,
             content: sourceComponent.content,
             type: sourceComponent.type,
             position: {
-              x: delta.x,
-              y: delta.y
-            }
+              x: relativeX,
+              y: relativeY,
+            },
           };
-
+  
           setCanvasComponents(prev => [...prev, newComponent]);
           setIdCounter(prev => prev + 1);
         }
       } else {
-        // Atualizar posição de um componente existente no canvas
+        // Atualiza a posição de um componente já no canvas
         setCanvasComponents(prev =>
           prev.map(component => {
             if (component.id === active.id) {
               return {
                 ...component,
                 position: {
-                  x: component.position.x + delta.x,
-                  y: component.position.y + delta.y
-                }
+                  x: component.position.x + event.delta.x,
+                  y: component.position.y + event.delta.y,
+                },
               };
             }
             return component;
@@ -147,7 +162,7 @@ export default function Home() {
           <div className="flex-1">
             <h2 className="text-lg font-semibold mb-4">Canvas</h2>
             <DroppableArea id="canvas">
-              <div style={{ backgroundColor: canvasColor }} className="w-full h-full rounded-lg transition-colors">
+              <div id="canvas-area" style={{ backgroundColor: canvasColor }} className="relative w-full h-full rounded-lg transition-colors">
                 {canvasComponents.map(component => (
                   <ComponentRenderer
                     key={component.id}

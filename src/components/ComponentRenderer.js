@@ -23,7 +23,7 @@ export function ComponentRenderer({ id, children, position = {x: 0, y: 0},inCanv
     height: `${size.height}px`,
     display: 'flex',
     cursor: 'move',
-    zIndex: 100,
+    zIndex: inCanvas ? 1: 100,
   };
 
   const handleResize = (event) => {
