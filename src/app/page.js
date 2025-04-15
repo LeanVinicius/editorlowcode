@@ -40,24 +40,23 @@ export default function Home() {
     if (over && over.id === "canvas") {
       const sourceComponent = availableComponents.find(c => c.id === active.id);
   
-      // Obtém o bounding box do canvas
       const canvasElement = document.getElementById("canvas-area");
       const canvasRect = canvasElement.getBoundingClientRect();
       
-       // Pega o tamanho real do elemento arrastado
       const draggedNode = active.node;
       const elementWidth = draggedNode?.offsetWidth || 200;
       const elementHeight = draggedNode?.offsetHeight || 40;
-
-      // Pega a posição do mouse no fim do drag
-      const dropX = event.delta.x + event.activatorEvent.clientX;
-      const dropY = event.delta.y + event.activatorEvent.clientY;
-  
-      // Posição relativa ao canvas
-      const relativeX = dropX - canvasRect.left - elementWidth / 2;
-      const relativeY = dropY - canvasRect.top - elementHeight / 2;
   
       if (!activeData.inCanvas) {
+        const dropX = event.delta.x + event.activatorEvent.clientX;
+        const dropY = event.delta.y + event.activatorEvent.clientY;
+  
+        let relativeX = dropX - canvasRect.left - elementWidth / 2;
+        let relativeY = dropY - canvasRect.top - elementHeight / 2;
+  
+        relativeX = Math.max(0, Math.min(relativeX, canvasRect.width - elementWidth));
+        relativeY = Math.max(0, Math.min(relativeY, canvasRect.height - elementHeight));
+  
         if (sourceComponent) {
           const newComponent = {
             id: `${sourceComponent.type}-${idCounter}`,
@@ -73,15 +72,17 @@ export default function Home() {
           setIdCounter(prev => prev + 1);
         }
       } else {
-        // Atualiza a posição de um componente já no canvas
         setCanvasComponents(prev =>
           prev.map(component => {
             if (component.id === active.id) {
+              const newX = component.position.x + event.delta.x;
+              const newY = component.position.y + event.delta.y;
+              
               return {
                 ...component,
                 position: {
-                  x: component.position.x + event.delta.x,
-                  y: component.position.y + event.delta.y,
+                  x: Math.max(0, Math.min(newX, canvasRect.width - elementWidth)),
+                  y: Math.max(0, Math.min(newY, canvasRect.height - elementHeight)),
                 },
               };
             }
