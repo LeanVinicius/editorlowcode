@@ -10,7 +10,7 @@ export function DroppableArea({ id, children }) {
     backgroundColor: isOver ? 'rgba(0, 0, 0, 0.05)' : undefined,
     padding: '20px',
     minHeight: '200px',
-    border: '2px dashed #ccc',
+    border: '8px dashed #ccc',
     borderRadius: '8px',
     width: '100%',
     height: '100%'
