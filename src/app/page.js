@@ -8,7 +8,7 @@ import { ComponentProperties } from "../components/ComponentProperties";
 export default function Home() {
   // Componentes disponíveis na barra lateral
   const availableComponents = [
-    { id: "button", content: "Botão", type: "button" },
+    { id: "button", content: "Botão", type: "button"},
     { id: "text", content: "Texto", type: "text" },
     { id: "input", content: "Campo de Entrada", type: "input" },
   ];
@@ -49,6 +49,8 @@ export default function Home() {
   
       const canvasElement = document.getElementById("canvas-area");
       const canvasRect = canvasElement.getBoundingClientRect();
+
+      
       
       const draggedNode = active.node;
       const elementWidth = draggedNode?.offsetWidth || 200;
@@ -73,6 +75,8 @@ export default function Home() {
               x: relativeX,
               y: relativeY,
             },
+            width: elementWidth,
+            height: elementHeight,
           };
   
           setCanvasComponents(prev => [...prev, newComponent]);
@@ -134,6 +138,22 @@ export default function Home() {
     setCanvasColor(colors[nextIndex]);
   }
 
+  const handleUpdateSize = (componentId, newSize) => {
+    console.log('New size:', newSize);
+    setCanvasComponents(prevComponents =>
+      prevComponents.map(component => {
+        if (component.id === componentId) {
+          return {
+            ...component,
+            width: newSize.width,
+            height: newSize.height,
+          };
+        }
+        return component;
+      })
+    );
+  }
+
   return (
     <DndContext onDragEnd={handleDragEnd} sensors={sensors}>
       <div className="min-h-screen p-8 font-[family-name:var(--font-geist-sans)]">
@@ -179,6 +199,7 @@ export default function Home() {
                     position={component.position}
                     inCanvas={true}
                     onClick={() => handleComponentSelect(component)}
+                    size={{width: component.width, height : component.height}}
                   >
                     {renderComponent(component)}
                   </ComponentRenderer>
@@ -188,6 +209,7 @@ export default function Home() {
           </div>
           <ComponentProperties 
           component={selectedComponent}
+          onUpdateSize={handleUpdateSize}
           
           />
         </div>

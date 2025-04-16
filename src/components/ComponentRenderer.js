@@ -5,17 +5,19 @@ import { useState } from "react";
 
 export function ComponentRenderer({ id, children, position = {x: 0, y: 0},inCanvas = false, onClick }) {
   const [size, setSize] = useState({ width: 200, height: 40 });
+  const [isResizing, setIsResizing] = useState(false);
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: id,
     data: {
         type: id.split('-')[0],
         inCanvas
-    }
+    },
+    disabled : isResizing,
   });
   
 
   const style = {
-    transform: CSS.Translate.toString(transform),
+    transform: inCanvas && !isResizing ? CSS.Translate.toString(transform) : undefined,
     position: inCanvas ? 'absolute' : 'relative',
     left: inCanvas ? `${position.x}px` : undefined,
     top: inCanvas ? `${position.y}px` : undefined,
@@ -28,6 +30,7 @@ export function ComponentRenderer({ id, children, position = {x: 0, y: 0},inCanv
 
   const handleResize = (event) => {
     event.stopPropagation();
+    setIsResizing(true);
     const startX = event.clientX;
     const startY = event.clientY;
     const startWidth = size.width;
@@ -39,13 +42,14 @@ export function ComponentRenderer({ id, children, position = {x: 0, y: 0},inCanv
       const deltaY = moveEvent.clientY - startY;
 
       setSize({
-        width: startWidth + deltaX,
+        width: Math.max(50,startWidth + deltaX),
         height: Math.max(30,startHeight + deltaY)
       });
       
       
     }
     const OnMouseUp = () => {
+      setIsResizing(false);
       document.removeEventListener('mousemove', OnMouseMove);
       document.removeEventListener('mouseup', OnMouseUp);
     }
@@ -59,8 +63,8 @@ export function ComponentRenderer({ id, children, position = {x: 0, y: 0},inCanv
       style={style}
       className="flex flex-col"
       onClick={onClick}
-      {...attributes}
-      {...listeners}
+      {...(isResizing ? {} : { ...listeners})}
+      {...(isResizing ? {} : { ...attributes})}
     >
       {children}
       {inCanvas && (
