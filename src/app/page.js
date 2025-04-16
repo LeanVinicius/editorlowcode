@@ -3,6 +3,7 @@ import { DndContext, useSensor, useSensors, PointerSensor } from "@dnd-kit/core"
 import { ComponentRenderer } from "../components/ComponentRenderer";
 import { DroppableArea } from "../components/DroppableArea";
 import { useState } from "react";
+import { ComponentProperties } from "../components/ComponentProperties";
 
 export default function Home() {
   // Componentes disponíveis na barra lateral
@@ -15,6 +16,8 @@ export default function Home() {
   // Componentes colocados no canvas
   const [canvasComponents, setCanvasComponents] = useState([]);
 
+  const [selectedComponent, setSelectedComponent] = useState(null);
+
   // ID counter para componentes adicionados ao canvas
   const [idCounter, setIdCounter] = useState(1);
 
@@ -23,6 +26,10 @@ export default function Home() {
 
   // Cores de fundo para o canvas
   const colors = ['white', '#f0f0f0', '#e6ffe6', '#fff0f0', '#f0f0ff'];
+
+  function handleComponentSelect(component){
+    setSelectedComponent(component);
+  }
 
   // Configurar sensores para melhor controle do arrasto
   const sensors = useSensors(
@@ -142,10 +149,11 @@ export default function Home() {
                   key={component.id}
                   id={component.id}
                   inCanvas={false}
+                  
                 >
-                  <div className="">
+                  
                     {renderComponent(component)}
-                  </div>
+                  
                 </ComponentRenderer>
               ))}
             </div>
@@ -170,6 +178,7 @@ export default function Home() {
                     id={component.id}
                     position={component.position}
                     inCanvas={true}
+                    onClick={() => handleComponentSelect(component)}
                   >
                     {renderComponent(component)}
                   </ComponentRenderer>
@@ -177,6 +186,10 @@ export default function Home() {
               </div>
             </DroppableArea>
           </div>
+          <ComponentProperties 
+          component={selectedComponent}
+          
+          />
         </div>
       </div>
     </DndContext>

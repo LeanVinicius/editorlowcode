@@ -3,7 +3,7 @@ import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import { useState } from "react";
 
-export function ComponentRenderer({ id, children, position = {x: 0, y: 0},inCanvas = false }) {
+export function ComponentRenderer({ id, children, position = {x: 0, y: 0},inCanvas = false, onClick }) {
   const [size, setSize] = useState({ width: 200, height: 40 });
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: id,
@@ -58,6 +58,7 @@ export function ComponentRenderer({ id, children, position = {x: 0, y: 0},inCanv
       ref={setNodeRef}
       style={style}
       className="flex flex-col"
+      onClick={onClick}
       {...attributes}
       {...listeners}
     >
