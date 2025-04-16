@@ -1,6 +1,15 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 export function ComponentProperties({ component, onUpdateSize }) {
+    const [localWidth, setLocalWidth] = useState(component?.width || 0);
+    const [localHeight, setLocalHeight] = useState(component?.height || 80);
+
+    // Atualiza os inputs sempre que um novo componente for selecionado
+    useEffect(() => {
+        setLocalWidth(component?.width || 0);
+        setLocalHeight(component?.height || 80);
+    }, [component]);
+
     if (!component) {
         return null;
     }
@@ -15,11 +24,15 @@ export function ComponentProperties({ component, onUpdateSize }) {
                 <label className="block mb-2">Largura (px):</label>
                 <input 
                     type="number"
-                    value={component.width || 0}
-                    onChange={(e) => onUpdateSize(component.id, {
-                        width: parseInt(e.target.value),
-                        height: component.height
-                    })}
+                    value={localWidth}
+                    onChange={(e) => {
+                        const newWidth = parseInt(e.target.value);
+                        setLocalWidth(newWidth);
+                        onUpdateSize(component.id, {
+                            width: newWidth,
+                            height: localHeight
+                        });
+                    }}
                     className="w-full px-3 py-2 border rounded"
                     min="50"
                 />
@@ -29,11 +42,15 @@ export function ComponentProperties({ component, onUpdateSize }) {
                 <label className="block mb-2">Altura (px):</label>
                 <input 
                     type="number"
-                    value={component.height || 80}
-                    onChange={(e) => onUpdateSize(component.id, {
-                        width: component.width,
-                        height: parseInt(e.target.value)
-                    })}
+                    value={localHeight}
+                    onChange={(e) => {
+                        const newHeight = parseInt(e.target.value);
+                        setLocalHeight(newHeight);
+                        onUpdateSize(component.id, {
+                            width: localWidth,
+                            height: newHeight
+                        });
+                    }}
                     className="w-full px-3 py-2 border rounded"
                     min="30"
                 />

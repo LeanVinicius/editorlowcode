@@ -199,7 +199,7 @@ export default function Home() {
                     position={component.position}
                     inCanvas={true}
                     onClick={() => handleComponentSelect(component)}
-                    size={{width: component.width, height : component.height}}
+                    size={{width: component.width || 200, height : component.height || 40}}
                   >
                     {renderComponent(component)}
                   </ComponentRenderer>
