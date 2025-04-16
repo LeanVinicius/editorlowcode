@@ -4,8 +4,12 @@ import { ComponentRenderer } from "../components/ComponentRenderer";
 import { DroppableArea } from "../components/DroppableArea";
 import { useState } from "react";
 import { ComponentProperties } from "../components/ComponentProperties";
+import { useSearchParams } from "next/navigation";
 
 export default function Home() {
+  // Hook para acessar os parâmetros da URL
+  const searchParams = useSearchParams();
+  const componentId = searchParams.get("userId");
   // Componentes disponíveis na barra lateral
   const availableComponents = [
     { id: "button", content: "Botão", type: "button"},
@@ -158,6 +162,7 @@ export default function Home() {
     <DndContext onDragEnd={handleDragEnd} sensors={sensors}>
       <div className="min-h-screen p-8 font-[family-name:var(--font-geist-sans)]">
         <h1 className="text-2xl font-bold mb-6">Editor No-Code</h1>
+        <div className="mb-4">{componentId}</div>
 
         <div className="flex gap-6 h-[calc(100vh-150px)]">
           {/* Barra lateral com componentes disponíveis */}

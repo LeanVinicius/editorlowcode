@@ -58,6 +58,7 @@ export function ComponentRenderer({ id, children, position = { x: 0, y: 0 }, inC
 
   return (
     <div
+      suppressHydrationWarning
       ref={setNodeRef}
       style={style}
       className="flex flex-col"
