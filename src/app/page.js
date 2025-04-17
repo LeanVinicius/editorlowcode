@@ -141,6 +141,19 @@ export default function Home() {
     const nextIndex = (currentIndex + 1) % colors.length;
     setCanvasColor(colors[nextIndex]);
   }
+  const handleContentUpdate = (componentId, newContent) => {
+    setCanvasComponents(prevComponents =>
+      prevComponents.map(component => {
+        if (component.id === componentId) {
+          return {
+            ...component,
+            content: newContent,
+          };
+        }
+        return component;
+      })
+    );
+  }
 
   const handleUpdateSize = (componentId, newSize) => {
     console.log('New size:', newSize);
@@ -205,6 +218,7 @@ export default function Home() {
                     inCanvas={true}
                     onClick={() => handleComponentSelect(component)}
                     size={{width: component.width || 200, height : component.height || 40}}
+                    content={component.content}
                   >
                     {renderComponent(component)}
                   </ComponentRenderer>
@@ -215,6 +229,7 @@ export default function Home() {
           <ComponentProperties 
           component={selectedComponent}
           onUpdateSize={handleUpdateSize}
+          onUpdateContent={handleContentUpdate}
           
           />
         </div>
