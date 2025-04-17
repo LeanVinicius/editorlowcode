@@ -4,14 +4,14 @@ export function ComponentProperties({ component, onUpdateSize, onUpdateContent, 
     const [localWidth, setLocalWidth] = useState(component?.width || 0);
     const [localHeight, setLocalHeight] = useState(component?.height || 80);
     const [localContent, setLocalContent] = useState(component?.content || '');
-    const [localColor, setLocalColor] = useState(component?.color || '#ffffff');
+    const [localColor, setLocalColor] = useState(component?.colorComponent || '#ffffff');
 
     // Atualiza os inputs sempre que um novo componente for selecionado
     useEffect(() => {
         setLocalWidth(component?.width || 0);
         setLocalHeight(component?.height || 80);
         setLocalContent(component?.content || '');
-        setLocalColor(component?.color || '#ffffff');
+        setLocalColor(component?.colorComponent || '#ffffff');
     }, [component]);
 
     if (!component) {
