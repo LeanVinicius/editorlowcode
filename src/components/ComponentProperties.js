@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 
-export function ComponentProperties({ component, onUpdateSize, onUpdateContent }) {
+export function ComponentProperties({ component, onUpdateSize, onUpdateContent, onUpdateColor }) {
     const [localWidth, setLocalWidth] = useState(component?.width || 0);
     const [localHeight, setLocalHeight] = useState(component?.height || 80);
     const [localContent, setLocalContent] = useState(component?.content || '');
+    const [localColor, setLocalColor] = useState(component?.color || '#ffffff');
 
     // Atualiza os inputs sempre que um novo componente for selecionado
     useEffect(() => {
         setLocalWidth(component?.width || 0);
         setLocalHeight(component?.height || 80);
         setLocalContent(component?.content || '');
+        setLocalColor(component?.color || '#ffffff');
     }, [component]);
 
     if (!component) {
@@ -68,6 +70,30 @@ export function ComponentProperties({ component, onUpdateSize, onUpdateContent }
                     className="w-full px-3 py-2 border rounded"
                     min="30"
                 />
+            </div>
+            <div className="mt-4">
+                <label className="block mb-2">Cor:</label>
+                <div className="flex gap-2">
+                    <input 
+                        type="color"
+                        value= {localColor}
+                        onChange={(e) => {
+                            setLocalColor(e.target.value);
+                            onUpdateColor(component.id, e.target.value);
+                        }}
+                        className="w-12 h-8 cursor-pointer"
+                    />
+                    <input 
+                        type="text"
+                        value= {localColor}
+                        onChange={(e) => {
+                            setLocalColor(e.target.value);
+                            onUpdateColor(component.id, e.target.value);
+                        }}
+                        className="w-full px-3 py-2 border rounded"
+                        placeholder="#000000 ou rgb(0,0,0)"
+                    />
+                </div>
             </div>
         </div>
     );

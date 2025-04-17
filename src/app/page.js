@@ -5,6 +5,7 @@ import { DroppableArea } from "../components/DroppableArea";
 import { useState } from "react";
 import { ComponentProperties } from "../components/ComponentProperties";
 import { useSearchParams } from "next/navigation";
+import { renderComponent } from "@/utils/renderComponent";
 
 export default function Home() {
   // Hook para acessar os parâmetros da URL
@@ -13,8 +14,11 @@ export default function Home() {
   // Componentes disponíveis na barra lateral
   const availableComponents = [
     { id: "button", content: "Botão", type: "button"},
-    { id: "text", content: "Texto", type: "text" },
+    { id: "text", content: "Texto", type: "heading" },
     { id: "input", content: "Campo de Entrada", type: "input" },
+    {id: "select", content: "Seleção", type: "select"},
+    {id: "checkbox", content: "Checkbox", type: "checkbox"},
+    {id: "toggle", content: "ON/OFF", type: "toggle"},
   ];
 
   // Componentes colocados no canvas
@@ -108,33 +112,7 @@ export default function Home() {
     }
   }
 
-  // Renderizar o componente apropriado com base no tipo
-  function renderComponent(component) {
-    switch (component.type) {
-      case 'button':
-        return (
-          <button className="h-full w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-            {component.content}
-          </button>
-        );
-      case 'text':
-        return (
-          <p className="text-gray-800 w-full h-full">
-            {component.content}
-          </p>
-        );
-      case 'input':
-        return (
-          <input
-            type="text"
-            placeholder={component.content}
-            className=" w-full min-h-full text-neutral-900 border border-gray-300 rounded px-3 py-2"
-          />
-        );
-      default:
-        return <div>{component.content}</div>;
-    }
-  }
+  
 
   function changeCanvasColor(color) {
     const currentIndex = colors.indexOf(canvasColor);
@@ -156,7 +134,6 @@ export default function Home() {
   }
 
   const handleUpdateSize = (componentId, newSize) => {
-    console.log('New size:', newSize);
     setCanvasComponents(prevComponents =>
       prevComponents.map(component => {
         if (component.id === componentId) {
@@ -166,6 +143,20 @@ export default function Home() {
             height: newSize.height,
           };
         }
+        return component;
+      })
+    );
+  }
+  const handleUpdateColor = (componentId, newColor) => {
+    setCanvasComponents(prevComponents =>
+      prevComponents.map(component => {
+        if (component.id === componentId) {
+          return {
+            ...component,
+            colorComponent: newColor,
+          };
+        }
+        
         return component;
       })
     );
@@ -181,16 +172,15 @@ export default function Home() {
           {/* Barra lateral com componentes disponíveis */}
           <div className="w-64 flex flex-col justify-between bg-gray-100 p-4 rounded-lg">
             <div>
-              <h2 className="text-lg font-semibold mb-4">Componentes</h2>
+              <h2 className="text-lg font-black text-black mb-4">Componentes</h2>              
               {availableComponents.map(component => (
                 <ComponentRenderer
                   key={component.id}
                   id={component.id}
                   inCanvas={false}
-                  
                 >
                   
-                    {renderComponent(component)}
+                    {renderComponent(component.type, component.content,component.colorComponent)}
                   
                 </ComponentRenderer>
               ))}
@@ -219,8 +209,10 @@ export default function Home() {
                     onClick={() => handleComponentSelect(component)}
                     size={{width: component.width || 200, height : component.height || 40}}
                     content={component.content}
+                    colorComponent={component.colorComponent}
+                    
                   >
-                    {renderComponent(component)}
+                    {renderComponent(component.type, component.content, component.colorComponent)}
                   </ComponentRenderer>
                 ))}
               </div>
@@ -230,6 +222,7 @@ export default function Home() {
           component={selectedComponent}
           onUpdateSize={handleUpdateSize}
           onUpdateContent={handleContentUpdate}
+          onUpdateColor={handleUpdateColor}
           
           />
         </div>
