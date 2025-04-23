@@ -3,7 +3,7 @@ export const renderComponent = (type, content, color) => {
   switch (type) {
     case 'button':
       return (
-        <button className={color ? 'rounded px-4 py-2' : 'bg-blue-500 px-4 py-2 rounded'}>
+        <button className={color ? 'px-4 py-2' : 'bg-blue-500 px-4 py-2 rounded-[32px]'}>
           {content}
         </button>
       );

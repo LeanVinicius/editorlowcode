@@ -11,6 +11,8 @@ export function ComponentsSidebar({ availableComponents, onCanvasColorChange }) 
             key={component.id}
             id={component.id}
             inCanvas={false}
+            size = {{ width: component.width, height: component.height}}
+            colorComponent={component.colorComponent}
           >
             {renderComponent(component.type, component.content, component.colorComponent)}
           </ComponentRenderer>

@@ -4,7 +4,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { useState } from "react";
 
 export function ComponentRenderer({ id, children, position = { x: 0, y: 0 }, inCanvas = false, onClick, size, colorComponent }) {
-  const [localSize, setLocalSize] = useState(size || { width: 200, height: 40 });
+  const [localSize, setLocalSize] = useState(size);
   
   
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
@@ -29,6 +29,22 @@ export function ComponentRenderer({ id, children, position = { x: 0, y: 0 }, inC
     backgroundColor: colorComponent || undefined,
   };
 
+  switch (id.split('-')[0]) {
+    case 'button':
+      style.borderRadius = '32px';
+      break;
+    case 'success':
+      style.backgroundColor = 'green';
+      style.borderRadius = '32px';
+      break;
+    case 'neutral':
+      style.backgroundColor = 'gray';
+      style.borderRadius = '0px';
+      break;
+    default:
+      style.backgroundColor = 'blue';
+      style.borderRadius = '8px';
+  }
   // const handleResize = (event) => {
   //   event.stopPropagation();
   //   setIsResizing(true);
