@@ -21,29 +21,35 @@ export function ComponentRenderer({ id, children, position = { x: 0, y: 0 }, inC
     position: inCanvas ? 'absolute' : 'relative',
     left: inCanvas ? `${position.x}px` : undefined,
     top: inCanvas ? `${position.y}px` : undefined,
-    width: size?.width ? `${size.width}px` : `${localSize.width}px`,
-    height: size?.height ? `${size.height}px` : `${localSize.height}px`,
+    
     display: 'flex',
     cursor: 'move',
     zIndex: inCanvas ? 1 : 100,
-    backgroundColor: colorComponent || undefined,
+    //backgroundColor: colorComponent || undefined,
   };
 
   switch (id.split('-')[0]) {
     case 'button':
       style.borderRadius = '32px';
+      style.backgroundColor = colorComponent || undefined;
+      style.width = size?.width ? `${size.width}px` : `${localSize.width}px`;
+      style.height = size?.height ? `${size.height}px` : `${localSize.height}px`;
       break;
-    case 'success':
-      style.backgroundColor = 'green';
-      style.borderRadius = '32px';
-      break;
+    case 'text':
+     style.color = colorComponent || undefined;
+     style.backgroundColor = undefined;
+     break;
     case 'neutral':
       style.backgroundColor = 'gray';
       style.borderRadius = '0px';
       break;
+    
     default:
-      style.backgroundColor = 'blue';
+      style.backgroundColor = '#ffffff80';
+      style.color = colorComponent || undefined;
       style.borderRadius = '8px';
+      style.width = size?.width ? `${size.width}px` : `${localSize.width}px`;
+      style.height = size?.height ? `${size.height}px` : `${localSize.height}px`;
   }
   // const handleResize = (event) => {
   //   event.stopPropagation();
@@ -79,7 +85,7 @@ export function ComponentRenderer({ id, children, position = { x: 0, y: 0 }, inC
       suppressHydrationWarning
       ref={setNodeRef}
       style={style}
-      className="flex flex-col"
+      className="flex flex-col m-2"
       onClick={onClick}
       { ...listeners }
       { ...attributes }

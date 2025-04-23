@@ -12,13 +12,14 @@ export default function Home() {
 
   // Componentes disponíveis na barra lateral
   const availableComponents = [
-    { id: "button", content: "Botão", type: "button", width: 175, height: 41, colorComponent: "#3B82F6" },
-    { id: "text", content: "Texto", type: "heading" },
-    { id: "input", content: "Campo de Entrada", type: "input" },
+    { id: "button", content: "Botão", type: "button", width: 175, height: 41, colorComponent: "#000000" },
+    { id: "text", content: "Texto", type: "heading", width: 175, height: 41, colorComponent: "#000000" },
+    { id: "input", content: "Campo de Entrada", type: "input",width : 175, height: 64, colorComponent: "#000000" },
     { id: "select", content: "Seleção", type: "select" },
     { id: "checkbox", content: "Checkbox", type: "checkbox" },
     { id: "toggle", content: "ON/OFF", type: "toggle" },
   ];
+  // cor preta : 
 
   // Componentes colocados no canvas
   const [canvasComponents, setCanvasComponents] = useState([]);
