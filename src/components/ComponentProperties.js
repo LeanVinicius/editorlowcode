@@ -19,7 +19,7 @@ export function ComponentProperties({ component, onUpdateSize, onUpdateContent, 
     }
 
     return (
-        <div className="w-64 bg-green p-4 rounded-lg">
+        <div className="w-64 max-h-full bg-amber-800 p-4 rounded-lg overflow-auto">
             <h2 className="text-lg font-semibold mb-4">Propriedades do Componente</h2>
             <p>Tipo: {component.type}</p>
 
@@ -90,11 +90,14 @@ export function ComponentProperties({ component, onUpdateSize, onUpdateContent, 
                             setLocalColor(e.target.value);
                             onUpdateColor(component.id, e.target.value);
                         }}
-                        className="w-full px-3 py-2 border rounded"
+                        className="w-full px-3 border rounded"
                         placeholder="#000000 ou rgb(0,0,0)"
                     />
                 </div>
             </div>
+            <div className="mt-4">
+                teste
+                </div>
         </div>
     );
 }

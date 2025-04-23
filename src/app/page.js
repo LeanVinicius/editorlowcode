@@ -6,6 +6,8 @@ import { useState } from "react";
 import { ComponentProperties } from "../components/ComponentProperties";
 import { useSearchParams } from "next/navigation";
 import { renderComponent } from "@/utils/renderComponent";
+import {Suspense} from "react";
+import { ComponentsSidebar } from "@/components/ComponentsSidebar";
 
 export default function Home() {
   // Hook para acessar os parâmetros da URL
@@ -163,6 +165,7 @@ export default function Home() {
   }
 
   return (
+    <Suspense>
     <DndContext onDragEnd={handleDragEnd} sensors={sensors}>
       <div className="min-h-screen p-8 font-[family-name:var(--font-geist-sans)]">
         <h1 className="text-2xl font-bold mb-6">Editor No-Code</h1>
@@ -170,30 +173,10 @@ export default function Home() {
 
         <div className="flex gap-6 h-[calc(100vh-150px)]">
           {/* Barra lateral com componentes disponíveis */}
-          <div className="w-64 flex flex-col justify-between bg-gray-100 p-4 rounded-lg">
-            <div>
-              <h2 className="text-lg font-black text-black mb-4">Componentes</h2>              
-              {availableComponents.map(component => (
-                <ComponentRenderer
-                  key={component.id}
-                  id={component.id}
-                  inCanvas={false}
-                >
-                  
-                    {renderComponent(component.type, component.content,component.colorComponent)}
-                  
-                </ComponentRenderer>
-              ))}
-            </div>
-
-            {/* New button for changing canvas color */}
-            <button
-              onClick={changeCanvasColor}
-              className="mt-4 w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
-            >
-              Mudar Cor do Canvas
-            </button>
-          </div>
+          <ComponentsSidebar
+          availableComponents={availableComponents}
+          onCanvasColorChange={changeCanvasColor}
+          />
 
           {/* Área central (canvas) */}
           <div className="flex-1">
@@ -223,10 +206,10 @@ export default function Home() {
           onUpdateSize={handleUpdateSize}
           onUpdateContent={handleContentUpdate}
           onUpdateColor={handleUpdateColor}
-          
           />
         </div>
       </div>
     </DndContext>
+    </Suspense>
   );
 }
