@@ -7,6 +7,8 @@ import { ComponentProperties } from "../components/ComponentProperties";
 import { renderComponent } from "@/utils/renderComponent";
 import { ComponentsSidebar } from "@/components/ComponentsSidebar";
 import { UserCanvasLoader } from "@/utils/UserCanvasLoader";
+import { JsonLoader } from "@/utils/JsonLoader";
+import { JsonStringParser } from "@/utils/JsonStringParser";
 
 export default function Home() {
 
@@ -46,6 +48,23 @@ export default function Home() {
       },
     })
   );
+
+  const handleLoadJson = (jsonData) => {
+    if (Array.isArray(jsonData)) {
+      setCanvasComponents(jsonData.map(component => ({
+        ...component,
+        id: `${component.type}-${idCounter + Math.random()}`,
+      })));
+    }
+  };
+  const handleParseJson = (jsonData) => {
+    if (Array.isArray(jsonData)) {
+      setCanvasComponents(jsonData.map(component => ({
+        ...component,
+        id: `${component.type}-${idCounter + Math.random()}`,
+      })));
+    }
+  };
 
   function handleDragEnd(event) {
     const { active, over } = event;
@@ -174,12 +193,19 @@ export default function Home() {
         {/* New fixed left sidebar */}
         <div className="w-64 bg-gray-100 h-screen fixed left-0 p-4">
           <h2 className="text-lg text-black font-semibold mb-4">Left Sidebar</h2>
+          <button className="bg-blue-500 text-white px-4 py-2 rounded-md mb-4"
+          onClick={() => {
+            // Lógica para salvar o canvas
+            console.log(JSON.stringify(canvasComponents, null, 2));
+          }}
+          >Salvar</button>
+          <JsonLoader onLoadJson={handleLoadJson} />
+          <JsonStringParser onParseJson={handleLoadJson} />
           {/* Add your new sidebar content here */}
         </div>
   
         {/* Main content area with top components bar and canvas */}
-        <div className="ml-64 flex-1 p-8 w-auto mr-64">
-          <h1 className="text-2xl font-bold mb-6">Editor No-Code</h1>
+        <div className="ml-64 flex-1 w-auto mr-64">
 
           
           {/* Components bar now on top */}
@@ -194,7 +220,6 @@ export default function Home() {
           <div className="flex gap-6">
             {/* Canvas area */}
             <div className="flex-1">
-              <h2 className="text-lg font-semibold mb-4">Canvas</h2>
               <DroppableArea id="canvas">
                 <div 
                   id="canvas-area" 
