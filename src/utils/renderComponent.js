@@ -9,12 +9,12 @@ export const renderComponent = (type, content, color) => {
       );
     case 'input':
       return (
-        <div className="flex flex-col">
-          <div className="bg-transparent ">Label</div>
+        <div className="flex h-full flex-col">
+          <div className="bg-transparent ">{content}</div>
           <input
             type="text"
-            placeholder={content}
-            className="border border-gray-300 text-black rounded px-3 py-2"
+            placeholder="Campo de Entrada"
+            className="border h-full bg-transparent sgrow flex-1 border-gray-300 text-black rounded px-3 py-2"
           />
         </div>
       );

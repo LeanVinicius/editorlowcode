@@ -19,7 +19,7 @@ export function ComponentProperties({ component, onUpdateSize, onUpdateContent, 
     }
 
     return (
-        <div className="w-64 max-h-full bg-amber-800 p-4 rounded-lg overflow-auto">
+        <div className="w-64 bg-amber-800 p-4 rounded-lg overflow-auto h-screen fixed right-0">
             <h2 className="text-lg font-semibold mb-4">Propriedades do Componente</h2>
             <p>Tipo: {component.type}</p>
 

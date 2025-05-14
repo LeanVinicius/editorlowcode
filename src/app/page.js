@@ -14,12 +14,11 @@ export default function Home() {
   const availableComponents = [
     { id: "button", content: "Botão", type: "button", width: 175, height: 41, colorComponent: "#000000" },
     { id: "text", content: "Texto", type: "heading", width: 175, height: 41, colorComponent: "#000000" },
-    { id: "input", content: "Campo de Entrada", type: "input",width : 175, height: 64, colorComponent: "#000000" },
+    { id: "input", content: "Campo", type: "input",width : 175, height: 64, colorComponent: "#000000" },
     { id: "select", content: "Seleção", type: "select" },
     { id: "checkbox", content: "Checkbox", type: "checkbox" },
     { id: "toggle", content: "ON/OFF", type: "toggle" },
   ];
-  // cor preta : 
 
   // Componentes colocados no canvas
   const [canvasComponents, setCanvasComponents] = useState([]);
@@ -166,50 +165,66 @@ export default function Home() {
   }
 
   return (
-
     <DndContext onDragEnd={handleDragEnd} sensors={sensors}>
-      <div className="min-h-screen p-8 font-[family-name:var(--font-geist-sans)]">
-        <h1 className="text-2xl font-bold mb-6">Editor No-Code</h1>
+      <div className="min-h-screen font-[family-name:var(--font-geist-sans)] flex">
         {/* Suspense para carregar os componentes com base no userId da URL */}
         {/*<Suspense fallback={<div className="mb-4">Carregando componentes do usuário...</div>}>
           <UserCanvasLoader onDataLoaded={setCanvasComponents} />
         </Suspense>*/}
+        {/* New fixed left sidebar */}
+        <div className="w-64 bg-gray-100 h-screen fixed left-0 p-4">
+          <h2 className="text-lg text-black font-semibold mb-4">Left Sidebar</h2>
+          {/* Add your new sidebar content here */}
+        </div>
+  
+        {/* Main content area with top components bar and canvas */}
+        <div className="ml-64 flex-1 p-8 w-auto mr-64">
+          <h1 className="text-2xl font-bold mb-6">Editor No-Code</h1>
 
-        <div className="flex gap-6 h-[calc(100vh-150px)]">
-          {/* Barra lateral com componentes disponíveis */}
-          <ComponentsSidebar
-            availableComponents={availableComponents}
-            onCanvasColorChange={changeCanvasColor}
-          />
-          {/* Área central (canvas) */}
-          <div className="flex-1">
-            <h2 className="text-lg font-semibold mb-4">Canvas</h2>
-            <DroppableArea id="canvas">
-              <div id="canvas-area" style={{ backgroundColor: canvasColor }} className="relative w-full h-full rounded-lg transition-colors">
-                {canvasComponents.map(component => (
-                  <ComponentRenderer
-                    key={component.id}
-                    id={component.id}
-                    position={component.position}
-                    inCanvas={true}
-                    onClick={() => handleComponentSelect(component)}
-                    size={{ width: component.width, height: component.height}}
-                    content={component.content}
-                    colorComponent={component.colorComponent}
-
-                  >
-                    {renderComponent(component.type, component.content, component.colorComponent)}
-                  </ComponentRenderer>
-                ))}
-              </div>
-            </DroppableArea>
+          
+          {/* Components bar now on top */}
+          <div className="mb-6">
+            <ComponentsSidebar
+              availableComponents={availableComponents}
+              onCanvasColorChange={changeCanvasColor}
+            />
           </div>
-          <ComponentProperties
-            component={selectedComponent}
-            onUpdateSize={handleUpdateSize}
-            onUpdateContent={handleContentUpdate}
-            onUpdateColor={handleUpdateColor}
-          />
+  
+          {/* Canvas and properties section */}
+          <div className="flex gap-6">
+            {/* Canvas area */}
+            <div className="flex-1">
+              <h2 className="text-lg font-semibold mb-4">Canvas</h2>
+              <DroppableArea id="canvas">
+                <div 
+                  id="canvas-area" 
+                  style={{ backgroundColor: canvasColor }} 
+                  className="relative w-full h-[calc(100vh-300px)] rounded-lg transition-colors"
+                >
+                  {canvasComponents.map(component => (
+                    <ComponentRenderer
+                      key={component.id}
+                      id={component.id}
+                      position={component.position}
+                      inCanvas={true}
+                      onClick={() => handleComponentSelect(component)}
+                      size={{ width: component.width, height: component.height}}
+                      content={component.content}
+                      colorComponent={component.colorComponent}
+                    >
+                      {renderComponent(component.type, component.content, component.colorComponent)}
+                    </ComponentRenderer>
+                  ))}
+                </div>
+              </DroppableArea>
+            </div>
+  
+          
+            
+          </div>
+          
+  
+          {/* Debug section */}
           <div className="mt-6 text-black bg-gray-100 p-4 rounded-md max-h-64 overflow-auto">
             <h3 className="font-semibold mb-2">Debug: Canvas Components</h3>
             <pre className="text-xs whitespace-pre-wrap break-all">
@@ -217,8 +232,18 @@ export default function Home() {
             </pre>
           </div>
         </div>
+        
+        
+          {/* Properties panel */}
+          <ComponentProperties
+              component={selectedComponent}
+              onUpdateSize={handleUpdateSize}
+              onUpdateContent={handleContentUpdate}
+              onUpdateColor={handleUpdateColor}
+            />
+          {/* Add your new sidebar content here */}
+        
       </div>
     </DndContext>
-
   );
 }
