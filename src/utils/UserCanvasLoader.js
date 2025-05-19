@@ -15,6 +15,7 @@ export function UserCanvasLoader({ onDataLoaded }) {
     fetch(`https://xjvf-6soq-uwxw.n7c.xano.io/api:X-N9-OyD/desenho?usuario_id=${userId}`)
       .then(res => res.json())
       .then(dataString => {
+        if (!dataString || dataString === "null" || dataString === "[]") {onDataLoaded([]);return;}
         onDataLoaded(dataString); // você adapta isso ao seu backend
       })
       .catch(err => {
