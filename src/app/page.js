@@ -212,9 +212,10 @@ export default function Home() {
       <div className="min-h-screen font-[family-name:var(--font-geist-sans)] flex">
         {/* Suspense para carregar os componentes com base no userId da URL */}
         <Suspense fallback={<div className="mb-4">Carregando componentes do usuário...</div>}>
-          {canvasComponents.length === 0 && (
-            <UserCanvasLoader onDataLoaded={handleLoadJson} />
-          )}
+          <UserCanvasLoader
+            onDataLoaded={handleLoadJson}
+            shouldLoad={canvasComponents.length === 0}
+          />
         </Suspense>
 
         {/* New fixed left sidebar */}

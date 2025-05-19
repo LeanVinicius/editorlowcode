@@ -4,13 +4,13 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
-export function UserCanvasLoader({ onDataLoaded }) {
+export function UserCanvasLoader({ onDataLoaded, shouldLoad }) {
   const searchParams = useSearchParams();
   const userId = searchParams.get("userId");
   const projectId = searchParams.get("projectId");
 
   useEffect(() => {
-    if (!userId) return;
+    if (!userId || !shouldLoad || !projectId)  return;
 
     // Exemplo de chamada para seu backend
     fetch(`https://xjvf-6soq-uwxw.n7c.xano.io/api:X-N9-OyD/desenho?usuario_id=${userId}&projeto_id=${projectId}&tela=1`)
