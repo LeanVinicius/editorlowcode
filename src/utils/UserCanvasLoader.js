@@ -22,7 +22,7 @@ export function UserCanvasLoader({ onDataLoaded, shouldLoad }) {
       .catch(err => {
         console.error("Erro ao carregar canvas:", err);
       });
-  }, [userId,onDataLoaded]);
+  }, [userId,onDataLoaded, shouldLoad, projectId]);
 
   return null; // não renderiza nada, apenas faz a chamada
 }
