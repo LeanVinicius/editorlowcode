@@ -12,15 +12,15 @@ export function UserCanvasLoader({ onDataLoaded }) {
     if (!userId) return;
 
     // Exemplo de chamada para seu backend
-    fetch(`/api/get-user-canvas?userId=${userId}`)
+    fetch(`https://xjvf-6soq-uwxw.n7c.xano.io/api:X-N9-OyD/desenho?usuario_id=${userId}`)
       .then(res => res.json())
-      .then(data => {
-        onDataLoaded(data.canvas || []); // você adapta isso ao seu backend
+      .then(dataString => {
+        onDataLoaded(dataString); // você adapta isso ao seu backend
       })
       .catch(err => {
         console.error("Erro ao carregar canvas:", err);
       });
-  }, [userId]);
+  }, [userId,onDataLoaded]);
 
   return null; // não renderiza nada, apenas faz a chamada
 }

@@ -7,16 +7,17 @@ import { ComponentProperties } from "../components/ComponentProperties";
 import { renderComponent } from "@/utils/renderComponent";
 import { ComponentsSidebar } from "@/components/ComponentsSidebar";
 import { UserCanvasLoader } from "@/utils/UserCanvasLoader";
-import { JsonLoader } from "@/utils/JsonLoader";
-import { JsonStringParser } from "@/utils/JsonStringParser";
-
+import { useSearchParams } from "next/navigation";
 export default function Home() {
+
+  const searchParams = useSearchParams();
+  const userId = searchParams.get("userId");
 
   // Componentes disponíveis na barra lateral
   const availableComponents = [
     { id: "button", content: "Botão", type: "button", width: 175, height: 41, colorComponent: "#000000" },
     { id: "text", content: "Texto", type: "heading", width: 175, height: 41, colorComponent: "#000000" },
-    { id: "input", content: "Campo", type: "input",width : 175, height: 64, colorComponent: "#000000" },
+    { id: "input", content: "Campo", type: "input", width: 175, height: 64, colorComponent: "#000000" },
     { id: "select", content: "Seleção", type: "select" },
     { id: "checkbox", content: "Checkbox", type: "checkbox" },
     { id: "toggle", content: "ON/OFF", type: "toggle" },
@@ -49,7 +50,8 @@ export default function Home() {
     })
   );
 
-  const handleLoadJson = (jsonData) => {
+  const handleLoadJson = (jsonString) => {
+    const jsonData = JSON.parse(jsonString);
     if (Array.isArray(jsonData)) {
       setCanvasComponents(jsonData.map(component => ({
         ...component,
@@ -57,12 +59,21 @@ export default function Home() {
       })));
     }
   };
-  const handleParseJson = (jsonData) => {
-    if (Array.isArray(jsonData)) {
-      setCanvasComponents(jsonData.map(component => ({
-        ...component,
-        id: `${component.type}-${idCounter + Math.random()}`,
-      })));
+  
+  const sendCanvasToEndpoint = async (canvasData) => {
+    try {
+      const response = await fetch('https://xjvf-6soq-uwxw.n7c.xano.io/api:X-N9-OyD/desenho', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ usuario_id: userId, jsonDesenho: canvasData })
+      });
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Erro ao enviar dados para o endpoint:', error);
+
     }
   };
 
@@ -72,14 +83,14 @@ export default function Home() {
 
     if (over && over.id === "canvas") {
       const sourceComponent = activeData.inCanvas
-  ? canvasComponents.find(c => c.id === active.id)
-  : availableComponents.find(c => c.id === active.id);
+        ? canvasComponents.find(c => c.id === active.id)
+        : availableComponents.find(c => c.id === active.id);
 
       const canvasElement = document.getElementById("canvas-area");
       const canvasRect = canvasElement.getBoundingClientRect();
 
 
-      
+
       const draggedNode = active.node;
       const elementWidth = draggedNode?.offsetWidth || sourceComponent.width;
       const elementHeight = draggedNode?.offsetHeight || sourceComponent.height;
@@ -187,27 +198,26 @@ export default function Home() {
     <DndContext onDragEnd={handleDragEnd} sensors={sensors}>
       <div className="min-h-screen font-[family-name:var(--font-geist-sans)] flex">
         {/* Suspense para carregar os componentes com base no userId da URL */}
-        {/*<Suspense fallback={<div className="mb-4">Carregando componentes do usuário...</div>}>
-          <UserCanvasLoader onDataLoaded={setCanvasComponents} />
-        </Suspense>*/}
+        <Suspense fallback={<div className="mb-4">Carregando componentes do usuário...</div>}>
+          <UserCanvasLoader onDataLoaded={handleLoadJson} />
+        </Suspense>
         {/* New fixed left sidebar */}
         <div className="w-64 bg-gray-100 h-screen fixed left-0 p-4">
           <h2 className="text-lg text-black font-semibold mb-4">Left Sidebar</h2>
           <button className="bg-blue-500 text-white px-4 py-2 rounded-md mb-4"
-          onClick={() => {
-            // Lógica para salvar o canvas
-            console.log(JSON.stringify(canvasComponents, null, 2));
-          }}
+            onClick={async () => {
+              // Lógica para salvar o canvas
+              const canvasData = JSON.stringify(canvasComponents);
+              const result = await sendCanvasToEndpoint(canvasData);
+            }}
           >Salvar</button>
-          <JsonLoader onLoadJson={handleLoadJson} />
-          <JsonStringParser onParseJson={handleLoadJson} />
           {/* Add your new sidebar content here */}
         </div>
-  
+
         {/* Main content area with top components bar and canvas */}
         <div className="ml-64 flex-1 w-auto mr-64">
 
-          
+
           {/* Components bar now on top */}
           <div className="mb-6">
             <ComponentsSidebar
@@ -215,15 +225,15 @@ export default function Home() {
               onCanvasColorChange={changeCanvasColor}
             />
           </div>
-  
+
           {/* Canvas and properties section */}
           <div className="flex gap-6">
             {/* Canvas area */}
             <div className="flex-1">
               <DroppableArea id="canvas">
-                <div 
-                  id="canvas-area" 
-                  style={{ backgroundColor: canvasColor }} 
+                <div
+                  id="canvas-area"
+                  style={{ backgroundColor: canvasColor }}
                   className="relative w-full h-[calc(100vh-300px)] rounded-lg transition-colors"
                 >
                   {canvasComponents.map(component => (
@@ -233,7 +243,7 @@ export default function Home() {
                       position={component.position}
                       inCanvas={true}
                       onClick={() => handleComponentSelect(component)}
-                      size={{ width: component.width, height: component.height}}
+                      size={{ width: component.width, height: component.height }}
                       content={component.content}
                       colorComponent={component.colorComponent}
                     >
@@ -243,31 +253,19 @@ export default function Home() {
                 </div>
               </DroppableArea>
             </div>
-  
-          
-            
-          </div>
-          
-  
-          {/* Debug section */}
-          <div className="mt-6 text-black bg-gray-100 p-4 rounded-md max-h-64 overflow-auto">
-            <h3 className="font-semibold mb-2">Debug: Canvas Components</h3>
-            <pre className="text-xs whitespace-pre-wrap break-all">
-              {JSON.stringify(canvasComponents, null, 2)}
-            </pre>
           </div>
         </div>
-        
-        
-          {/* Properties panel */}
-          <ComponentProperties
-              component={selectedComponent}
-              onUpdateSize={handleUpdateSize}
-              onUpdateContent={handleContentUpdate}
-              onUpdateColor={handleUpdateColor}
-            />
-          {/* Add your new sidebar content here */}
-        
+
+
+        {/* Properties panel */}
+        <ComponentProperties
+          component={selectedComponent}
+          onUpdateSize={handleUpdateSize}
+          onUpdateContent={handleContentUpdate}
+          onUpdateColor={handleUpdateColor}
+        />
+        {/* Add your new sidebar content here */}
+
       </div>
     </DndContext>
   );
