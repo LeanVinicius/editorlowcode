@@ -8,7 +8,6 @@ export function DroppableArea({ id, children }) {
   
   const style = {
     backgroundColor: isOver ? 'rgba(0, 0, 0, 0.05)' : undefined,
-    padding: '20px',
     minHeight: '200px',
     borderRadius: '8px',
     width: '100%',
@@ -16,7 +15,7 @@ export function DroppableArea({ id, children }) {
   };
   
   return (
-    <div ref={setNodeRef} style={style} className="p-4">
+    <div ref={setNodeRef} style={style} className="">
       {children}
     </div>
   );

@@ -8,6 +8,7 @@ import { renderComponent } from "@/utils/renderComponent";
 import { ComponentsSidebar } from "@/components/ComponentsSidebar";
 import { UserCanvasLoader } from "@/utils/UserCanvasLoader";
 import { useSearchParams } from "next/navigation";
+
 export default function Home() {
 
   const searchParams = useSearchParams();
@@ -85,7 +86,7 @@ export default function Home() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ usuario_id: userId, jsonDesenho: canvasData })
+          body: JSON.stringify({ usuario_id: userId, jsonDesenho: canvasData, projeto_id: projectId, tela: 1 }),
         });
         const data = await response.json();
         return data;
@@ -210,17 +211,21 @@ export default function Home() {
       <DndContext onDragEnd={handleDragEnd} sensors={sensors}>
         <div className="min-h-screen font-[family-name:var(--font-geist-sans)] flex">
           {/* Suspense para carregar os componentes com base no userId da URL */}
-          <Suspense fallback={<div className="mb-4">Carregando componentes do usuário...</div>}>
-            <UserCanvasLoader onDataLoaded={handleLoadJson} />
-          </Suspense>
+          {canvasComponents.length === 0 && (
+             <Suspense fallback={<div className="mb-4">Carregando componentes do usuário...</div>}>
+             <UserCanvasLoader onDataLoaded={handleLoadJson} />
+           </Suspense>
+          )}
+         
           {/* New fixed left sidebar */}
           <div className="w-64 bg-gray-100 h-screen fixed left-0 p-4">
             <h2 className="text-lg text-black font-semibold mb-4">Left Sidebar</h2>
-            <button className="bg-blue-500 text-white px-4 py-2 rounded-md mb-4"
+            <button className=" cursor-pointer bg-blue-500 text-white px-4 py-2 rounded-md mb-4"
               onClick={async () => {
                 // Lógica para salvar o canvas
                 const canvasData = JSON.stringify(canvasComponents);
                 const result = await sendCanvasToEndpoint(canvasData);
+                window.alert("Salvo com sucesso!");
               }}
             >Salvar</button>
             {/* Add your new sidebar content here */}
@@ -229,7 +234,7 @@ export default function Home() {
           {/* Main content area with top components bar and canvas */}
           <div className="ml-64 flex-1 w-auto mr-64">
             {/* Components bar now on top */}
-            <div className="mb-6">
+            <div className="">
               <ComponentsSidebar
                 availableComponents={availableComponents}
                 onCanvasColorChange={changeCanvasColor}
