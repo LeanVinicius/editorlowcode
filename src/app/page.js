@@ -208,6 +208,7 @@ export default function Home() {
   }
 
   return (
+    <Suspense fallback={<div className="mb-4">Carregando pagina..</div>}>
     <DndContext onDragEnd={handleDragEnd} sensors={sensors}>
       <div className="min-h-screen font-[family-name:var(--font-geist-sans)] flex">
         {/* Suspense para carregar os componentes com base no userId da URL */}
@@ -282,5 +283,6 @@ export default function Home() {
 
       </div>
     </DndContext>
+    </Suspense>
   );
 }
