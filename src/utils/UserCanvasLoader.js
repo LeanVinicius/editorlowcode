@@ -10,7 +10,7 @@ export function UserCanvasLoader({ onDataLoaded, shouldLoad }) {
   const projectId = searchParams.get("projectId");
 
   useEffect(() => {
-    if (!userId || !shouldLoad || !projectId)  return;
+    if (!userId || !shouldLoad || !projectId)  return null;
 
     // Exemplo de chamada para seu backend
     fetch(`https://xjvf-6soq-uwxw.n7c.xano.io/api:X-N9-OyD/desenho?usuario_id=${userId}&projeto_id=${projectId}&tela=1`)

@@ -2,18 +2,27 @@
 import { DndContext, useSensor, useSensors, PointerSensor } from "@dnd-kit/core";
 import { ComponentRenderer } from "../components/ComponentRenderer";
 import { DroppableArea } from "../components/DroppableArea";
-import { useState} from "react";
+import { useState, useEffect} from "react";
 import { ComponentProperties } from "../components/ComponentProperties";
 import { renderComponent } from "@/utils/renderComponent";
 import { ComponentsSidebar } from "@/components/ComponentsSidebar";
 import { UserCanvasLoader } from "@/utils/UserCanvasLoader";
 import { useSearchParams } from "next/navigation";
 
+
 export default function Home() {
 
   const searchParams = useSearchParams();
   const userId = searchParams.get("userId");
   const projectId = searchParams.get("projectId");
+
+  const [initialLoadComplete, setInitialLoadComplete] = useState(false);
+
+  useEffect(() => {
+    if (!initialLoadComplete && canvasComponents.length === 0){
+      setInitialLoadComplete(true);
+    }
+  }, []);
 
   // Componentes disponíveis na barra lateral
   const availableComponents = [
@@ -211,10 +220,11 @@ export default function Home() {
    
     <DndContext onDragEnd={handleDragEnd} sensors={sensors}>
       <div className="min-h-screen font-[family-name:var(--font-geist-sans)] flex">
+          {!initialLoadComplete && (
           <UserCanvasLoader
             onDataLoaded={handleLoadJson}
             shouldLoad={canvasComponents.length === 0}
-          />
+          />)}
         {/* New fixed left sidebar */}
         <div className="w-64 bg-gray-100 h-screen fixed left-0 p-4">
           <h2 className="text-lg text-black font-semibold mb-4">Left Sidebar</h2>
