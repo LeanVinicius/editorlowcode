@@ -19,7 +19,7 @@ export default function Home() {
   const [initialLoadComplete, setInitialLoadComplete] = useState(false);
 
   useEffect(() => {
-    if (!initialLoadComplete && canvasComponents.length === 0){
+    if (!initialLoadComplete){
       setInitialLoadComplete(true);
     }
   }, []);
@@ -54,6 +54,11 @@ export default function Home() {
     setSelectedComponent(component);
   }
 
+  const clearCanvas = () => {
+    setCanvasComponents([]);
+    setSelectedComponent(null);
+  };
+  
   // Configurar sensores para melhor controle do arrasto
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -215,6 +220,14 @@ export default function Home() {
       })
     );
   }
+  const deleteComponent = (componentId) => {
+    setCanvasComponents(prevComponents =>
+      prevComponents.filter(component => component.id !== componentId)
+    );
+    if (selectedComponent?.id === componentId){
+      setSelectedComponent(null);
+    }
+  }
 
   return (
    
@@ -276,7 +289,13 @@ export default function Home() {
                 </div>
               </DroppableArea>
             </div>
+           
           </div>
+          <button
+            onClick={clearCanvas}
+            className="mt-4 bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-md transition-colors" >
+              Limpar Canvas
+            </button>
         </div>
         {/* Properties panel */}
         <ComponentProperties
@@ -284,6 +303,7 @@ export default function Home() {
           onUpdateSize={handleUpdateSize}
           onUpdateContent={handleContentUpdate}
           onUpdateColor={handleUpdateColor}
+          onDelete={deleteComponent}
         />
         {/* Add your new sidebar content here */}
 
