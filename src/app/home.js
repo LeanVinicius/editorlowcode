@@ -2,7 +2,7 @@
 import { DndContext, useSensor, useSensors, PointerSensor } from "@dnd-kit/core";
 import { ComponentRenderer } from "../components/ComponentRenderer";
 import { DroppableArea } from "../components/DroppableArea";
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import { ComponentProperties } from "../components/ComponentProperties";
 import { renderComponent } from "@/utils/renderComponent";
 import { ComponentsSidebar } from "@/components/ComponentsSidebar";
@@ -19,7 +19,7 @@ export default function Home() {
   const [initialLoadComplete, setInitialLoadComplete] = useState(false);
 
   useEffect(() => {
-    if (!initialLoadComplete){
+    if (!initialLoadComplete) {
       setInitialLoadComplete(true);
     }
   }, []);
@@ -58,7 +58,7 @@ export default function Home() {
     setCanvasComponents([]);
     setSelectedComponent(null);
   };
-  
+
   // Configurar sensores para melhor controle do arrasto
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -191,6 +191,19 @@ export default function Home() {
       })
     );
   }
+  const handleIDUpdate = (componentId, newId) => {
+    setCanvasComponents(prevComponents =>
+      prevComponents.map(component => {
+        if (component.id === componentId) {
+          return {
+            ...component,
+            id: newId,
+          };
+        }
+        return component;
+      })
+    );
+  }
 
   const handleUpdateSize = (componentId, newSize) => {
     setCanvasComponents(prevComponents =>
@@ -224,23 +237,35 @@ export default function Home() {
     setCanvasComponents(prevComponents =>
       prevComponents.filter(component => component.id !== componentId)
     );
-    if (selectedComponent?.id === componentId){
+    if (selectedComponent?.id === componentId) {
       setSelectedComponent(null);
     }
   }
 
   return (
-   
+
     <DndContext onDragEnd={handleDragEnd} sensors={sensors}>
       <div className="min-h-screen font-[family-name:var(--font-geist-sans)] flex">
-          {!initialLoadComplete && (
+        {!initialLoadComplete && (
           <UserCanvasLoader
             onDataLoaded={handleLoadJson}
             shouldLoad={canvasComponents.length === 0}
           />)}
         {/* New fixed left sidebar */}
-        <div className="w-64 bg-gray-100 h-screen fixed left-0 p-4">
+        <div className="w-64 bg-gray-100 h-screen fixed left-0 p-4 z-10">
           <h2 className="text-lg text-black font-semibold mb-4">Left Sidebar</h2>
+          {/* Component List */}
+          <div className="space-y-2">
+            {canvasComponents.map((component) => (
+              <div
+                key={component.id}
+                onClick={() => handleComponentSelect(component)}
+                className={`p-2 rounded cursor-pointer transition-colors ${selectedComponent?.id === component.id ? 'bg-blue-500 text-white' : 'bg-white hover:bg-gray-200'}`}
+              >
+                {component.type} - {component.id}
+              </div>
+            ))}
+          </div>
           <button className=" cursor-pointer bg-blue-500 text-white px-4 py-2 rounded-md mb-4"
             onClick={async () => {
               // Lógica para salvar o canvas
@@ -249,28 +274,34 @@ export default function Home() {
               window.alert("Salvo com sucesso!");
             }}
           >Salvar</button>
-          {/* Add your new sidebar content here */}
+
         </div>
 
         {/* Main content area with top components bar and canvas */}
-        <div className="ml-64 flex-1 w-auto mr-64">
+        <div className="ml-64 flex-1 w-auto mr-64 relative">
           {/* Components bar now on top */}
-          <div className="">
-            <ComponentsSidebar
-              availableComponents={availableComponents}
-              onCanvasColorChange={changeCanvasColor}
-            />
+          <div className="sticky top-0 z-20 overflow-x-auto whitespace-nowrap bg-white w-[calc(100vw-512px)]">
+            <div className="min-w-max">
+              <ComponentsSidebar
+                availableComponents={availableComponents}
+                onCanvasColorChange={changeCanvasColor}
+              />
+            </div>
           </div>
 
           {/* Canvas and properties section */}
-          <div className="flex gap-6">
+          <div className="flex gap-6 z-10">
             {/* Canvas area */}
-            <div className="flex-1">
+            <div className="flex-1 overflow-auto relative h-[calc(100vh -100px)]">
               <DroppableArea id="canvas">
                 <div
                   id="canvas-area"
-                  style={{ backgroundColor: canvasColor }}
-                  className="relative w-full h-[calc(100vh-300px)] rounded-lg transition-colors"
+                  style={{
+                    backgroundColor: canvasColor,
+                    width: '2000px',
+                    height: '2000px',
+                  }}
+                  className="relative rounded-lg transition-colors cursor-move"
                 >
                   {canvasComponents.map(component => (
                     <ComponentRenderer
@@ -289,21 +320,23 @@ export default function Home() {
                 </div>
               </DroppableArea>
             </div>
-           
+
           </div>
           <button
             onClick={clearCanvas}
             className="mt-4 bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-md transition-colors" >
-              Limpar Canvas
-            </button>
+            Limpar Canvas
+          </button>
         </div>
         {/* Properties panel */}
         <ComponentProperties
+          className="z-10"
           component={selectedComponent}
           onUpdateSize={handleUpdateSize}
           onUpdateContent={handleContentUpdate}
           onUpdateColor={handleUpdateColor}
           onDelete={deleteComponent}
+          onUpdateID={handleIDUpdate}
         />
         {/* Add your new sidebar content here */}
 

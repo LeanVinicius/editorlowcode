@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-export function ComponentProperties({ component, onUpdateSize, onUpdateContent, onUpdateColor, onDelete }) {
+export function ComponentProperties({ component, onUpdateSize, onUpdateContent, onUpdateColor, onDelete, onUpdateID }) {
     const [localWidth, setLocalWidth] = useState(component?.width || 0);
     const [localHeight, setLocalHeight] = useState(component?.height || 80);
     const [localContent, setLocalContent] = useState(component?.content || '');
@@ -19,9 +19,10 @@ export function ComponentProperties({ component, onUpdateSize, onUpdateContent, 
     }
 
     return (
-        <div className="w-64 bg-amber-800 p-4 rounded-lg overflow-auto h-screen fixed right-0">
+        <div className="w-64 bg-amber-800 p-4 rounded-lg z-30 overflow-auto h-screen fixed right-0">
             <div className='pb-16'>
                 <h2 className="text-lg font-semibold mb-4">Propriedades do Componente</h2>
+                <p>Nome : {component.id}</p>
                 <p>Tipo: {component.type}</p>
 
                 <div className="mt-4">
