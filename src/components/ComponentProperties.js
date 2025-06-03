@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-export function ComponentProperties({ component, onUpdateSize, onUpdateContent, onUpdateColor, onDelete, onUpdateID }) {
+export function ComponentProperties({ component, onUpdateSize, onUpdateContent, onUpdateColor, onDelete, onUpdateName }) {
     const [localWidth, setLocalWidth] = useState(component?.width || 0);
     const [localHeight, setLocalHeight] = useState(component?.height || 80);
     const [localContent, setLocalContent] = useState(component?.content || '');
@@ -13,6 +13,8 @@ export function ComponentProperties({ component, onUpdateSize, onUpdateContent, 
         setLocalContent(component?.content || '');
         setLocalColor(component?.colorComponent || '#ffffff');
     }, [component]);
+    const [isEditingId, setIsEditingId] = useState(false);
+
 
     if (!component) {
         return null;
@@ -22,7 +24,36 @@ export function ComponentProperties({ component, onUpdateSize, onUpdateContent, 
         <div className="w-64 bg-amber-800 p-4 rounded-lg z-30 overflow-auto h-screen fixed right-0">
             <div className='pb-16'>
                 <h2 className="text-lg font-semibold mb-4">Propriedades do Componente</h2>
-                <p>Nome : {component.id}</p>
+                <div className="mt-4">
+                    <label className="block mb-2">Nome:</label>
+                    {isEditingId ? (
+                        <span
+                            contentEditable
+                            suppressContentEditableWarning
+                            onBlur={(e) => {
+                                setIsEditingId(false);
+                                onUpdateName(component.id, e.target.textContent);
+                            }}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    e.preventDefault();
+                                    e.target.blur();
+                                }
+                            }}
+                            className="block w-full px-3 py-2 bg-white rounded focus:outline-none"
+                        >
+                            {component.name}
+                        </span>
+                    ) : (
+                        <div
+                            onClick={() => setIsEditingId(true)}
+                            className="px-3 py-2 bg-gray-100 rounded cursor-pointer hover:bg-gray-200"
+                        >
+                            {component.name}
+                        </div>
+                    )}
+                </div>
+                <p>Nome : {component.name}</p>
                 <p>Tipo: {component.type}</p>
 
                 <div className="mt-4">

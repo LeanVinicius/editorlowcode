@@ -26,7 +26,7 @@ export default function Home() {
 
   // Componentes disponíveis na barra lateral
   const availableComponents = [
-    { id: "button", content: "Botão", type: "button", width: 175, height: 41, colorComponent: "#000000" },
+    { id: "button", content: "Botão", type: "button" ,width: 175, height: 41, colorComponent: "#000000" },
     { id: "text", content: "Texto", type: "heading", width: 175, height: 41, colorComponent: "#000000" },
     { id: "input", content: "Campo", type: "input", width: 175, height: 64, colorComponent: "#000000" },
     { id: "select", content: "Seleção", type: "select" },
@@ -53,6 +53,29 @@ export default function Home() {
   function handleComponentSelect(component) {
     setSelectedComponent(component);
   }
+  const addComponentToCenter = (sourceComponent) => {
+    const canvasElement = document.getElementById("canvas-area");
+    const canvasRect = canvasElement.getBoundingClientRect();
+
+    const centerX = (canvasRect.width - sourceComponent.width) / 2 - (sourceComponent.width / 2);
+    const centerY = (canvasRect.height - sourceComponent.height) / 2 - (sourceComponent.height / 2);
+
+    const newComponent = {
+      id: `${sourceComponent.type}-${idCounter}`,
+      content: sourceComponent.content,
+      type: sourceComponent.type,
+      name: `${sourceComponent.type}-${idCounter}`,
+      colorComponent: sourceComponent.colorComponent,
+      position: {
+        x: 0,
+        y: 0,
+      },
+      width: sourceComponent.width,
+      height: sourceComponent.height,
+    };
+    setCanvasComponents(prev => [...prev, newComponent]);
+    setIdCounter(prev => prev + 1);
+  };
 
   const clearCanvas = () => {
     setCanvasComponents([]);
@@ -191,13 +214,13 @@ export default function Home() {
       })
     );
   }
-  const handleIDUpdate = (componentId, newId) => {
+  const handleNameUpdate = (componentId, newName) => {
     setCanvasComponents(prevComponents =>
       prevComponents.map(component => {
         if (component.id === componentId) {
           return {
             ...component,
-            id: newId,
+            name: newName,
           };
         }
         return component;
@@ -252,19 +275,21 @@ export default function Home() {
             shouldLoad={canvasComponents.length === 0}
           />)}
         {/* New fixed left sidebar */}
-        <div className="w-64 bg-gray-100 h-screen fixed left-0 p-4 z-10">
+        <div className="w-64 bg-gray-100 h-screen fixed left-0 p-4 z-10 flex flex-col">
           <h2 className="text-lg text-black font-semibold mb-4">Left Sidebar</h2>
           {/* Component List */}
-          <div className="space-y-2">
-            {canvasComponents.map((component) => (
-              <div
-                key={component.id}
-                onClick={() => handleComponentSelect(component)}
-                className={`p-2 rounded cursor-pointer transition-colors ${selectedComponent?.id === component.id ? 'bg-blue-500 text-white' : 'bg-white hover:bg-gray-200'}`}
-              >
-                {component.type} - {component.id}
-              </div>
-            ))}
+          <div className="flex-1 overflow-y-auto">
+            <div className="space-y-2">
+              {canvasComponents.map((component) => (
+                <div
+                  key={component.id}
+                  onClick={() => handleComponentSelect(component)}
+                  className={`p-2 rounded cursor-pointer transition-colors ${selectedComponent?.id === component.id ? 'bg-blue-500 text-white' : 'bg-black hover:bg-gray-200'}`}
+                >
+                  {component.type} - {component.name}
+                </div>
+              ))}
+            </div>
           </div>
           <button className=" cursor-pointer bg-blue-500 text-white px-4 py-2 rounded-md mb-4"
             onClick={async () => {
@@ -274,6 +299,11 @@ export default function Home() {
               window.alert("Salvo com sucesso!");
             }}
           >Salvar</button>
+          <button
+            onClick={clearCanvas}
+            className=" bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-md transition-colors" >
+            Limpar Canvas
+          </button>
 
         </div>
 
@@ -285,6 +315,7 @@ export default function Home() {
               <ComponentsSidebar
                 availableComponents={availableComponents}
                 onCanvasColorChange={changeCanvasColor}
+                onComponentClick={addComponentToCenter}
               />
             </div>
           </div>
@@ -322,11 +353,7 @@ export default function Home() {
             </div>
 
           </div>
-          <button
-            onClick={clearCanvas}
-            className="mt-4 bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-md transition-colors" >
-            Limpar Canvas
-          </button>
+          
         </div>
         {/* Properties panel */}
         <ComponentProperties
@@ -336,7 +363,7 @@ export default function Home() {
           onUpdateContent={handleContentUpdate}
           onUpdateColor={handleUpdateColor}
           onDelete={deleteComponent}
-          onUpdateID={handleIDUpdate}
+          onUpdateName={handleNameUpdate}
         />
         {/* Add your new sidebar content here */}
 

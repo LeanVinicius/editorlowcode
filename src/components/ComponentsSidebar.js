@@ -1,22 +1,21 @@
 import { ComponentRenderer } from "./ComponentRenderer";
 import { renderComponent } from "@/utils/renderComponent";
 
-export function ComponentsSidebar({ availableComponents, onCanvasColorChange }) {
+export function ComponentsSidebar({ availableComponents, onCanvasColorChange, onComponentClick }) {
   return (
     <div className="w-full flex flex-col justify-between  bg-amber-700 p-4 rounded-lg">
       <h2 className="text-lg flex  justify-center font-black text-black mb-4">Componentes</h2>
       <div className="flex flex-row wrap-normal">
         
         {availableComponents.map(component => (
-          <ComponentRenderer
+          <div
             key={component.id}
-            id={component.id}
-            inCanvas={false}
-            size = {{ width: component.width, height: component.height}}
-            colorComponent={component.colorComponent}
+            onClick={() => onComponentClick(component)}
+            className = "cursor-pointer p-2 bg-white rounded shadow hover:bg-gray-100"
+            
           >
-            {renderComponent(component.type, component.content, component.colorComponent)}
-          </ComponentRenderer>
+            {component.content}
+          </div>
         ))}
       </div>
 
