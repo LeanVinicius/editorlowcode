@@ -5,6 +5,8 @@ export function ComponentProperties({ component, onUpdateSize, onUpdateContent, 
     const [localHeight, setLocalHeight] = useState(component?.height || 80);
     const [localContent, setLocalContent] = useState(component?.content || '');
     const [localColor, setLocalColor] = useState(component?.colorComponent || '#ffffff');
+    const [localName, setLocalName] = useState(component?.name || '');
+    const [isEditingId, setIsEditingId] = useState(false);
 
     // Atualiza os inputs sempre que um novo componente for selecionado
     useEffect(() => {
@@ -12,8 +14,9 @@ export function ComponentProperties({ component, onUpdateSize, onUpdateContent, 
         setLocalHeight(component?.height || 80);
         setLocalContent(component?.content || '');
         setLocalColor(component?.colorComponent || '#ffffff');
+        setLocalName(component?.name || '');
     }, [component]);
-    const [isEditingId, setIsEditingId] = useState(false);
+    
 
 
     if (!component) {
@@ -31,8 +34,10 @@ export function ComponentProperties({ component, onUpdateSize, onUpdateContent, 
                             contentEditable
                             suppressContentEditableWarning
                             onBlur={(e) => {
+                                const newName = e.target.textContent;
                                 setIsEditingId(false);
-                                onUpdateName(component.id, e.target.textContent);
+                                setLocalName(newName);
+                                onUpdateName(component.id, newName);
                             }}
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter') {
@@ -42,18 +47,17 @@ export function ComponentProperties({ component, onUpdateSize, onUpdateContent, 
                             }}
                             className="block w-full px-3 py-2 bg-white rounded focus:outline-none"
                         >
-                            {component.name}
+                            {localName}
                         </span>
                     ) : (
                         <div
                             onClick={() => setIsEditingId(true)}
                             className="px-3 py-2 bg-gray-100 rounded cursor-pointer hover:bg-gray-200"
                         >
-                            {component.name}
+                            {localName}
                         </div>
                     )}
                 </div>
-                <p>Nome : {component.name}</p>
                 <p>Tipo: {component.type}</p>
 
                 <div className="mt-4">

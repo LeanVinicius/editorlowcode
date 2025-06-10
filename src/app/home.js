@@ -1,5 +1,10 @@
 "use client";
-import { DndContext, useSensor, useSensors, PointerSensor } from "@dnd-kit/core";
+import {
+  DndContext,
+  useSensor,
+  useSensors,
+  PointerSensor,
+} from "@dnd-kit/core";
 import { ComponentRenderer } from "../components/ComponentRenderer";
 import { DroppableArea } from "../components/DroppableArea";
 import { useState, useEffect } from "react";
@@ -9,9 +14,7 @@ import { ComponentsSidebar } from "@/components/ComponentsSidebar";
 import { UserCanvasLoader } from "@/utils/UserCanvasLoader";
 import { useSearchParams } from "next/navigation";
 
-
 export default function Home() {
-
   const searchParams = useSearchParams();
   const userId = searchParams.get("userId");
   const projectId = searchParams.get("projectId");
@@ -26,12 +29,36 @@ export default function Home() {
 
   // Componentes disponíveis na barra lateral
   const availableComponents = [
-    { id: "button", content: "Botão", type: "button" ,width: 175, height: 41, colorComponent: "#000000" },
-    { id: "text", content: "Texto", type: "heading", width: 175, height: 41, colorComponent: "#000000" },
-    { id: "input", content: "Campo", type: "input", width: 175, height: 64, colorComponent: "#000000" },
+    {
+      id: "button",
+      content: "Botão",
+      type: "button",
+      width: 175,
+      height: 41,
+      colorComponent: "#000000",
+    },
+    {
+      id: "text",
+      content: "Texto",
+      type: "heading",
+      width: 175,
+      height: 41,
+      colorComponent: "#000000",
+    },
+    {
+      id: "input",
+      content: "Campo",
+      type: "input",
+      width: 175,
+      height: 64,
+      colorComponent: "#000000",
+    },
     { id: "select", content: "Seleção", type: "select" },
     { id: "checkbox", content: "Checkbox", type: "checkbox" },
-    { id: "toggle", content: "ON/OFF", type: "toggle" },
+    { id: "calendar", content: "Data", type: "calendar" },
+    { id: "toggle", content: "Opção", type: "toggle" },
+    { id: "table", content: "Galeria", type: "slider" },
+    { id: "kanbam", content: "Kanbam", type: "kanbam" },
   ];
 
   // Componentes colocados no canvas
@@ -47,7 +74,7 @@ export default function Home() {
   const [canvasColor, setCanvasColor] = useState("#ffffff");
 
   // Cores de fundo para o canvas
-  const colors = ['white', '#f0f0f0', '#e6ffe6', '#fff0f0', '#f0f0ff'];
+  const colors = ["white", "#f0f0f0", "#e6ffe6", "#fff0f0", "#f0f0ff"];
 
   // Função para adicionar um componente ao canvas
   function handleComponentSelect(component) {
@@ -56,9 +83,6 @@ export default function Home() {
   const addComponentToCenter = (sourceComponent) => {
     const canvasElement = document.getElementById("canvas-area");
     const canvasRect = canvasElement.getBoundingClientRect();
-
-    const centerX = (canvasRect.width - sourceComponent.width) / 2 - (sourceComponent.width / 2);
-    const centerY = (canvasRect.height - sourceComponent.height) / 2 - (sourceComponent.height / 2);
 
     const newComponent = {
       id: `${sourceComponent.type}-${idCounter}`,
@@ -73,13 +97,15 @@ export default function Home() {
       width: sourceComponent.width,
       height: sourceComponent.height,
     };
-    setCanvasComponents(prev => [...prev, newComponent]);
-    setIdCounter(prev => prev + 1);
+    setCanvasComponents((prev) => [...prev, newComponent]);
+    setIdCounter((prev) => prev + 1);
   };
 
   const clearCanvas = () => {
-    setCanvasComponents([]);
-    setSelectedComponent(null);
+    if (window.confirm("Tem certeza que deseja limpar o canvas?")) {
+      setCanvasComponents([]);
+      setSelectedComponent(null);
+    }
   };
 
   // Configurar sensores para melhor controle do arrasto
@@ -99,14 +125,16 @@ export default function Home() {
         return;
       }
 
-      const jsonData = typeof jsonString === 'string' ? JSON.parse(jsonString) : jsonString;
+      const jsonData =
+        typeof jsonString === "string" ? JSON.parse(jsonString) : jsonString;
       if (Array.isArray(jsonData)) {
-        setCanvasComponents(jsonData.map(component => ({
-          ...component,
-          id: `${component.type}-${idCounter + Math.random()}`,
-        })));
-      }
-      else {
+        setCanvasComponents(
+          jsonData.map((component) => ({
+            ...component,
+            id: `${component.type}-${idCounter + Math.random()}`,
+          }))
+        );
+      } else {
         setCanvasComponents([]);
       }
     } catch (error) {
@@ -114,21 +142,27 @@ export default function Home() {
     }
   };
 
-
   // Função para salvar o canvas do usuário
   const sendCanvasToEndpoint = async (canvasData) => {
     try {
-      const response = await fetch('https://xjvf-6soq-uwxw.n7c.xano.io/api:X-N9-OyD/desenho', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ usuario_id: userId, jsonDesenho: canvasData, projeto_id: projectId, tela: 1 }),
-      });
+      const response = await fetch(
+        "https://xjvf-6soq-uwxw.n7c.xano.io/api:X-N9-OyD/desenho",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            usuario_id: userId,
+            jsonDesenho: canvasData,
+            projeto_id: projectId,
+            tela: 1,
+          }),
+        }
+      );
       const data = await response.json();
       return data;
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   function handleDragEnd(event) {
@@ -137,8 +171,8 @@ export default function Home() {
 
     if (over && over.id === "canvas") {
       const sourceComponent = activeData.inCanvas
-        ? canvasComponents.find(c => c.id === active.id)
-        : availableComponents.find(c => c.id === active.id);
+        ? canvasComponents.find((c) => c.id === active.id)
+        : availableComponents.find((c) => c.id === active.id);
 
       const canvasElement = document.getElementById("canvas-area");
       const canvasRect = canvasElement.getBoundingClientRect();
@@ -154,8 +188,14 @@ export default function Home() {
         let relativeX = dropX - canvasRect.left - elementWidth / 2;
         let relativeY = dropY - canvasRect.top - elementHeight / 2;
 
-        relativeX = Math.max(0, Math.min(relativeX, canvasRect.width - elementWidth));
-        relativeY = Math.max(0, Math.min(relativeY, canvasRect.height - elementHeight));
+        relativeX = Math.max(
+          0,
+          Math.min(relativeX, canvasRect.width - elementWidth)
+        );
+        relativeY = Math.max(
+          0,
+          Math.min(relativeY, canvasRect.height - elementHeight)
+        );
 
         if (sourceComponent) {
           const newComponent = {
@@ -171,12 +211,12 @@ export default function Home() {
             height: elementHeight,
           };
 
-          setCanvasComponents(prev => [...prev, newComponent]);
-          setIdCounter(prev => prev + 1);
+          setCanvasComponents((prev) => [...prev, newComponent]);
+          setIdCounter((prev) => prev + 1);
         }
       } else {
-        setCanvasComponents(prev =>
-          prev.map(component => {
+        setCanvasComponents((prev) =>
+          prev.map((component) => {
             if (component.id === active.id) {
               const newX = component.position.x + event.delta.x;
               const newY = component.position.y + event.delta.y;
@@ -184,8 +224,14 @@ export default function Home() {
               return {
                 ...component,
                 position: {
-                  x: Math.max(0, Math.min(newX, canvasRect.width - elementWidth)),
-                  y: Math.max(0, Math.min(newY, canvasRect.height - elementHeight)),
+                  x: Math.max(
+                    0,
+                    Math.min(newX, canvasRect.width - elementWidth)
+                  ),
+                  y: Math.max(
+                    0,
+                    Math.min(newY, canvasRect.height - elementHeight)
+                  ),
                 },
               };
             }
@@ -202,8 +248,8 @@ export default function Home() {
     setCanvasColor(colors[nextIndex]);
   }
   const handleContentUpdate = (componentId, newContent) => {
-    setCanvasComponents(prevComponents =>
-      prevComponents.map(component => {
+    setCanvasComponents((prevComponents) =>
+      prevComponents.map((component) => {
         if (component.id === componentId) {
           return {
             ...component,
@@ -213,10 +259,10 @@ export default function Home() {
         return component;
       })
     );
-  }
+  };
   const handleNameUpdate = (componentId, newName) => {
-    setCanvasComponents(prevComponents =>
-      prevComponents.map(component => {
+    setCanvasComponents((prevComponents) =>
+      prevComponents.map((component) => {
         if (component.id === componentId) {
           return {
             ...component,
@@ -226,11 +272,11 @@ export default function Home() {
         return component;
       })
     );
-  }
+  };
 
   const handleUpdateSize = (componentId, newSize) => {
-    setCanvasComponents(prevComponents =>
-      prevComponents.map(component => {
+    setCanvasComponents((prevComponents) =>
+      prevComponents.map((component) => {
         if (component.id === componentId) {
           return {
             ...component,
@@ -241,10 +287,10 @@ export default function Home() {
         return component;
       })
     );
-  }
+  };
   const handleUpdateColor = (componentId, newColor) => {
-    setCanvasComponents(prevComponents =>
-      prevComponents.map(component => {
+    setCanvasComponents((prevComponents) =>
+      prevComponents.map((component) => {
         if (component.id === componentId) {
           return {
             ...component,
@@ -255,28 +301,32 @@ export default function Home() {
         return component;
       })
     );
-  }
+  };
   const deleteComponent = (componentId) => {
-    setCanvasComponents(prevComponents =>
-      prevComponents.filter(component => component.id !== componentId)
-    );
-    if (selectedComponent?.id === componentId) {
-      setSelectedComponent(null);
+    if (window.confirm("Tem certeza que deseja excluir este componente?")) {
+      setCanvasComponents((prevComponents) =>
+        prevComponents.filter((component) => component.id !== componentId)
+      );
+      if (selectedComponent?.id === componentId) {
+        setSelectedComponent(null);
+      }
     }
-  }
+  };
 
   return (
-
     <DndContext onDragEnd={handleDragEnd} sensors={sensors}>
       <div className="min-h-screen font-[family-name:var(--font-geist-sans)] flex">
         {!initialLoadComplete && (
           <UserCanvasLoader
             onDataLoaded={handleLoadJson}
             shouldLoad={canvasComponents.length === 0}
-          />)}
+          />
+        )}
         {/* New fixed left sidebar */}
         <div className="w-64 bg-gray-100 h-screen fixed left-0 p-4 z-10 flex flex-col">
-          <h2 className="text-lg text-black font-semibold mb-4">Left Sidebar</h2>
+          <h2 className="text-lg text-black font-semibold mb-4">
+            Left Sidebar
+          </h2>
           {/* Component List */}
           <div className="flex-1 overflow-y-auto">
             <div className="space-y-2">
@@ -284,33 +334,40 @@ export default function Home() {
                 <div
                   key={component.id}
                   onClick={() => handleComponentSelect(component)}
-                  className={`p-2 rounded cursor-pointer transition-colors ${selectedComponent?.id === component.id ? 'bg-blue-500 text-white' : 'bg-black hover:bg-gray-200'}`}
+                  className={`p-2 rounded cursor-pointer transition-colors ${
+                    selectedComponent?.id === component.id
+                      ? "bg-blue-500 text-white"
+                      : "bg-black hover:bg-gray-200"
+                  }`}
                 >
                   {component.type} - {component.name}
                 </div>
               ))}
             </div>
           </div>
-          <button className=" cursor-pointer bg-blue-500 text-white px-4 py-2 rounded-md mb-4"
+          <button
+            className=" cursor-pointer bg-blue-500 text-white px-4 py-2 rounded-md mb-4"
             onClick={async () => {
               // Lógica para salvar o canvas
               const canvasData = JSON.stringify(canvasComponents);
               const result = await sendCanvasToEndpoint(canvasData);
               window.alert("Salvo com sucesso!");
             }}
-          >Salvar</button>
+          >
+            Salvar
+          </button>
           <button
             onClick={clearCanvas}
-            className=" bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-md transition-colors" >
+            className=" bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-md transition-colors"
+          >
             Limpar Canvas
           </button>
-
         </div>
 
         {/* Main content area with top components bar and canvas */}
         <div className="ml-64 flex-1 w-auto mr-64 relative">
           {/* Components bar now on top */}
-          <div className="sticky top-0 z-20 overflow-x-auto whitespace-nowrap bg-white w-[calc(100vw-512px)]">
+          <div className="fixed top-0 left-64 right-64 z-20 bg-white border-b shadow-sm">
             <div className="min-w-max">
               <ComponentsSidebar
                 availableComponents={availableComponents}
@@ -321,39 +378,44 @@ export default function Home() {
           </div>
 
           {/* Canvas and properties section */}
-          <div className="flex gap-6 z-10">
+          <div className="flex gap-6 z-10 pt-28">
             {/* Canvas area */}
-            <div className="flex-1 overflow-auto relative h-[calc(100vh -100px)]">
+            <div className="flex-1 overflow-auto relative h-[calc(100vh-80px)]">
               <DroppableArea id="canvas">
                 <div
                   id="canvas-area"
                   style={{
                     backgroundColor: canvasColor,
-                    width: '2000px',
-                    height: '2000px',
+                    width: "2000px",
+                    height: "2000px",
                   }}
                   className="relative rounded-lg transition-colors cursor-move"
                 >
-                  {canvasComponents.map(component => (
+                  {canvasComponents.map((component) => (
                     <ComponentRenderer
                       key={component.id}
                       id={component.id}
                       position={component.position}
                       inCanvas={true}
                       onClick={() => handleComponentSelect(component)}
-                      size={{ width: component.width, height: component.height }}
+                      size={{
+                        width: component.width,
+                        height: component.height,
+                      }}
                       content={component.content}
                       colorComponent={component.colorComponent}
                     >
-                      {renderComponent(component.type, component.content, component.colorComponent)}
+                      {renderComponent(
+                        component.type,
+                        component.content,
+                        component.colorComponent
+                      )}
                     </ComponentRenderer>
                   ))}
                 </div>
               </DroppableArea>
             </div>
-
           </div>
-          
         </div>
         {/* Properties panel */}
         <ComponentProperties
@@ -366,7 +428,6 @@ export default function Home() {
           onUpdateName={handleNameUpdate}
         />
         {/* Add your new sidebar content here */}
-
       </div>
     </DndContext>
   );
