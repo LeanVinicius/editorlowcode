@@ -7,7 +7,7 @@ import {
 } from "@dnd-kit/core";
 import { ComponentRenderer } from "../components/ComponentRenderer";
 import { DroppableArea } from "../components/DroppableArea";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { ComponentProperties } from "../components/ComponentProperties";
 import { renderComponent } from "@/utils/renderComponent";
 import { ComponentsSidebar } from "@/components/ComponentsSidebar";
@@ -20,13 +20,43 @@ export default function Home() {
   const projectId = searchParams.get("projectId");
 
   const [initialLoadComplete, setInitialLoadComplete] = useState(false);
-  const [screens, setScreens] = useState([])
+  const [screens, setScreens] = useState([]);
+  const [selectScreen, setSelectScreen] = useState(null);
 
   useEffect(() => {
     if (!initialLoadComplete) {
       setInitialLoadComplete(true);
     }
+    
   }, []);
+
+  useEffect(() => {
+  if (selectScreen != null && userId && projectId) {
+    fetch(
+      `https://xjvf-6soq-uwxw.n7c.xano.io/api:X-N9-OyD/desenho?usuario_id=${userId}&projeto_id=${projectId}&tela=${selectScreen}`
+    )
+      .then((res) => res.json())
+      .then((dataString) => {
+        if (!dataString || dataString === "null" || dataString === "[]") {
+          setCanvasComponents([]) // <-- CORRETO
+          return
+        }
+
+        const jsonData =
+          typeof dataString === 'string' ? JSON.parse(dataString) : dataString
+
+        setCanvasComponents(
+          jsonData.map((component, index) => ({
+            ...component,
+            id: `${component.type}-${Date.now()}-${index}`,
+          }))
+        )
+      })
+      .catch((err) => {
+        console.error("Erro ao carregar canvas:", err)
+      })
+  }
+}, [selectScreen, userId, projectId])
 
   // Componentes disponíveis na barra lateral
   const availableComponents = [
@@ -53,6 +83,7 @@ export default function Home() {
       width: 175,
       height: 64,
       colorComponent: "#000000",
+      mandatory: "opcional",
     },
     { id: "select", content: "Seleção", type: "select" },
     { id: "checkbox", content: "Checkbox", type: "checkbox" },
@@ -83,7 +114,7 @@ export default function Home() {
   }
   const addComponentToCenter = (sourceComponent) => {
     const canvasElement = document.getElementById("canvas-area");
-    const canvasRect = canvasElement.getBoundingClientRect();
+    
 
     const newComponent = {
       id: `${sourceComponent.type}-${idCounter}`,
@@ -97,6 +128,7 @@ export default function Home() {
       },
       width: sourceComponent.width,
       height: sourceComponent.height,
+      mandatory: sourceComponent.mandatory,
     };
     setCanvasComponents((prev) => [...prev, newComponent]);
     setIdCounter((prev) => prev + 1);
@@ -161,7 +193,7 @@ export default function Home() {
             usuario_id: userId,
             jsonDesenho: canvasData,
             projeto_id: projectId,
-            tela: 1,
+            tela: selectScreen,
             desenho: canvasData
           }),
         }
@@ -308,14 +340,13 @@ export default function Home() {
       })
     );
   };
-   const handleUpdateRadio = (componentId,newEvent) => {
-    const value = newEvent.target.value;
+   const handleMandatoryUpdate = (componentId,value) => {
     setCanvasComponents((prevComponents) =>
       prevComponents.map((component) => {
         if(component.id === componentId ){
           return {
             ...component,
-            obrigatoriedade: value,
+            mandatory: value,
           };
         }
         return component;
@@ -443,6 +474,7 @@ export default function Home() {
           <div
             key={item.tela}
             className="px-4 py-2 bg-white border rounded shadow-sm text-gray-800 hover:bg-blue-100 cursor-pointer"
+            onClick={() => setSelectScreen(item.tela)}
           >
             Tela {item.tela}
           </div>
@@ -458,6 +490,7 @@ export default function Home() {
           onUpdateColor={handleUpdateColor}
           onDelete={deleteComponent}
           onUpdateName={handleNameUpdate}
+          onUpdateMandatory={handleMandatoryUpdate}
         />
         {/* Add your new sidebar content here */}
       </div>

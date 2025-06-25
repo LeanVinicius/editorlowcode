@@ -7,12 +7,16 @@ export function ComponentProperties({
   onUpdateColor,
   onDelete,
   onUpdateName,
+  onUpdateMandatory,
 }) {
   const [localWidth, setLocalWidth] = useState(component?.width || 0);
   const [localHeight, setLocalHeight] = useState(component?.height || 80);
   const [localContent, setLocalContent] = useState(component?.content || "");
   const [localColor, setLocalColor] = useState(
     component?.colorComponent || "#ffffff"
+  );
+  const [localMandatory, setLocalMandatory] = useState(
+    component?.mandatory || "opcional"
   );
   const [localName, setLocalName] = useState(component?.name || "");
   const [isEditingId, setIsEditingId] = useState(false);
@@ -24,6 +28,7 @@ export function ComponentProperties({
     setLocalContent(component?.content || "");
     setLocalColor(component?.colorComponent || "#ffffff");
     setLocalName(component?.name || "");
+    setLocalMandatory(component?.mandatory || "opcional");
   }, [component]);
 
   if (!component) {
@@ -141,31 +146,45 @@ export function ComponentProperties({
             />
           </div>
         </div>
-        {component.type === "input" && (
-          <div className="mt-4">
-            <label className="block mb-2">Obrigatoriedade:</label>
+        {component.type === "input" ||
+          component.type === "select" ||
+          component.type === "checkbox" ||
+          component.type === "toggle" ||
+          (component.type === "calendar" && (
+            <div className="mt-4">
+              <label className="block mb-2">Obrigatoriedade:</label>
 
-            <label className="inline-flex items-center space-x-2">
-              <input
-                type="radio"
-                name="obrigatoriedade"
-                value="obrigatorio"
-                className="form-radio h-5 w-5 text-blue-600"
-              />
-              <span className="">Obrigatório</span>
-            </label>
+              <label className="flex items-center space-x-2 mb-2">
+                <input
+                  type="radio"
+                  name="obrigatoriedade"
+                  value="obrigatorio"
+                  className="form-radio h-5 w-5 text-blue-600"
+                  onChange={(e) => {
+                    onUpdateMandatory(component.id, e.target.value);
+                    setLocalMandatory(e.target.value);
+                  }}
+                  checked={localMandatory === "obrigatorio"}
+                />
+                <span className="">Obrigatório</span>
+              </label>
 
-            <label className="inline-flex items-center space-x-2 ml-4">
-              <input
-                type="radio"
-                name="obrigatoriedade"
-                value="opcional"
-                className="form-radio h-5 w-5 text-blue-600"
-              />
-              <span className="">Opcional</span>
-            </label>
-          </div>
-        )}
+              <label className="flex items-center space-x-2">
+                <input
+                  type="radio"
+                  name="obrigatoriedade"
+                  value="opcional"
+                  className="form-radio h-5 w-5 text-blue-600"
+                  onChange={(e) => {
+                    onUpdateMandatory(component.id, e.target.value);
+                    setLocalMandatory(e.target.value);
+                  }}
+                  checked={localMandatory === "opcional"}
+                />
+                <span className="">Opcional</span>
+              </label>
+            </div>
+          ))}
         <div>text</div>
         <div>text</div>
         <div>text</div>
