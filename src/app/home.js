@@ -20,6 +20,7 @@ export default function Home() {
   const projectId = searchParams.get("projectId");
 
   const [initialLoadComplete, setInitialLoadComplete] = useState(false);
+  const [screens, setScreens] = useState([])
 
   useEffect(() => {
     if (!initialLoadComplete) {
@@ -142,6 +143,10 @@ export default function Home() {
     }
   };
 
+  const handleScreens = (data) => {
+    const sorted = [...data].sort((a, b) => a.tela - b.tela)
+    setScreens(sorted)
+  }
   // Função para salvar o canvas do usuário
   const sendCanvasToEndpoint = async (canvasData) => {
     try {
@@ -157,6 +162,7 @@ export default function Home() {
             jsonDesenho: canvasData,
             projeto_id: projectId,
             tela: 1,
+            desenho: canvasData
           }),
         }
       );
@@ -302,6 +308,21 @@ export default function Home() {
       })
     );
   };
+   const handleUpdateRadio = (componentId,newEvent) => {
+    const value = newEvent.target.value;
+    setCanvasComponents((prevComponents) =>
+      prevComponents.map((component) => {
+        if(component.id === componentId ){
+          return {
+            ...component,
+            obrigatoriedade: value,
+          };
+        }
+        return component;
+      })
+    );
+    
+  };
   const deleteComponent = (componentId) => {
     if (window.confirm("Tem certeza que deseja excluir este componente?")) {
       setCanvasComponents((prevComponents) =>
@@ -319,6 +340,7 @@ export default function Home() {
         {!initialLoadComplete && (
           <UserCanvasLoader
             onDataLoaded={handleLoadJson}
+            screens={handleScreens}
             shouldLoad={canvasComponents.length === 0}
           />
         )}
@@ -416,6 +438,16 @@ export default function Home() {
               </DroppableArea>
             </div>
           </div>
+          <div className="fixed bottom-0 left-64 right-0 bg-gray-100 border-t border-gray-300 shadow-inner h-16 flex items-center px-4 space-x-4">
+        {screens.map((item) => (
+          <div
+            key={item.tela}
+            className="px-4 py-2 bg-white border rounded shadow-sm text-gray-800 hover:bg-blue-100 cursor-pointer"
+          >
+            Tela {item.tela}
+          </div>
+        ))}
+      </div>
         </div>
         {/* Properties panel */}
         <ComponentProperties
