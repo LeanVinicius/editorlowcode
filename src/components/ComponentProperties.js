@@ -146,11 +146,11 @@ export function ComponentProperties({
             />
           </div>
         </div>
-        {component.type === "input" ||
+        {(component.type === "input" ||
           component.type === "select" ||
           component.type === "checkbox" ||
           component.type === "toggle" ||
-          (component.type === "calendar" && (
+          component.type === "calendar") && (
             <div className="mt-4">
               <label className="block mb-2">Obrigatoriedade:</label>
 
@@ -184,7 +184,7 @@ export function ComponentProperties({
                 <span className="">Opcional</span>
               </label>
             </div>
-          ))}
+          )}
         <div>text</div>
         <div>text</div>
         <div>text</div>

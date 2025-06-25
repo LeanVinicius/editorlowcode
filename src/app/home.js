@@ -27,36 +27,38 @@ export default function Home() {
     if (!initialLoadComplete) {
       setInitialLoadComplete(true);
     }
-    
   }, []);
 
   useEffect(() => {
-  if (selectScreen != null && userId && projectId) {
-    fetch(
-      `https://xjvf-6soq-uwxw.n7c.xano.io/api:X-N9-OyD/desenho?usuario_id=${userId}&projeto_id=${projectId}&tela=${selectScreen}`
-    )
-      .then((res) => res.json())
-      .then((dataString) => {
-        if (!dataString || dataString === "null" || dataString === "[]") {
-          setCanvasComponents([]) // <-- CORRETO
-          return
-        }
+    if (selectScreen != null && userId && projectId) {
+      setSelectedComponent(null);
+      fetch(
+        `https://xjvf-6soq-uwxw.n7c.xano.io/api:X-N9-OyD/desenho?usuario_id=${userId}&projeto_id=${projectId}&tela=${selectScreen}`
+      )
+        .then((res) => res.json())
+        .then((dataString) => {
+          if (!dataString || dataString === "null" || dataString === "[]") {
+            setCanvasComponents([]); // <-- CORRETO
+            return;
+          }
 
-        const jsonData =
-          typeof dataString === 'string' ? JSON.parse(dataString) : dataString
+          const jsonData =
+            typeof dataString === "string"
+              ? JSON.parse(dataString)
+              : dataString;
 
-        setCanvasComponents(
-          jsonData.map((component, index) => ({
-            ...component,
-            id: `${component.type}-${Date.now()}-${index}`,
-          }))
-        )
-      })
-      .catch((err) => {
-        console.error("Erro ao carregar canvas:", err)
-      })
-  }
-}, [selectScreen, userId, projectId])
+          setCanvasComponents(
+            jsonData.map((component, index) => ({
+              ...component,
+              id: `${component.type}-${Date.now()}-${index}`,
+            }))
+          );
+        })
+        .catch((err) => {
+          console.error("Erro ao carregar canvas:", err);
+        });
+    }
+  }, [selectScreen, userId, projectId]);
 
   // Componentes disponíveis na barra lateral
   const availableComponents = [
@@ -114,7 +116,6 @@ export default function Home() {
   }
   const addComponentToCenter = (sourceComponent) => {
     const canvasElement = document.getElementById("canvas-area");
-    
 
     const newComponent = {
       id: `${sourceComponent.type}-${idCounter}`,
@@ -176,9 +177,9 @@ export default function Home() {
   };
 
   const handleScreens = (data) => {
-    const sorted = [...data].sort((a, b) => a.tela - b.tela)
-    setScreens(sorted)
-  }
+    const sorted = [...data].sort((a, b) => a.tela - b.tela);
+    setScreens(sorted);
+  };
   // Função para salvar o canvas do usuário
   const sendCanvasToEndpoint = async (canvasData) => {
     try {
@@ -194,7 +195,7 @@ export default function Home() {
             jsonDesenho: canvasData,
             projeto_id: projectId,
             tela: selectScreen,
-            desenho: canvasData
+            desenho: canvasData,
           }),
         }
       );
@@ -340,10 +341,10 @@ export default function Home() {
       })
     );
   };
-   const handleMandatoryUpdate = (componentId,value) => {
+  const handleMandatoryUpdate = (componentId, value) => {
     setCanvasComponents((prevComponents) =>
       prevComponents.map((component) => {
-        if(component.id === componentId ){
+        if (component.id === componentId) {
           return {
             ...component,
             mandatory: value,
@@ -352,7 +353,6 @@ export default function Home() {
         return component;
       })
     );
-    
   };
   const deleteComponent = (componentId) => {
     if (window.confirm("Tem certeza que deseja excluir este componente?")) {
@@ -470,16 +470,18 @@ export default function Home() {
             </div>
           </div>
           <div className="fixed bottom-0 left-64 right-0 bg-gray-100 border-t border-gray-300 shadow-inner h-16 flex items-center px-4 space-x-4">
-        {screens.map((item) => (
-          <div
-            key={item.tela}
-            className="px-4 py-2 bg-white border rounded shadow-sm text-gray-800 hover:bg-blue-100 cursor-pointer"
-            onClick={() => setSelectScreen(item.tela)}
-          >
-            Tela {item.tela}
+            {screens.map((item) => (
+              <div
+                key={item.tela}
+                className="px-4 py-2 bg-white border rounded shadow-sm text-gray-800 hover:bg-blue-100 cursor-pointer"
+                onClick={() => {setSelectScreen(item.tela)
+                  
+                }}
+              >
+                Tela {item.tela}
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
         </div>
         {/* Properties panel */}
         <ComponentProperties
