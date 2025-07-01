@@ -541,7 +541,7 @@ export default function Home() {
             {screens.map((item) => (
               <div
                 key={item.tela}
-                className="relative pl-4 pr-6 py-2 bg-white border rounded shadow-sm text-gray-800 hover:bg-blue-100 cursor-pointer flex items-center space-x-2"
+                className={`relative pl-4 pr-6 py-2 ${selectScreen === item.tela ? `bg-amber-700` : `bg-white`}  border rounded shadow-sm text-gray-800 hover:bg-blue-100 cursor-pointer flex items-center space-x-2`}
               >
                 {/* Botão X no canto superior direito */}
                 <button
