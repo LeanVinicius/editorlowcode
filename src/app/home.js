@@ -13,6 +13,7 @@ import { renderComponent } from "@/utils/renderComponent";
 import { ComponentsSidebar } from "@/components/ComponentsSidebar";
 import { UserCanvasLoader } from "@/utils/UserCanvasLoader";
 import { useSearchParams } from "next/navigation";
+import { deleteScreen } from "@/utils/deleteScreen";
 
 export default function Home() {
   const searchParams = useSearchParams();
@@ -22,6 +23,8 @@ export default function Home() {
   const [initialLoadComplete, setInitialLoadComplete] = useState(false);
   const [screens, setScreens] = useState([]);
   const [selectScreen, setSelectScreen] = useState(1);
+  const [editingScreenName, setEditingScreenName] = useState(false);
+  const [newScreenName, setNewScreenName] = useState("");
 
   useEffect(() => {
     if (!initialLoadComplete) {
@@ -107,9 +110,6 @@ export default function Home() {
   // Estado para armazenar o valor do background do canvas
   const [canvasColor, setCanvasColor] = useState("#ffffff");
 
-  // Cores de fundo para o canvas
-  const colors = ["white", "#f0f0f0", "#e6ffe6", "#fff0f0", "#f0f0ff"];
-
   // Função para adicionar um componente ao canvas
   function handleComponentSelect(component) {
     setSelectedComponent(component);
@@ -182,50 +182,79 @@ export default function Home() {
   };
 
   const createNewScreen = async () => {
-  if (!userId || !projectId) return;
+    if (!userId || !projectId) return;
 
-  // Descobre a próxima tela disponível
-  const nextTela =
-    screens.length > 0
-      ? Math.max(...screens.map((s) => s.tela)) + 1
-      : 1;
+    // Descobre a próxima tela disponível
+    const nextTela =
+      screens.length > 0 ? Math.max(...screens.map((s) => s.tela)) + 1 : 1;
 
-  const emptyCanvas = [];
+    const emptyCanvas = [];
 
-  try {
-    const response = await fetch(
-      "https://xjvf-6soq-uwxw.n7c.xano.io/api:X-N9-OyD/desenho",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          usuario_id: userId,
-          projeto_id: projectId,
-          tela: nextTela,
-          desenho: JSON.stringify(emptyCanvas),
-        }),
-      }
-    );
+    try {
+      const response = await fetch(
+        "https://xjvf-6soq-uwxw.n7c.xano.io/api:X-N9-OyD/desenho",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            usuario_id: userId,
+            projeto_id: projectId,
+            tela: nextTela,
+            desenho: JSON.stringify(emptyCanvas),
+          }),
+        }
+      );
 
-    const result = await response.json();
+      const result = await response.json();
 
-    // Atualiza lista de telas com a nova
-    const novaTelaObj = { tela: nextTela };
-    setScreens((prev) =>
-      [...prev, novaTelaObj].sort((a, b) => a.tela - b.tela)
-    );
+      // Atualiza lista de telas com a nova
+      const novaTelaObj = { tela: nextTela, nomeTela: `Tela ${nextTela}` };
+      setScreens((prev) =>
+        [...prev, novaTelaObj].sort((a, b) => a.tela - b.tela)
+      );
 
-    setCanvasComponents([]);
-    setSelectScreen(nextTela);
-  } catch (error) {
-    console.error("Erro ao criar nova tela:", error);
-    alert("Erro ao criar nova tela.");
-  }
-};
+      setCanvasComponents([]);
+      setSelectScreen(nextTela);
+    } catch (error) {
+      console.error("Erro ao criar nova tela:", error);
+      alert("Erro ao criar nova tela.");
+    }
+  };
 
+  const handleScreenNameChange = async (tela, newName) => {
+    try {
+      await fetch(
+        "https://xjvf-6soq-uwxw.n7c.xano.io/api:X-N9-OyD/desenho/alterarNome",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            usuario_id: userId,
+            projeto_id: projectId,
+            tela: tela,
+            nomeTela: newName,
+          }),
+        }
+      );
 
+      // Atualiza a lista de telas localmente
+      setScreens((prev) =>
+        prev.map((screen) =>
+          screen.tela === tela ? { ...screen, nomeTela: newName } : screen
+        )
+      );
+
+      setEditingScreenName(null);
+      setNewScreenName("");
+    } catch (err) {
+      console.error("Erro ao renomear a tela:", err);
+      alert("Erro ao renomear a tela.");
+    }
+  };
   // Função para salvar o canvas do usuário
   const sendCanvasToEndpoint = async (canvasData) => {
     try {
@@ -512,16 +541,78 @@ export default function Home() {
             {screens.map((item) => (
               <div
                 key={item.tela}
-                className="px-4 py-2 bg-white border rounded shadow-sm text-gray-800 hover:bg-blue-100 cursor-pointer"
-                onClick={() => {
-                  setSelectScreen(item.tela);
-                }}
+                className="relative pl-4 pr-6 py-2 bg-white border rounded shadow-sm text-gray-800 hover:bg-blue-100 cursor-pointer flex items-center space-x-2"
               >
-                Tela {item.tela}
+                {/* Botão X no canto superior direito */}
+                <button
+                  className="absolute top-[-3px] right-0 text-gray-400 hover:text-red-500 mr-0 flex items-center justify-center text-lg leading-none"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deleteScreen({
+                      userId,
+                      projectId,
+                      telaId: item.tela,
+                      onSuccess: () => {
+                        setScreens((prev) =>
+                          prev.filter((s) => s.tela !== item.tela)
+                        );
+                        if (selectScreen === item.tela) {
+                          setCanvasComponents([]);
+                          setSelectScreen(null);
+                        }
+                      },
+                      onError: () => {
+                        alert("Erro ao deletar a tela.");
+                      },
+                    });
+                  }}
+                >
+                  x
+                </button>
+                {editingScreenName === item.tela ? (
+                  <>
+                    <input
+                      className="border px-2 py-1 text-sm rounded"
+                      value={newScreenName}
+                      onChange={(e) => setNewScreenName(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter")
+                          handleScreenNameChange(item.tela, newScreenName);
+                      }}
+                    />
+                    <button
+                      className="text-blue-600 text-sm"
+                      onClick={() =>
+                        handleScreenNameChange(item.tela, newScreenName)
+                      }
+                    >
+                      Salvar
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <span onClick={() => setSelectScreen(item.tela)}>
+                      {item.nomeTela ?? `Tela ${item.tela}`}
+                    </span>
+                    <button
+                      className="ml-1 text-xs text-gray-500 hover:text-gray-800"
+                      onClick={() => {
+                        setEditingScreenName(item.tela);
+                        setNewScreenName(item.nomeTela ?? `Tela ${item.tela}`);
+                      }}
+                    >
+                      ✏️
+                    </button>
+                  </>
+                )}
               </div>
             ))}
-            <button className="px-4 py-2 bg-green-500 text-white text-base rounded-full shadow-sm hover:bg-green-600 transition"
-            onClick={createNewScreen}>+</button>
+            <button
+              className="px-4 py-2 bg-green-500 text-white text-base rounded-full shadow-sm hover:bg-green-600 transition"
+              onClick={createNewScreen}
+            >
+              +
+            </button>
           </div>
         </div>
         {/* Properties panel */}
