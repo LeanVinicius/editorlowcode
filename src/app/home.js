@@ -520,8 +520,8 @@ export default function Home() {
                 Tela {item.tela}
               </div>
             ))}
-            <div className="flex-1 "
-            onClick={createNewScreen}>Adicionar</div>
+            <button className="px-4 py-2 bg-green-500 text-white text-base rounded-full shadow-sm hover:bg-green-600 transition"
+            onClick={createNewScreen}>+</button>
           </div>
         </div>
         {/* Properties panel */}
