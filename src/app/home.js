@@ -21,7 +21,7 @@ export default function Home() {
 
   const [initialLoadComplete, setInitialLoadComplete] = useState(false);
   const [screens, setScreens] = useState([]);
-  const [selectScreen, setSelectScreen] = useState(null);
+  const [selectScreen, setSelectScreen] = useState(1);
 
   useEffect(() => {
     if (!initialLoadComplete) {
@@ -180,6 +180,52 @@ export default function Home() {
     const sorted = [...data].sort((a, b) => a.tela - b.tela);
     setScreens(sorted);
   };
+
+  const createNewScreen = async () => {
+  if (!userId || !projectId) return;
+
+  // Descobre a próxima tela disponível
+  const nextTela =
+    screens.length > 0
+      ? Math.max(...screens.map((s) => s.tela)) + 1
+      : 1;
+
+  const emptyCanvas = [];
+
+  try {
+    const response = await fetch(
+      "https://xjvf-6soq-uwxw.n7c.xano.io/api:X-N9-OyD/desenho",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          usuario_id: userId,
+          projeto_id: projectId,
+          tela: nextTela,
+          desenho: JSON.stringify(emptyCanvas),
+        }),
+      }
+    );
+
+    const result = await response.json();
+
+    // Atualiza lista de telas com a nova
+    const novaTelaObj = { tela: nextTela };
+    setScreens((prev) =>
+      [...prev, novaTelaObj].sort((a, b) => a.tela - b.tela)
+    );
+
+    setCanvasComponents([]);
+    setSelectScreen(nextTela);
+  } catch (error) {
+    console.error("Erro ao criar nova tela:", error);
+    alert("Erro ao criar nova tela.");
+  }
+};
+
+
   // Função para salvar o canvas do usuário
   const sendCanvasToEndpoint = async (canvasData) => {
     try {
@@ -192,7 +238,6 @@ export default function Home() {
           },
           body: JSON.stringify({
             usuario_id: userId,
-            jsonDesenho: canvasData,
             projeto_id: projectId,
             tela: selectScreen,
             desenho: canvasData,
@@ -281,11 +326,6 @@ export default function Home() {
     }
   }
 
-  function changeCanvasColor(color) {
-    const currentIndex = colors.indexOf(canvasColor);
-    const nextIndex = (currentIndex + 1) % colors.length;
-    setCanvasColor(colors[nextIndex]);
-  }
   const handleContentUpdate = (componentId, newContent) => {
     setCanvasComponents((prevComponents) =>
       prevComponents.map((component) => {
@@ -424,7 +464,6 @@ export default function Home() {
             <div className="min-w-max">
               <ComponentsSidebar
                 availableComponents={availableComponents}
-                onCanvasColorChange={changeCanvasColor}
                 onComponentClick={addComponentToCenter}
               />
             </div>
@@ -474,13 +513,15 @@ export default function Home() {
               <div
                 key={item.tela}
                 className="px-4 py-2 bg-white border rounded shadow-sm text-gray-800 hover:bg-blue-100 cursor-pointer"
-                onClick={() => {setSelectScreen(item.tela)
-                  
+                onClick={() => {
+                  setSelectScreen(item.tela);
                 }}
               >
                 Tela {item.tela}
               </div>
             ))}
+            <div className="flex-1 "
+            onClick={createNewScreen}>Adicionar</div>
           </div>
         </div>
         {/* Properties panel */}

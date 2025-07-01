@@ -28,7 +28,7 @@ export function UserCanvasLoader({ onDataLoaded, shouldLoad, screens }) {
         console.error("Erro ao carregar canvas:", err);
       });
     fetch(
-      `https://xjvf-6soq-uwxw.n7c.xano.io/api:X-N9-OyD/desenho/telas?usuario_id=${userId}`
+      `https://xjvf-6soq-uwxw.n7c.xano.io/api:X-N9-OyD/desenho/telas?usuario_id=${userId}&projeto_id=${projectId}`
     )
       .then((res) => res.json())
       .then((screenData) => {
