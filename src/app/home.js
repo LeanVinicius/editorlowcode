@@ -22,9 +22,10 @@ export default function Home() {
 
   const [initialLoadComplete, setInitialLoadComplete] = useState(false);
   const [screens, setScreens] = useState([]);
-  const [selectScreen, setSelectScreen] = useState(1);
+  const [selectScreen, setSelectScreen] = useState(null);
   const [editingScreenName, setEditingScreenName] = useState(false);
   const [newScreenName, setNewScreenName] = useState("");
+  const [screenName,setScreenName] = useState("");
 
   useEffect(() => {
     if (!initialLoadComplete) {
@@ -41,7 +42,7 @@ export default function Home() {
         .then((res) => res.json())
         .then((dataString) => {
           if (!dataString || dataString === "null" || dataString === "[]") {
-            setCanvasComponents([]); // <-- CORRETO
+            setCanvasComponents([]);
             return;
           }
 
@@ -62,6 +63,13 @@ export default function Home() {
         });
     }
   }, [selectScreen, userId, projectId]);
+
+  useEffect(() => {
+  if (selectScreen != null) {
+    const selected = screens.find((s) => s.tela === selectScreen);
+    setScreenName(selected?.nomeTela ?? `Tela ${selectScreen}`);
+  }
+}, [selectScreen, screens]);
 
   // Componentes disponíveis na barra lateral
   const availableComponents = [
@@ -107,8 +115,7 @@ export default function Home() {
   // ID counter para componentes adicionados ao canvas
   const [idCounter, setIdCounter] = useState(1);
 
-  // Estado para armazenar o valor do background do canvas
-  const [canvasColor, setCanvasColor] = useState("#ffffff");
+  
 
   // Função para adicionar um componente ao canvas
   function handleComponentSelect(component) {
@@ -442,13 +449,54 @@ export default function Home() {
             onDataLoaded={handleLoadJson}
             screens={handleScreens}
             shouldLoad={canvasComponents.length === 0}
+            selectScreen={setSelectScreen}
+            
           />
         )}
         {/* New fixed left sidebar */}
         <div className="w-64 bg-gray-100 h-screen fixed left-0 p-4 z-10 flex flex-col">
-          <h2 className="text-lg text-black font-semibold mb-4">
-            Left Sidebar
-          </h2>
+          <div className="flex items-start justify-between mb-4">
+         
+          {editingScreenName === selectScreen ? (
+            <div className="flex flex-col">
+              <input
+                className="border px-2 py-1 text-sm rounded"
+                value={newScreenName}
+                onChange={(e) => setNewScreenName(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter")
+                    handleScreenNameChange(selectScreen, newScreenName);
+                }}
+              />
+              <button
+                className="text-blue-600 text-sm self-start"
+                onClick={() =>
+                  handleScreenNameChange(selectScreen, newScreenName)
+                }
+              >
+                Salvar
+              </button>
+            </div>
+          ) : (
+            <h2 className="text-lg text-black font-semibold">
+              {screenName ?? `Tela ${selectScreen}`}
+            </h2>
+          )}
+           <button
+            className="ml-1 text-xs text-gray-500 hover:text-gray-800"
+            onClick={() => {
+              const selectedScreen = screens.find(
+                (screen) => screen.tela === selectScreen
+              );
+              setEditingScreenName(selectScreen);
+              setNewScreenName(
+                selectedScreen.nomeTela ?? `Tela ${selectScreen}`
+              );
+            }}
+          >
+            ✏️
+          </button>
+          </div>
           {/* Component List */}
           <div className="flex-1 overflow-y-auto">
             <div className="space-y-2">
@@ -506,7 +554,7 @@ export default function Home() {
                 <div
                   id="canvas-area"
                   style={{
-                    backgroundColor: canvasColor,
+                    backgroundColor: "#ffffff",
                     width: "2000px",
                     height: "2000px",
                   }}
@@ -541,7 +589,9 @@ export default function Home() {
             {screens.map((item) => (
               <div
                 key={item.tela}
-                className={`relative pl-4 pr-6 py-2 ${selectScreen === item.tela ? `bg-amber-700` : `bg-white`}  border rounded shadow-sm text-gray-800 hover:bg-blue-100 cursor-pointer flex items-center space-x-2`}
+                className={`relative pl-4 pr-6 py-2 ${
+                  selectScreen === item.tela ? `bg-amber-700` : `bg-white`
+                }  border rounded shadow-sm text-gray-800 hover:bg-blue-100 cursor-pointer flex items-center space-x-2`}
               >
                 {/* Botão X no canto superior direito */}
                 <button
@@ -569,42 +619,17 @@ export default function Home() {
                 >
                   x
                 </button>
-                {editingScreenName === item.tela ? (
-                  <>
-                    <input
-                      className="border px-2 py-1 text-sm rounded"
-                      value={newScreenName}
-                      onChange={(e) => setNewScreenName(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter")
-                          handleScreenNameChange(item.tela, newScreenName);
-                      }}
-                    />
-                    <button
-                      className="text-blue-600 text-sm"
-                      onClick={() =>
-                        handleScreenNameChange(item.tela, newScreenName)
-                      }
-                    >
-                      Salvar
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <span onClick={() => setSelectScreen(item.tela)}>
-                      {item.nomeTela ?? `Tela ${item.tela}`}
-                    </span>
-                    <button
-                      className="ml-1 text-xs text-gray-500 hover:text-gray-800"
-                      onClick={() => {
-                        setEditingScreenName(item.tela);
-                        setNewScreenName(item.nomeTela ?? `Tela ${item.tela}`);
-                      }}
-                    >
-                      ✏️
-                    </button>
-                  </>
-                )}
+                <>
+                  <span
+                    onClick={() => {
+                      sendCanvasToEndpoint(JSON.stringify(canvasComponents));
+                      setScreenName(item.nomeTela);
+                      setSelectScreen(item.tela);
+                    }}
+                  >
+                    {item.nomeTela ?? `Tela ${item.tela}`}
+                  </span>
+                </>
               </div>
             ))}
             <button

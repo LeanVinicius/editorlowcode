@@ -1,10 +1,10 @@
 "use client";
-// TODO: colocar a url do xano
+
 
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
-export function UserCanvasLoader({ onDataLoaded, shouldLoad, screens }) {
+export function UserCanvasLoader({ onDataLoaded, shouldLoad, screens, selectScreen }) {
   const searchParams = useSearchParams();
   const userId = searchParams.get("userId");
   const projectId = searchParams.get("projectId");
@@ -35,11 +35,17 @@ export function UserCanvasLoader({ onDataLoaded, shouldLoad, screens }) {
         if (screens && typeof screens === "function") {
           screens(screenData);
         }
+        if (Array.isArray(screenData) && screenData.length > 0 && typeof selectScreen === "function") {
+      selectScreen(screenData[0].tela);
+    }
       })
       .catch((err) => {
         console.error("Erro ao carregar telas:", err);
       });
-  }, [userId, onDataLoaded, shouldLoad, projectId,screens]);
+      // pegar o primeiro elemento da lista
+    
+
+  }, [userId, onDataLoaded, shouldLoad, projectId,screens,selectScreen]);
 
   return null; // não renderiza nada, apenas faz a chamada
 }
