@@ -1,11 +1,11 @@
 import { Suspense } from "react";
 
-import Home from "./home";
+import CanvasDesigner from "@/components/CanvasDesigner";
 
 export default function Page() {
   return (
     <Suspense fallback={<div>Carregando aplicação...</div>}>
-      <Home/>
+      <CanvasDesigner/>
     </Suspense>
   );
 }
