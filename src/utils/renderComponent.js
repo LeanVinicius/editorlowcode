@@ -28,37 +28,58 @@ export const renderComponent = (component) => {
           />
         </div>
       );
-      case 'select':
-        return (
-          <div className="flex h-full flex-col">
-            <div className="text-sm mb-1">{content ?? "Seleção"}</div>
-            <select
-              multiple={multi}
-              className="border bg-transparent border-gray-300 text-black rounded px-3 py-2"
-            >
-              {options.length > 0 ? (
-                options.map((opt, idx) => (
-                  <option key={idx} value={opt}>
-                    {opt}
-                  </option>
-                ))
-              ) : (
-                <>
-                  <option value="">Opção 1</option>
-                  <option value="">Opção 2</option>
-                </>
-              )}
-            </select>
-          </div>
-        );
-      case 'checkbox':
-        return (
-          <div className="flex items-center gap-2">
-            <input type="checkbox" className="w-4 h-4" />
-            <label className="text-black">{content ?? "CheckBox"}</label>
-          </div>
-        );
-      
+    case 'select':
+      return (
+        <div className="flex h-full flex-col">
+          <div className="text-sm mb-1">{content ?? "Seleção"}</div>
+          <select
+            multiple={multi}
+            className="border h-full bg-transparent border-gray-300 text-black rounded px-3 py-2"
+          >
+            {options.length > 0 ? (
+              options.map((opt, idx) => (
+                <option key={idx} value={opt}>
+                  {opt}
+                </option>
+              ))
+            ) : (
+              <>
+                <option value="">Opção 1</option>
+                <option value="">Opção 2</option>
+              </>
+            )}
+          </select>
+        </div>
+      );
+    case 'checkbox':
+      return (
+        <div className="flex items-center gap-2">
+          <input type="checkbox" className="w-4 h-4" />
+          <label className="text-black">{content ?? "CheckBox"}</label>
+        </div>
+      );
+    case "toggle":
+      return (
+        <div className="flex items-center gap-2">
+          <label className="text-sm">{content ?? "Opção"}</label>
+          <input type="radio" name="radio" className="w-6 h-3 rounded-full" />
+          <label className="text-sm">{content ?? "Opção"}</label>
+          <input type="radio" name="radio" className="w-6 h-3 rounded-full" />
+        </div>
+      );
+    case 'calendar':
+      return (
+        <div className="flex h-full flex-col">
+          <div className="bg-transparent ">{content ?? "Data"}</div>
+
+          <input
+            type="date"
+            className="border h-full bg-transparent sgrow flex-1 border-gray-300 text-black rounded px-3 py-2"
+          />
+
+        </div>
+      );
+
     case 'heading':
       return <h2 className="text-xl font-bold">{content ?? "Texto"}</h2>;
 
