@@ -1,3 +1,6 @@
+// Funções utilitárias para manipulação de telas no editor
+// Essas funções ajudam a gerenciar telas, como ordenação, criação, atualização e remoção
+
 export const ScreenHelpers = {
   sortScreens(screens) {
     return [...screens].sort((a, b) => a.tela - b.tela);

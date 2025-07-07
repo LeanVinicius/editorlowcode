@@ -253,12 +253,14 @@ export default function CanvasDesigner() {
                 {currentScreenName ?? `Tela ${currentScreenId}`}
               </h2>
             )}
+            {availableScreens.length > 0 && (
             <button
               className="ml-1 text-xs text-gray-500 hover:text-gray-800"
               onClick={startEditingScreenName}
             >
               ✏️
             </button>
+            )}
           </div>
           {/* Component List */}
           <div className="flex-1 overflow-y-auto">

@@ -24,7 +24,11 @@ export const DEFAULT_COMPONENTS = [
     colorComponent: "#000000",
     mandatory: "opcional",
   },
-  { id: "select", content: "Seleção", type: "select" },
+  { id: "select", content: "Seleção", type: "select",
+    width: 175, height: 64, colorComponent: "#000000",
+    mandatory: "opcional",
+    multi: false
+  },
   { id: "checkbox", content: "Checkbox", type: "checkbox" },
   { id: "calendar", content: "Data", type: "calendar" },
   { id: "toggle", content: "Opção", type: "toggle" },
@@ -34,3 +38,11 @@ export const DEFAULT_COMPONENTS = [
 
 export const CANVAS_DIMENSIONS = { width: 2000, height: 2000 };
 export const DRAG_ACTIVATION_DISTANCE = 5;
+export  const INTERACTIVE_COMPONENT_TYPES = [
+  'input', 'select', 'checkbox', 'toggle', 'calendar'
+];
+
+export const MANDATORY_OPTIONS = {
+  REQUIRED: 'obrigatorio',
+  OPTIONAL: 'opcional'
+};

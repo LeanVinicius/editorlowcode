@@ -1,3 +1,4 @@
+// Carregamento inicial do canvas
 "use client";
 
 import { useSearchParams } from "next/navigation";

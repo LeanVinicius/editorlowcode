@@ -18,6 +18,17 @@ export const renderComponent = (type, content, color) => {
           />
         </div>
       );
+      case 'select':
+      return (
+        <div className="flex h-full flex-col">
+          <div className="bg-transparent ">{content}</div>
+          <select className="border h-full bg-transparent grow flex-1 border-gray-300 text-black rounded px-3 py-2">
+            <option value="">Selecionar</option>
+            <option value="opcao1">Opção 1</option>
+            <option value="opcao2">Opção 2</option>
+          </select>
+        </div>
+      );
     case 'heading':
       return <h2 className="text-xl font-bold">{content}</h2>;
 
