@@ -344,9 +344,7 @@ export default function CanvasDesigner() {
                       colorComponent={component.colorComponent}
                     >
                       {renderComponent(
-                        component.type,
-                        component.content,
-                        component.colorComponent
+                        component
                       )}
                     </ComponentRenderer>
                   ))}

@@ -20,15 +20,10 @@ export const dragHelpers = {
   },
   createNewComponent(sourceComponent, position, idCounter) {
     return {
+      ...sourceComponent,
       id: `${sourceComponent.type}-${idCounter}`,
-      content: sourceComponent.content,
-      type: sourceComponent.type,
       name: `${sourceComponent.type}-${idCounter}`,
-      colorComponent: sourceComponent.colorComponent,
       position,
-      width: sourceComponent.width,
-      height: sourceComponent.height,
-      mandatory: sourceComponent.mandatory,
     };
   },
 

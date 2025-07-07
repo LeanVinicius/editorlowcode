@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useComponentProperties } from "@/hooks/useComponentProperties";
 import { INTERACTIVE_COMPONENT_TYPES } from "@/constants/Components";
+import { OPTION_COMPONENT_TYPES } from "@/constants/Components";
 import { ComponentBasicFields } from "@/properties/ComponentBasicFields";
 import { ComponentSizeFields } from "@/properties/ComponentSizeFields";
 import { ComponentColorField } from "@/properties/ComponentColorField";
@@ -56,19 +57,7 @@ export function ComponentProperties({
   const isInteractiveComponent = INTERACTIVE_COMPONENT_TYPES.includes(
     component.type
   );
-
-  // const [localWidth, setLocalWidth] = useState(component?.width || 0);
-  // const [localHeight, setLocalHeight] = useState(component?.height || 80);
-  // const [localContent, setLocalContent] = useState(component?.content || "");
-  // const [localColor, setLocalColor] = useState(
-  //   component?.colorComponent || "#ffffff"
-  // );
-  // const [localMandatory, setLocalMandatory] = useState(
-  //   component?.mandatory || "opcional"
-  // );
-  // const [localName, setLocalName] = useState(component?.name || "");
-  // const [localMulti, setLocalMulti] = useState(component?.multi || false);
-  // const [localOptions, setLocalOptions] = useState(component?.options || []);
+ const isOptionComponent = OPTION_COMPONENT_TYPES.includes(component.type);
 
   return (
     <div className="w-64 bg-amber-800 p-4 rounded-lg z-30 overflow-auto h-screen fixed right-0">

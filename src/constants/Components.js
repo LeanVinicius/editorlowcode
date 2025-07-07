@@ -27,9 +27,13 @@ export const DEFAULT_COMPONENTS = [
   { id: "select", content: "Seleção", type: "select",
     width: 175, height: 64, colorComponent: "#000000",
     mandatory: "opcional",
-    multi: false
+    multi: true
   },
-  { id: "checkbox", content: "Checkbox", type: "checkbox" },
+  { id: "checkbox", content: "Checkbox", type: "checkbox",
+    width: 175, height: 64, colorComponent: "#000000",
+    mandatory: "opcional",
+    options: ["Opção 1", "Opção 2", "Opção 3"],
+   },
   { id: "calendar", content: "Data", type: "calendar" },
   { id: "toggle", content: "Opção", type: "toggle" },
   { id: "table", content: "Galeria", type: "slider" },
@@ -41,6 +45,9 @@ export const DRAG_ACTIVATION_DISTANCE = 5;
 export  const INTERACTIVE_COMPONENT_TYPES = [
   'input', 'select', 'checkbox', 'toggle', 'calendar'
 ];
+export const OPTION_COMPONENT_TYPES = [
+  'select','checkbox'
+]
 
 export const MANDATORY_OPTIONS = {
   REQUIRED: 'obrigatorio',
