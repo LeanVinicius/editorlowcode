@@ -43,6 +43,13 @@ export function ComponentRenderer({ id, children, position = { x: 0, y: 0 }, inC
       style.backgroundColor = 'gray';
       style.borderRadius = '0px';
       break;
+    case 'table':
+      style.backgroundColor = '#ffffff80';
+      style.color = colorComponent || undefined;
+      style.borderRadius = '8px';
+      style.width = size?.width ? `${size.width}px` : `${localSize.width}px`;
+      break;
+    
     
     default:
       style.backgroundColor = '#ffffff80';

@@ -1,4 +1,6 @@
+
 export const renderComponent = (component) => {
+  
   // NOTE: caso adiciona propriedades a mais, mudar aqui tbm
   const {
     type,
@@ -6,9 +8,10 @@ export const renderComponent = (component) => {
     colorComponent = "#000000",
     options = [],
     multi = false,
+    data = [],
   } = component;
+ 
 
-  console.log("Opções recebidas:", options);
   // TODO: colocar style para cada componente? e usar o props?
   switch (type) {
     case 'button':
@@ -76,6 +79,51 @@ export const renderComponent = (component) => {
             type="date"
             className="border h-full bg-transparent sgrow flex-1 border-gray-300 text-black rounded px-3 py-2"
           />
+
+        </div>
+      );
+    case 'table':
+      return (
+        <div className="border-1 rounded-[20px] bg-transparent sgrow border-gray-300" 
+       >
+          <table className="min-w-full mb-[12px]">
+            {data.length > 0 ? (
+              <thead>
+                <tr>
+                  {Object.keys(data[0]).map((key, idx) => (
+                    <th key={idx} className="p-[12px]  h-[40px] border-b text-left capitalize">
+                      {key}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+            ) : (
+              <thead>
+                <tr>
+                  <th className="p-[12px] h-[40px] border-b text-left capitalize">
+                    Matrícula
+                  </th>
+                </tr>
+              </thead>
+            )}
+            <tbody>
+              {data.length > 0 ? (
+                data.map((item, i) => (
+                  <tr key={item.id ?? i} className="hover:bg-gray-50">
+                    {Object.values(item).map((val, j) => (
+                      <td key={j} className="p-[12px] h-[40px] border-b">
+                        {val}
+                      </td>
+                    ))}
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td className="p-[12px] border-b">Nenhum dado</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
 
         </div>
       );
