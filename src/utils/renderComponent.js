@@ -1,6 +1,6 @@
 
 export const renderComponent = (component) => {
-  
+
   // NOTE: caso adiciona propriedades a mais, mudar aqui tbm
   const {
     type,
@@ -10,7 +10,7 @@ export const renderComponent = (component) => {
     multi = false,
     data = [],
   } = component;
- 
+
 
   // TODO: colocar style para cada componente? e usar o props?
   switch (type) {
@@ -84,8 +84,8 @@ export const renderComponent = (component) => {
       );
     case 'table':
       return (
-        <div className="border-1 rounded-[20px] bg-transparent sgrow border-gray-300" 
-       >
+        <div className="border-1 rounded-[20px] bg-transparent sgrow border-gray-300"
+        >
           <table className="min-w-full mb-[12px]">
             {data.length > 0 ? (
               <thead>
@@ -127,7 +127,18 @@ export const renderComponent = (component) => {
 
         </div>
       );
-
+    case 'kanbam':
+      return (
+        <div className="flex flex-col space-y-3 h-full p-3 border-1 rounded-[20px] bg-transparent  border-gray-300"
+        >
+          <div className="bg-[RGBA(130,130,130,0.08)] text-gray-700 font-bold w-min rounded-[20px] pt-1 pb-1 pr-3 pl-3">Titulo</div>
+          <div className="flex flex-col p-3 border-1 rounded-[20px] bg-transparent border-gray-300"
+          >
+            <div className="bg-[RGBA(130,130,130,0.08)] rounded-[20px] pt-1 pb-1 pr-3 pl-3">Titulo</div>
+            <div>ghghgh</div>
+          </div>
+        </div>
+      );
     case 'heading':
       return <h2 className="text-xl font-bold">{content ?? "Texto"}</h2>;
 

@@ -67,7 +67,10 @@ export const DEFAULT_COMPONENTS = [
       "status": "Não enviado",
     }]
   },
-  { id: "kanbam", content: "Kanbam", type: "kanbam" },
+  { id: "kanbam", content: "Kanbam", type: "kanbam",
+    width: 229, height: 110,
+    colorComponent: "#000000",
+   },
 ];
 
 export const CANVAS_DIMENSIONS = { width: 2000, height: 2000 };

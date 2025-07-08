@@ -353,7 +353,7 @@ export default function CanvasDesigner() {
             </div>
           </div>
           {/* Bottom Screen Tabs */}
-          <div className="fixed bottom-0 left-64 right-0 bg-gray-100 border-t border-gray-300 shadow-inner h-16 flex items-center px-4 space-x-4">
+          <div className="fixed bottom-0 left-64 right-0 bg-gray-100 border-t border-gray-300 shadow-inner h-16 flex items-center px-4 space-x-4 z-10">
             {availableScreens.map((screen) => (
               <div
                 key={screen.tela}
