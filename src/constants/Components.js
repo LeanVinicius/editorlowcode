@@ -6,6 +6,8 @@ export const DEFAULT_COMPONENTS = [
     width: 175,
     height: 41,
     colorComponent: "#000000",
+    role: "",
+    business_rule : []
   },
   {
     id: "text",

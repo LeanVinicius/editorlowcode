@@ -9,7 +9,8 @@ export const useComponentProperties = (component) => {
     name: '',
     mandatory: 'opcional',
     multi: false,
-    options: []
+    options: [],
+    role: ''
   });
   
   const [isEditingName, setIsEditingName] = useState(false);
@@ -24,7 +25,8 @@ export const useComponentProperties = (component) => {
         name: component.name || '',
         mandatory: component.mandatory || 'opcional',
         multi: component.multi || false,
-        options: component.options || []
+        options: component.options || [],
+        role: component.role || ''
       });
     }
   }, [component]);

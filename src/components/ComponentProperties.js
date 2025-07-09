@@ -7,6 +7,7 @@ import { ComponentSizeFields } from "@/properties/ComponentSizeFields";
 import { ComponentColorField } from "@/properties/ComponentColorField";
 import { ComponentMandatoryField } from "@/properties/ComponentMandatoryField";
 import { ComponentActions } from "@/properties/ComponentActions";
+import { ComponentRoleField } from "@/properties/ComponentRoleField";
 
 export function ComponentProperties({
   component,
@@ -18,6 +19,7 @@ export function ComponentProperties({
   onUpdateMandatory,
   onUpdateMulti,
   onUpdateOptions,
+  onUpdateRole
 }) {
   const { formData, updateField, isEditingName, setIsEditingName } =
     useComponentProperties(component);
@@ -53,11 +55,15 @@ export function ComponentProperties({
     updateField("mandatory", value);
     onUpdateMandatory(component.id, value);
   };
+  const handleRoleChange = (value) => {
+    updateField("role", value);
+    onUpdateRole(component.id, value);
+  };
 
-  const isInteractiveComponent = INTERACTIVE_COMPONENT_TYPES.includes(
-    component.type
-  );
- const isOptionComponent = OPTION_COMPONENT_TYPES.includes(component.type);
+  const isInteractiveComponent = INTERACTIVE_COMPONENT_TYPES.includes(component.type);
+  const isOptionComponent = OPTION_COMPONENT_TYPES.includes(component.type);
+  const isButtonComponent = component.type === "button";
+
 
   return (
     <div className="w-64 bg-amber-800 p-4 rounded-lg z-30 overflow-auto h-screen fixed right-0">
@@ -87,6 +93,14 @@ export function ComponentProperties({
           color={formData.color}
           onColorChange={handleColorChange}
         />
+
+        {isButtonComponent && (
+          <ComponentRoleField
+            role={formData.role}
+            onRoleChange={handleRoleChange}
+          />
+        )}
+
 
         {isInteractiveComponent && (
           <ComponentMandatoryField

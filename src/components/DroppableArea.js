@@ -1,4 +1,7 @@
 "use client";
+
+// Este componente define uma área droppable no layout usando o hook `useDroppable` do `@dnd-kit/core`.
+// Ele permite que outros componentes sejam soltos dentro dele e fornece feedback visual quando um item está sendo arrastado sobre ele.
 import { useDroppable } from "@dnd-kit/core";
 
 export function DroppableArea({ id, children }) {

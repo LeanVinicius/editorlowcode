@@ -1,4 +1,13 @@
 "use client";
+
+// Este é o componente principal da interface de design.
+// É responsável por:
+// - Gerenciar o estado dos componentes no canvas e das telas.
+// - Lidar com as interações de drag and drop para adicionar e mover componentes.
+// - Interagir com a API para salvar e carregar o estado do canvas e das telas.
+// - Coordenar a renderização dos sub-componentes que formam a interface (sidebar, área do canvas, painel de propriedades, abas de tela).
+
+
 import {
   DndContext,
   useSensor,
@@ -7,7 +16,7 @@ import {
 } from "@dnd-kit/core";
 import { ComponentRenderer } from "../components/ComponentRenderer";
 import { DroppableArea } from "../components/DroppableArea";
-import { useState, useEffect, use } from "react";
+import { useState, useEffect, } from "react";
 import { ComponentProperties } from "../components/ComponentProperties";
 import { renderComponent } from "@/utils/renderComponent";
 import { ComponentsSidebar } from "@/components/ComponentsSidebar";
@@ -43,6 +52,7 @@ export default function CanvasDesigner() {
     updateComponentColor,
     updateComponentMandatory,
     updateComponentPosition,
+    updateComponentRole,
     addComponent,
     removeComponent,
     clearCanvas,
@@ -73,11 +83,13 @@ export default function CanvasDesigner() {
       },
     })
   );
+  // Carregar canvas apenas uma vez
   useEffect(() => {
     if (!initialLoadComplete) {
       setInitialLoadComplete(true);
     }
   }, [initialLoadComplete]);
+  
   // Configurar o evento de unload para mostrar popup de confirmação
   useEffect(() => {
     const handleBeforeUnload = (event) => {
@@ -91,7 +103,8 @@ export default function CanvasDesigner() {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, []);
-  // Load canvas data when screen changes
+
+  // Carregar canvas quando o ID da tela mudar
   useEffect(() => {
     if (currentScreenId && userId && projectId) {
       loadCanvasForScreen(currentScreenId);
@@ -112,6 +125,15 @@ export default function CanvasDesigner() {
     }
   };
 
+  const addComponentToCanvas = (sourceComponent) => {
+    const newComponent = dragHelpers.createNewComponent(
+      sourceComponent,
+      { x: 0, y: 0 },
+      componentIdCounter
+    );
+    addComponent(newComponent);
+  };
+  
   const handleSaveCanvas = async () => {
     try {
       const canvasData = JSON.stringify(canvasComponents);
@@ -125,15 +147,6 @@ export default function CanvasDesigner() {
     } catch (error) {
       alert("Erro ao salvar canvas.");
     }
-  };
-
-  const addComponentToCenter = (sourceComponent) => {
-    const newComponent = dragHelpers.createNewComponent(
-      sourceComponent,
-      { x: 0, y: 0 },
-      componentIdCounter
-    );
-    addComponent(newComponent);
   };
 
   const handleDeleteComponent = (componentId) => {
@@ -174,6 +187,7 @@ export default function CanvasDesigner() {
       }
     }
   }
+
   const handleScreensData = (screensData) => {
     const sortedScreens = [...screensData].sort((a, b) => a.tela - b.tela);
     setAvailableScreens(sortedScreens);
@@ -203,6 +217,7 @@ export default function CanvasDesigner() {
       }
     );
   };
+
   const startEditingScreenName = () => {
     const selectedScreen = availableScreens.find(
       (screen) => screen.tela === currentScreenId
@@ -310,7 +325,7 @@ export default function CanvasDesigner() {
             <div className="min-w-max">
               <ComponentsSidebar
                 availableComponents={DEFAULT_COMPONENTS}
-                onComponentClick={addComponentToCenter}
+                onComponentClick={addComponentToCanvas}
               />
             </div>
           </div>
@@ -398,6 +413,7 @@ export default function CanvasDesigner() {
           onDelete={handleDeleteComponent}
           onUpdateName={updateComponentName}
           onUpdateMandatory={updateComponentMandatory}
+          onUpdateRole={updateComponentRole}
         />
         {/* Add your new sidebar content here */}
       </div>

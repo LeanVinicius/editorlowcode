@@ -3,6 +3,17 @@ import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import { useState } from "react";
 
+/**
+ * @param {object} props - As propriedades do componente.
+ * @param {string} props.id - O ID único do componente, usado para drag and drop.
+ * @param {React.ReactNode} props.children - O conteúdo real do componente a ser renderizado.
+ * @param {object} [props.position={x: 0, y: 0}] - A posição do componente no canvas.
+ * @param {boolean} [props.inCanvas=false] - Indica se o componente está dentro da área do canvas (afeta posicionamento e drag).
+ * @param {() => void} [props.onClick] - Função a ser chamada quando o componente é clicado.
+ * @param {object} [props.size] - O tamanho (width, height) do componente.
+ * @param {string} [props.colorComponent] - A cor a ser aplicada ao componente (pode variar dependendo do tipo).
+ * @returns {JSX.Element} Renderiza um componente individual com funcionalidade de arrastar.
+ */
 export function ComponentRenderer({ id, children, position = { x: 0, y: 0 }, inCanvas = false, onClick, size, colorComponent }) {
   const [localSize, setLocalSize] = useState(size);
   
