@@ -1,7 +1,13 @@
 
+/**
+ * Renderiza o JSX correspondente a um objeto de componente.
+ * Baseia-se no `component.type` para determinar qual elemento React renderizar.
+ * @param {object} component - O objeto que descreve o componente a ser renderizado.
+ * @returns {JSX.Element|null} O elemento React correspondente ao componente, ou null se o tipo for desconhecido.
+ */
 export const renderComponent = (component) => {
 
-  // NOTE: caso adiciona propriedades a mais, mudar aqui tbm
+  // NOTE: caso adicionar propriedades visuais a mais, mudar aqui tbm
   const {
     type,
     content,
@@ -11,8 +17,6 @@ export const renderComponent = (component) => {
     data = [],
   } = component;
 
-
-  // TODO: colocar style para cada componente? e usar o props?
   switch (type) {
     case 'button':
       return (

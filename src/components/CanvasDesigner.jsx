@@ -13,8 +13,8 @@ import {
   useSensor,
   useSensors,
   PointerSensor,
-} from "@dnd-kit/core";
-import { ComponentRenderer } from "../components/ComponentRenderer";
+} from '@dnd-kit/core';
+import { MoveableDesignComponent } from './MoveableDesignComponent';
 import { DroppableArea } from "../components/DroppableArea";
 import { useState, useEffect, } from "react";
 import { ComponentProperties } from "../components/ComponentProperties";
@@ -343,9 +343,9 @@ export default function CanvasDesigner() {
                     height: `${CANVAS_DIMENSIONS.height}px`,
                   }}
                   className="relative rounded-lg transition-colors cursor-move"
-                >
+                >                 
                   {canvasComponents.map((component) => (
-                    <ComponentRenderer
+                    <MoveableDesignComponent
                       key={component.id}
                       id={component.id}
                       position={component.position}
@@ -361,7 +361,7 @@ export default function CanvasDesigner() {
                       {renderComponent(
                         component
                       )}
-                    </ComponentRenderer>
+                    </MoveableDesignComponent>
                   ))}
                 </div>
               </DroppableArea>

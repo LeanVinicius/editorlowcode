@@ -14,7 +14,7 @@ import { useState } from "react";
  * @param {string} [props.colorComponent] - A cor a ser aplicada ao componente (pode variar dependendo do tipo).
  * @returns {JSX.Element} Renderiza um componente individual com funcionalidade de arrastar.
  */
-export function ComponentRenderer({ id, children, position = { x: 0, y: 0 }, inCanvas = false, onClick, size, colorComponent }) {
+export function MoveableDesignComponent({ id, children, position = { x: 0, y: 0 }, inCanvas = false, onClick, size, colorComponent }) {
   const [localSize, setLocalSize] = useState(size);
   
   

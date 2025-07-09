@@ -2,6 +2,14 @@ import { useState, useCallback } from "react";
 import { ScreenHelpers } from "../utils/ScreenHelpers";
 import { CanvasApi } from "../services/CanvasApi";
 
+/**
+ * Hook customizado para gerenciar o estado e as operações relacionadas às telas (screens) do projeto.
+ * Interage com `CanvasApi` para operações de backend e `ScreenHelpers` para manipulação de dados locais.
+ *
+ * @param {string} userId - O ID do usuário atual.
+ * @param {string} projectId - O ID do projeto atual.
+ * @returns {object} Um objeto contendo o estado e funções para gerenciar as telas.
+ */
 export const useScreenManager = (userId, projectId) => {
   const [availableScreens, setAvailableScreens] = useState([]);
   const [currentScreenId, setCurrentScreenId] = useState(null);
@@ -9,6 +17,9 @@ export const useScreenManager = (userId, projectId) => {
   const [isEditingScreenName, setIsEditingScreenName] = useState(false);
   const [temporaryScreenName, setTemporaryScreenName] = useState("");
 
+/** 
+  * Cria uma nova tela para o usuário e projetos atuais
+  */
   const createNewScreen = useCallback(async () => {
     if (!userId || !projectId) return;
 
@@ -33,6 +44,13 @@ export const useScreenManager = (userId, projectId) => {
     }
   }, [userId, projectId, availableScreens]);
 
+/**
+  * Atualiza o nome de uma tela específica.
+  *
+  * @param {string|number} screenId - O ID da tela a ser atualizada.
+  * @param {string} newName - O novo nome para a tela.
+  * @returns {Promise<void>}
+  */
   const updateScreenName = useCallback(
     async (screenId, newName) => {
       try {
@@ -56,6 +74,12 @@ export const useScreenManager = (userId, projectId) => {
     [userId, projectId, availableScreens]
   );
 
+/**
+  * Exclui uma tela específica.
+  *
+  * @param {string|number} screenId - O ID da tela a ser excluída.
+  * @returns {Promise<void>}
+  */
   const deleteScreen = useCallback(
     async (screenId, onSuccess, onError) => {
       try {
@@ -87,6 +111,11 @@ export const useScreenManager = (userId, projectId) => {
     [userId, projectId, availableScreens, currentScreenId]
   );
 
+/**
+  * Seleciona uma tela para ser a tela atual.
+  *
+  * @param {string|number} screenId - O ID da tela a ser selecionada.
+  */
   const selectScreen = useCallback(
     (screenId) => {
       const selectedScreen = ScreenHelpers.findScreen(

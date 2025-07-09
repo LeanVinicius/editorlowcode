@@ -1,6 +1,3 @@
-import { ComponentRenderer } from "./ComponentRenderer";
-import { renderComponent } from "@/utils/renderComponent";
-
 export function ComponentsSidebar({ availableComponents, onComponentClick }) {
   return (
     <div className="w-full flex flex-col justify-between  bg-amber-700 p-4 rounded-lg">
