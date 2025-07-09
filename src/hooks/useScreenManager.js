@@ -3,13 +3,13 @@ import { ScreenHelpers } from "../utils/ScreenHelpers";
 import { CanvasApi } from "../services/CanvasApi";
 
 /**
- * Hook customizado para gerenciar o estado e as operações relacionadas às telas (screens) do projeto.
- * Interage com `CanvasApi` para operações de backend e `ScreenHelpers` para manipulação de dados locais.
- *
- * @param {string} userId - O ID do usuário atual.
- * @param {string} projectId - O ID do projeto atual.
- * @returns {object} Um objeto contendo o estado e funções para gerenciar as telas.
- */
+  * Hook customizado para gerenciar o estado e as operações relacionadas às telas (screens) do projeto.
+  * Interage com `CanvasApi` para operações de backend e `ScreenHelpers` para manipulação de dados locais.
+  *
+  * @param {string} userId - O ID do usuário atual.
+  * @param {string} projectId - O ID do projeto atual.
+  * @returns {object} Um objeto contendo o estado e funções para gerenciar as telas.
+  */
 export const useScreenManager = (userId, projectId) => {
   const [availableScreens, setAvailableScreens] = useState([]);
   const [currentScreenId, setCurrentScreenId] = useState(null);

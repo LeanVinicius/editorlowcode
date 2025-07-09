@@ -128,6 +128,87 @@ A função `renderComponent` recebe um objeto `component` como parâmetro e util
 
 Este arquivo é essencial para a visualização dos componentes no canvas, pois ele sabe como traduzir os dados abstratos de um componente em uma representação visual concreta.
 
+### src/constants/Components.js
+
+Este arquivo define constantes importantes utilizadas em toda a aplicação, principalmente relacionadas à configuração e definição dos componentes de design. Ele serve como uma fonte centralizada para as propriedades padrão dos componentes e outras configurações do canvas.
+
+**Constantes Principais:**
+
+*   `DEFAULT_COMPONENTS`: Um array de objetos, onde cada objeto representa a definição padrão de um tipo de componente disponível no editor (ex: botão, input, seleção). Inclui propriedades iniciais como `id`, `content`, `type`, `width`, `height`, `colorComponent`, `role`, etc.
+*   `CANVAS_DIMENSIONS`: Objeto que especifica as dimensões padrão (`width`, `height`) da área de design do canvas.
+*   `DRAG_ACTIVATION_DISTANCE`: Valor numérico que define a distância mínima de arrasto antes que a operação de drag and drop seja ativada.
+*   `INTERACTIVE_COMPONENT_TYPES`: Array de strings contendo os `type`s dos componentes que são considerados interativos (geralmente campos de formulário).
+*   `OPTION_COMPONENT_TYPES`: Array de strings contendo os `type`s dos componentes que suportam a definição de opções (como select e checkbox).
+*   `MANDATORY_OPTIONS`: Objeto com constantes (`REQUIRED`, `OPTIONAL`) para os possíveis valores da propriedade de obrigatoriedade de um componente.
+
+### src/utils/UserCanvasLoader.js
+
+Este "componente" (`UserCanvasLoader`) não renderiza nenhuma interface visual (`return null`). Sua finalidade principal é **carregar os dados iniciais** das telas e do canvas da API de backend quando o componente é montado na aplicação (geralmente no início do fluxo do `CanvasDesigner`).
+
+Ele obtém os parâmetros de `userId` e `projectId` da URL e, se `shouldLoad` for verdadeiro, realiza as seguintes operações assíncronas em sequência:
+
+1.  Carrega a lista de telas disponíveis usando `CanvasApi.loadScreens`.
+2.  Processa os dados das telas e chama a função `screens` (passada via props) com esses dados.
+3.  Seleciona a primeira tela carregada.
+4.  Chama a função `selectScreen` (passada via props) com o ID da primeira tela.
+5.  Carrega os componentes do canvas para a primeira tela selecionada usando `CanvasApi.loadCanvas`.
+6.  Chama a função `onDataLoaded` (passada via props) com os dados dos componentes do canvas carregados.
+
+Ele é essencial para inicializar o estado da aplicação com os dados persistidos no backend.
+
+**Props:**
+
+*   `onDataLoaded(canvasData)`: Função chamada com os dados dos componentes do canvas após o carregamento bem-sucedido.
+*   `shouldLoad`: Booleano que indica se o carregamento inicial deve ocorrer.
+*   `screens(screenData)`: Função chamada com os dados das telas disponíveis após o carregamento.
+*   `selectScreen(screenId)`: Função chamada para definir a tela atualmente selecionada após o carregamento.
+
+### src/components/ComponentsSidebar.js
+
+Este componente (`ComponentsSidebar`) renderiza a barra lateral que exibe a lista de componentes disponíveis para serem adicionados à área de design do canvas. Ele é um componente de apresentação que recebe os dados dos componentes e uma função para lidar com o clique neles.
+
+**Props:**
+
+*   `availableComponents`: Um array de objetos, onde cada objeto representa um componente disponível a ser exibido na barra lateral. Geralmente vem da constante `DEFAULT_COMPONENTS`.
+*   `onComponentClick(component)`: Função chamada quando um componente na lista da barra lateral é clicado. O objeto do componente clicado é passado como argumento. Esta função é usada para adicionar o componente selecionado ao canvas.
+
+### src/hooks/useComponentProperties.js
+
+Este hook customizado (`useComponentProperties`) é responsável por gerenciar o estado do formulário utilizado no painel de propriedades para editar um componente selecionado. Ele mantém uma cópia local das propriedades editáveis do componente e fornece uma forma de atualizá-las.
+
+**Prop:**
+
+*   `component`: O objeto do componente atualmente selecionado cujas propriedades devem ser exibidas e editadas.
+
+**Estados e Funções Retornadas:**
+
+*   `formData`: Um objeto que armazena os valores atuais dos campos do formulário de propriedades do componente. É sincronizado com as propriedades do `component` passado.
+*   `updateField(field, value)`: Função utilizada para atualizar o valor de um campo específico (`field`) dentro do `formData` com o novo `value`.
+*   `isEditingName`: Estado booleano que indica se o campo de edição do nome do componente está ativo.
+*   `setIsEditingName(boolean)`: Função para atualizar o estado `isEditingName`.
+
+Este hook é fundamental para a funcionalidade do painel de propriedades, garantindo que as informações do componente selecionado sejam exibidas corretamente e possam ser modificadas.
+
+### src/components/ComponentProperties.js
+
+Este componente (`ComponentProperties`) renderiza o painel lateral na interface de design que permite aos usuários visualizar e editar as propriedades do componente atualmente selecionado no canvas. Ele atua como um orquestrador para os diferentes campos de propriedade e ações disponíveis.
+
+**Props:**
+
+*   `component`: O objeto do componente atualmente selecionado cujas propriedades devem ser exibidas no painel. Se for `null` ou `undefined`, o painel não é renderizado.
+*   `onUpdateSize(componentId, newSize)`: Função chamada para atualizar as dimensões (largura/altura) do componente no estado global do canvas.
+*   `onUpdateContent(componentId, newContent)`: Função chamada para atualizar o conteúdo (texto, rótulo, etc.) do componente.
+*   `onUpdateColor(componentId, newColor)`: Função chamada para atualizar a cor do componente.
+*   `onDelete(componentId)`: Função chamada para remover o componente selecionado do canvas.
+*   `onUpdateName(componentId, newName)`: Função chamada para atualizar o nome do componente.
+*   `onUpdateMandatory(componentId, value)`: Função chamada para atualizar a propriedade de obrigatoriedade do componente.
+*   `onUpdateMulti(componentId, value)`: Função chamada para atualizar a propriedade `multi` (usada em `select`).
+*   `onUpdateOptions(componentId, newOptions)`: Função chamada para atualizar as opções de componentes que as suportam (como `select` e `checkbox`).
+*   `onUpdateRole(componentId, newRole)`: Função chamada para atualizar a propriedade `role` do componente (usada em `button`).
+
+Este componente utiliza o hook `useComponentProperties` para gerenciar o estado local dos dados do formulário e renderiza condicionalmente diferentes componentes de campo de propriedade (`ComponentBasicFields`, `ComponentSizeFields`, etc.) e ações (`ComponentActions`) com base no tipo e propriedades do componente selecionado.
+
+
 
 
 

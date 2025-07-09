@@ -9,6 +9,22 @@ import { ComponentMandatoryField } from "@/properties/ComponentMandatoryField";
 import { ComponentActions } from "@/properties/ComponentActions";
 import { ComponentRoleField } from "@/properties/ComponentRoleField";
 
+/**
+ * @param {object} props - As propriedades do componente.
+ * @param {object | null} props.component - O objeto do componente atualmente selecionado cujas propriedades devem ser exibidas e editadas. Se for `null`, o painel não é renderizado.
+ * @param {(componentId: string, newSize: { width: number, height: number }) => void} props.onUpdateSize - Função chamada quando o tamanho do componente é alterado.
+ * @param {(componentId: string, newContent: string) => void} props.onUpdateContent - Função chamada quando o conteúdo do componente é alterado.
+ * @param {(componentId: string, newColor: string) => void} props.onUpdateColor - Função chamada quando a cor do componente é alterada.
+ * @param {(componentId: string) => void} props.onDelete - Função chamada quando o componente deve ser excluído.
+ * @param {(componentId: string, newName: string) => void} props.onUpdateName - Função chamada quando o nome do componente é alterado.
+ * @param {(componentId: string, newMandatory: string) => void} props.onUpdateMandatory - Função chamada quando o status de obrigatoriedade do componente é alterado.
+ * @param {(componentId: string, newMulti: boolean) => void} [props.onUpdateMulti] - Função opcional chamada quando a propriedade 'multi' do componente é alterada (para selects).
+ * @param {(componentId: string, newOptions: string[]) => void} [props.onUpdateOptions] - Função opcional chamada quando as opções do componente são alteradas (para selects/checkboxes).
+ * @param {(componentId: string, newRole: string) => void} [props.onUpdateRole] - Função opcional chamada quando a propriedade 'role' do componente é alterada (para botões).
+ * @returns {JSX.Element | null} Renderiza o painel lateral para visualizar e editar as propriedades de um componente selecionado, ou `null` se nenhum componente estiver selecionado.
+ *
+ * Este componente utiliza o hook `useComponentProperties` para gerenciar o estado local do formulário de propriedades e sincronizá-lo com o componente selecionado. Ele renderiza condicionalmente diferentes campos de propriedade com base no tipo do componente.
+ */
 export function ComponentProperties({
   component,
   onUpdateSize,
@@ -113,185 +129,4 @@ export function ComponentProperties({
       <ComponentActions onDelete={() => onDelete(component.id)} />
     </div>
   );
-  // Atualiza os inputs sempre que um novo componente for selecionado
-  // useEffect(() => {
-  //   setLocalWidth(component?.width || 0);
-  //   setLocalHeight(component?.height || 80);
-  //   setLocalContent(component?.content || "");
-  //   setLocalColor(component?.colorComponent || "#ffffff");
-  //   setLocalName(component?.name || "");
-  //   setLocalMandatory(component?.mandatory || "opcional");
-  //   setLocalMulti(component?.multi || false);
-  //   setLocalOptions(component?.options || []);
-  // }, [component]);
-
-  // if (!component) {
-  //   return null;
-  // }
-
-  // return (
-  //   <div className="w-64 bg-amber-800 p-4 rounded-lg z-30 overflow-auto h-screen fixed right-0">
-  //     <div className="pb-16">
-  //       <h2 className="text-lg font-semibold mb-4">
-  //         Propriedades do Componente
-  //       </h2>
-  //       <div className="mt-4">
-  //         <label className="block mb-2">Nome:</label>
-  //         {isEditingName ? (
-  //           <span
-  //             contentEditable
-  //             suppressContentEditableWarning
-  //             onBlur={(e) => {
-  //               const newName = e.target.textContent;
-  //               setIsEditingName(false);
-  //               setLocalName(newName);
-  //               onUpdateName(component.id, newName);
-  //             }}
-  //             onKeyDown={(e) => {
-  //               if (e.key === "Enter") {
-  //                 e.preventDefault();
-  //                 e.target.blur();
-  //               }
-  //             }}
-  //             className="block w-full px-3 py-2 bg-white rounded focus:outline-none"
-  //           >
-  //             {localName}
-  //           </span>
-  //         ) : (
-  //           <div
-  //             onClick={() => setIsEditingName(true)}
-  //             className="px-3 py-2 bg-gray-100 rounded cursor-pointer hover:bg-gray-200"
-  //           >
-  //             {localName}
-  //           </div>
-  //         )}
-  //       </div>
-  //       <p>Tipo: {component.type}</p>
-
-  //       <div className="mt-4">
-  //         <label className="block mb-2">Texto:</label>
-  //         <input
-  //           type="text"
-  //           value={localContent}
-  //           onChange={(e) => {
-  //             setLocalContent(e.target.value);
-  //             onUpdateContent(component.id, e.target.value);
-  //           }}
-  //           className="w-full px-3 py-2 border rounded"
-  //         />
-  //       </div>
-
-  //       <div className="mt-4">
-  //         <label className="block mb-2">Largura (px):</label>
-  //         <input
-  //           type="number"
-  //           value={localWidth}
-  //           onChange={(e) => {
-  //             const newWidth = parseInt(e.target.value);
-  //             setLocalWidth(newWidth);
-  //             onUpdateSize(component.id, {
-  //               width: newWidth,
-  //               height: localHeight,
-  //             });
-  //           }}
-  //           className="w-full px-3 py-2 border rounded"
-  //           min="50"
-  //         />
-  //       </div>
-
-  //       <div className="mt-4">
-  //         <label className="block mb-2">Altura (px):</label>
-  //         <input
-  //           type="number"
-  //           value={localHeight}
-  //           onChange={(e) => {
-  //             const newHeight = parseInt(e.target.value);
-  //             setLocalHeight(newHeight);
-  //             onUpdateSize(component.id, {
-  //               width: localWidth,
-  //               height: newHeight,
-  //             });
-  //           }}
-  //           className="w-full px-3 py-2 border rounded"
-  //           min="30"
-  //         />
-  //       </div>
-  //       <div className="mt-4">
-  //         <label className="block mb-2">Cor:</label>
-  //         <div className="flex gap-2">
-  //           <input
-  //             type="color"
-  //             value={localColor}
-  //             onChange={(e) => {
-  //               setLocalColor(e.target.value);
-  //               onUpdateColor(component.id, e.target.value);
-  //             }}
-  //             className="w-12 h-8 cursor-pointer"
-  //           />
-  //           <input
-  //             type="text"
-  //             value={localColor}
-  //             onChange={(e) => {
-  //               setLocalColor(e.target.value);
-  //               onUpdateColor(component.id, e.target.value);
-  //             }}
-  //             className="w-full px-3 border rounded"
-  //             placeholder="#000000 ou rgb(0,0,0)"
-  //           />
-  //         </div>
-  //       </div>
-  //       {(component.type === "input" ||
-  //         component.type === "select" ||
-  //         component.type === "checkbox" ||
-  //         component.type === "toggle" ||
-  //         component.type === "calendar") && (
-  //           <div className="mt-4">
-  //             <label className="block mb-2">Obrigatoriedade:</label>
-
-  //             <label className="flex items-center space-x-2 mb-2">
-  //               <input
-  //                 type="radio"
-  //                 name="obrigatoriedade"
-  //                 value="obrigatorio"
-  //                 className="form-radio h-5 w-5 text-blue-600"
-  //                 onChange={(e) => {
-  //                   onUpdateMandatory(component.id, e.target.value);
-  //                   setLocalMandatory(e.target.value);
-  //                 }}
-  //                 checked={localMandatory === "obrigatorio"}
-  //               />
-  //               <span className="">Obrigatório</span>
-  //             </label>
-
-  //             <label className="flex items-center space-x-2">
-  //               <input
-  //                 type="radio"
-  //                 name="obrigatoriedade"
-  //                 value="opcional"
-  //                 className="form-radio h-5 w-5 text-blue-600"
-  //                 onChange={(e) => {
-  //                   onUpdateMandatory(component.id, e.target.value);
-  //                   setLocalMandatory(e.target.value);
-  //                 }}
-  //                 checked={localMandatory === "opcional"}
-  //               />
-  //               <span className="">Opcional</span>
-  //             </label>
-  //           </div>
-  //         )}
-  //       <div>text</div>
-  //       <div>text</div>
-  //       <div>text</div>
-  //       <div>text</div>
-  //     </div>
-  //     <div className="fixed bottom-0 right-0 w-64 bg-amber-800">
-  //       <button
-  //         onClick={() => onDelete(component.id)}
-  //         className="mt-4 bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-md transition-colors"
-  //       >
-  //         Deletar
-  //       </button>
-  //     </div>
-  //   </div>
-  // );
 }
