@@ -8,6 +8,7 @@ import { ComponentColorField } from "@/properties/ComponentColorField";
 import { ComponentMandatoryField } from "@/properties/ComponentMandatoryField";
 import { ComponentActions } from "@/properties/ComponentActions";
 import { ComponentRoleField } from "@/properties/ComponentRoleField";
+import { ComponentRulesField } from "@/properties/ComponentRulesField";
 
 /**
  * @param {object} props - As propriedades do componente.
@@ -21,7 +22,8 @@ import { ComponentRoleField } from "@/properties/ComponentRoleField";
  * @param {(componentId: string, newMulti: boolean) => void} [props.onUpdateMulti] - Função opcional chamada quando a propriedade 'multi' do componente é alterada (para selects).
  * @param {(componentId: string, newOptions: string[]) => void} [props.onUpdateOptions] - Função opcional chamada quando as opções do componente são alteradas (para selects/checkboxes).
  * @param {(componentId: string, newRole: string) => void} [props.onUpdateRole] - Função opcional chamada quando a propriedade 'role' do componente é alterada (para botões).
- * @returns {JSX.Element | null} Renderiza o painel lateral para visualizar e editar as propriedades de um componente selecionado, ou `null` se nenhum componente estiver selecionado.
+ * @param {(componentId: string, newRules: string) => void} [props.onUpdateRules] - Função opcional chamada quando a propriedade 'rules' do componente é alterada (para inputs).
+* @returns {JSX.Element | null} Renderiza o painel lateral para visualizar e editar as propriedades de um componente selecionado, ou `null` se nenhum componente estiver selecionado.
  *
  * Este componente utiliza o hook `useComponentProperties` para gerenciar o estado local do formulário de propriedades e sincronizá-lo com o componente selecionado. Ele renderiza condicionalmente diferentes campos de propriedade com base no tipo do componente.
  */
@@ -35,7 +37,8 @@ export function ComponentProperties({
   onUpdateMandatory,
   onUpdateMulti,
   onUpdateOptions,
-  onUpdateRole
+  onUpdateRole,
+  onUpdateRules
 }) {
   const { formData, updateField, isEditingName, setIsEditingName } =
     useComponentProperties(component);
@@ -75,6 +78,10 @@ export function ComponentProperties({
     updateField("role", value);
     onUpdateRole(component.id, value);
   };
+  const handleRulesChange = (value) => {
+    updateField("rules", value);
+    onUpdateRules(component.id, value);
+  }
 
   const isInteractiveComponent = INTERACTIVE_COMPONENT_TYPES.includes(component.type);
   const isOptionComponent = OPTION_COMPONENT_TYPES.includes(component.type);
@@ -124,7 +131,15 @@ export function ComponentProperties({
             onMandatoryChange={handleMandatoryChange}
           />
         )}
+        <ComponentRulesField
+          rules={formData.rules}
+          onRulesChange={handleRulesChange}
+        />
+
       </div>
+
+
+
 
       <ComponentActions onDelete={() => onDelete(component.id)} />
     </div>

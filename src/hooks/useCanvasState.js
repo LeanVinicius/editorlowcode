@@ -79,6 +79,23 @@ export const useCanvasState = () => {
     );
   }, []);
 
+  const udpateComponentImformation = useCallback((componentId, newInformation) => {
+    setCanvasComponents(prevComponents =>
+      ComponentHelpers.updateComponentProperty(prevComponents, componentId, 'information', newInformation)
+    );
+  }, []);
+
+  /**
+    * Atualiza as regras de negócio de um componente.
+    * @param {string} componentId - O ID do componente a ser atualizado.
+    * @param {string} newRule - A nova regra para o componente.
+    */
+  const updateComponentRules = useCallback((componentId, newRule) => {
+    setCanvasComponents(prevComponents =>
+      ComponentHelpers.updateComponentProperty(prevComponents, componentId, 'rules', newRule)
+    );
+  }, []);
+
   /**
     * Atualiza a posição de um componente específico no canvas.
     * @param {string} componentId - O ID do componente a ser atualizado.
@@ -151,6 +168,8 @@ export const useCanvasState = () => {
     updateComponentColor,
     updateComponentMandatory,
     updateComponentRole,
+    updateComponentRules,
+    udpateComponentImformation,
     updateComponentPosition,
     addComponent,
     removeComponent,

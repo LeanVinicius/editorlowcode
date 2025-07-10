@@ -26,7 +26,8 @@ export const useComponentProperties = (component) => {
     mandatory: 'opcional',
     multi: false,
     options: [],
-    role: ''
+    role: '',
+    rules: [],
   });
 
   const [isEditingName, setIsEditingName] = useState(false);
@@ -42,7 +43,8 @@ export const useComponentProperties = (component) => {
         mandatory: component.mandatory || 'opcional',
         multi: component.multi || false,
         options: component.options || [],
-        role: component.role || ''
+        role: component.role || '',
+        rules: component.rules || [],
       });
     }
   }, [component]); // Dependência: Sincroniza quando o componente selecionado muda.

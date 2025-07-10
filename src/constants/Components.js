@@ -7,7 +7,7 @@
   * @property {number} height - Altura padrão do componente.
   * @property {string} colorComponent - Cor padrão do componente (em formato hexadecimal).
   * @property {string} [role] - Role/função do componente.
-  * @property {Array<any>} [business_rule] - Regras de negócio associadas ao componente.
+  * @property {Array<any>} [rules] - Regras de negócio associadas ao componente.
   * @property {string} [mandatory] - Indica se o componente é obrigatório ('obrigatorio' ou 'opcional').
   * @property {Array<string>} [options] - Opções para componentes de seleção (ex: 'select', 'checkbox').
   * @property {Array<object>} [data] - Dados para componentes de lista/tabela.
@@ -27,7 +27,7 @@ export const DEFAULT_COMPONENTS = [
     height: 41,
     colorComponent: "#000000",
     role: "",
-    business_rule : []
+    rules : ["teste"]
   },
   {
     id: "text",
@@ -36,6 +36,7 @@ export const DEFAULT_COMPONENTS = [
     width: 175,
     height: 41,
     colorComponent: "#000000",
+    rules:[]
   },
   {
     id: "input",
@@ -45,29 +46,35 @@ export const DEFAULT_COMPONENTS = [
     height: 64,
     colorComponent: "#000000",
     mandatory: "opcional",
+    rules:[],
+    information: 'Texto Livre'
   },
   {
     id: "select", content: "Seleção", type: "select",
     width: 175, height: 64, colorComponent: "#000000",
     mandatory: "opcional",
-    multi: true
+    multi: true,
+    rules:[]
   },
   {
     id: "checkbox", content: "Checkbox", type: "checkbox",
     width: 175, height: 64, colorComponent: "#000000",
     mandatory: "opcional",
     options: ["Opção 1", "Opção 2", "Opção 3"],
+    rules:[]
   },
   {
     id: "calendar", content: "Data", type: "calendar",
     width: 175, height: 64, colorComponent: "#000000",
     mandatory: "opcional",
+    rules:[]
   },
   {
     id: "toggle", content: "Opção", type: "toggle",
     width: 175, height: 64, colorComponent: "#000000",
     mandatory: "opcional",
     options: ["Opção 1", "Opção 2", "Opção 3"],
+    rules:[]
   },
   {
     id: "table", content: "Galeria", type: "table",
@@ -87,11 +94,13 @@ export const DEFAULT_COMPONENTS = [
       "mes": "Outubro",
       "ano": "2025",
       "status": "Não enviado",
-    }]
+    }],
+    rules:[]
   },
   { id: "kanbam", content: "Kanbam", type: "kanbam",
     width: 229, height: 110,
     colorComponent: "#000000",
+    rules:[]
    },
 ];
 /**
@@ -130,3 +139,7 @@ export const MANDATORY_OPTIONS = {
   REQUIRED: 'obrigatorio',
   OPTIONAL: 'opcional'
 };
+
+export const IMFORMATION_TYPE =[
+  'Texto Livre', 'Dinheiro', 'CPF/CNPJ', 'Outro'
+]

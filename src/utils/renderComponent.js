@@ -40,7 +40,6 @@ export const renderComponent = (component) => {
         <div className="flex h-full flex-col">
           <div className="text-sm mb-1">{content ?? "Seleção"}</div>
           <select
-            multiple={multi}
             className="border h-full bg-transparent border-gray-300 text-black rounded px-3 py-2"
           >
             {options.length > 0 ? (
