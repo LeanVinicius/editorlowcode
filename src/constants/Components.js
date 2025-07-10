@@ -6,9 +6,15 @@
   * @property {number} width - Largura padrão do componente.
   * @property {number} height - Altura padrão do componente.
   * @property {string} colorComponent - Cor padrão do componente (em formato hexadecimal).
-  * @property {string} [role] - Role/função do componente.
+  * @property {string} [role] - Role/função do componente do botão.
   * @property {Array<any>} [rules] - Regras de negócio associadas ao componente.
+  * @property {string} [information] - Tipo da informação do componente campo de texto.
+  * @property {string} [restriction] - Tipo de restrição do componente campo de texto.
   * @property {string} [mandatory] - Indica se o componente é obrigatório ('obrigatorio' ou 'opcional').
+  * @property {boolean} [multi] - Indica se o componente é multi-seleção (true/false).
+  * @property {string} [source] - Fonte de dados do componente.
+  * @property {Array<object>} [buckets] - Buckets para o componente Kanbam
+  * @property {string} [default] - Data padrão para o componente Data
   * @property {Array<string>} [options] - Opções para componentes de seleção (ex: 'select', 'checkbox').
   * @property {Array<object>} [data] - Dados para componentes de lista/tabela.
   */
@@ -47,14 +53,17 @@ export const DEFAULT_COMPONENTS = [
     colorComponent: "#000000",
     mandatory: "opcional",
     rules:[],
-    information: 'Texto Livre'
+    information: "Texto Livre",
+    restriction: "Nenhuma"
   },
   {
     id: "select", content: "Seleção", type: "select",
     width: 175, height: 64, colorComponent: "#000000",
     mandatory: "opcional",
     multi: true,
-    rules:[]
+    rules:[],
+    options :[],
+    source: "Alimentação Direta"
   },
   {
     id: "checkbox", content: "Checkbox", type: "checkbox",
@@ -67,7 +76,8 @@ export const DEFAULT_COMPONENTS = [
     id: "calendar", content: "Data", type: "calendar",
     width: 175, height: 64, colorComponent: "#000000",
     mandatory: "opcional",
-    rules:[]
+    rules:[],
+    default: ""
   },
   {
     id: "toggle", content: "Opção", type: "toggle",
@@ -100,7 +110,8 @@ export const DEFAULT_COMPONENTS = [
   { id: "kanbam", content: "Kanbam", type: "kanbam",
     width: 229, height: 110,
     colorComponent: "#000000",
-    rules:[]
+    rules:[],
+    buckets:[]
    },
 ];
 /**
@@ -142,4 +153,12 @@ export const MANDATORY_OPTIONS = {
 
 export const IMFORMATION_TYPE =[
   'Texto Livre', 'Dinheiro', 'CPF/CNPJ', 'Outro'
+]
+
+export const RESTRICTION_TYPE =[
+  'Nenhuma', 'Texto', 'Número'
+]
+
+export const SOURCE_TYPE =[
+  'Alimentação Direta', 'Fonte Externa', 'Fonte externa com inserção'
 ]
