@@ -27,7 +27,7 @@ export function ComponentRulesField({ rules, onRuleChange }) {
                         </button>
                         <h2 className="text-xl font-bold mb-4">Regras de Negócios</h2>
                         {rules.map((opt) => (
-                            <p>{opt}</p>
+                            <p key={opt}>{opt}</p>
 
                         ))}
                     </div>
