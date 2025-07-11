@@ -89,7 +89,7 @@ export default function CanvasDesigner() {
     if (!initialLoadComplete) {
       setInitialLoadComplete(true);
     }
-  }, [initialLoadComplete]);
+  }, []);
   
   // Configurar o evento de unload para mostrar popup de confirmação
   useEffect(() => {
