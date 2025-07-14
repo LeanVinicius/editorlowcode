@@ -19,7 +19,6 @@ export function UserCanvasLoader({
   onDataLoaded,
   shouldLoad,
   screens,
-  selectScreen,
 }) {
   const searchParams = useSearchParams();
   const userId = searchParams.get("userId");
@@ -35,9 +34,7 @@ export function UserCanvasLoader({
         }
         if (Array.isArray(screenData) && screenData.length > 0) {
           const firstScreen = screenData[0].tela;
-          if (typeof selectScreen === "function") {
-            selectScreen(screenData[0].tela);
-          }
+          
           CanvasApi.loadCanvas(userId, projectId, firstScreen)
             .then(onDataLoaded)
             .catch((err) => {
@@ -49,7 +46,7 @@ export function UserCanvasLoader({
       .catch((err) => {
         console.error("Erro ao carregar telas:", err);
       });
-  }, [userId, onDataLoaded, shouldLoad, projectId, screens, selectScreen]);
+  }, [userId, onDataLoaded, shouldLoad, projectId, screens, ]);
 
   return null;
 }

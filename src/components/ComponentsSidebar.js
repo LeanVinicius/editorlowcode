@@ -6,21 +6,27 @@
   */
 export function ComponentsSidebar({ availableComponents, onComponentClick }) {
   return (
-    <div className="w-full flex flex-col justify-between  bg-amber-700 p-4 rounded-lg">
-      <h2 className="text-lg flex  justify-center font-black text-black mb-4">
-        Componentes
-      </h2>
-      <div className="flex flex-row wrap-normal">
+    <div className="w-full flex flex-col justify-between  rounded-lg">
+
+      <div className="flex justify-center flex-row ">
         {availableComponents.map((component) => (
+
           <div
             key={component.id}
             onClick={() => onComponentClick(component)}
-            className="cursor-pointer p-2 bg-white rounded shadow hover:bg-gray-100"
+            className="text-[rgba(18,49,50,1)] font-semibold cursor-pointer pb-2.5 px-1.5 border-b-[2px] border-b-[rgba(0,0,0,0.2)]
+             hover:bg-gray-100 w-[79px] flex flex-col justify-center text-center items-center"
           >
+            <img src={`/icons/${component.type}.png`}
+              className="w-[44px] h-[44px]"
+            ></img>
             {component.content}
           </div>
         ))}
       </div>
+      <p className=" pt-1 text-base font-normal leading-none tracking-normal flex justify-center text-[rgba(18,49,50,1)]">
+        Componentes
+      </p>
     </div>
   );
 }

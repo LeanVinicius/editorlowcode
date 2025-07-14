@@ -89,7 +89,7 @@ export default function CanvasDesigner() {
     if (!initialLoadComplete) {
       setInitialLoadComplete(true);
     }
-  }, []);
+  }, [initialLoadComplete]);
   
   // Configurar o evento de unload para mostrar popup de confirmação
   useEffect(() => {
@@ -235,17 +235,16 @@ export default function CanvasDesigner() {
 
   return (
     <DndContext onDragEnd={handleDragEnd} sensors={dragSensors}>
-      <div className="min-h-screen font-[family-name:var(--font-geist-sans)] flex">
+      <div className="min-h-screen flex">
         {!initialLoadComplete && (
           <UserCanvasLoader
             onDataLoaded={setCanvasComponents}
             screens={handleScreensData}
             shouldLoad={canvasComponents.length === 0}
-            selectScreen={setCurrentScreenId}
           />
         )}
         {/* New fixed left sidebar */}
-        <div className="w-64 bg-gray-100 h-screen fixed left-0 p-4 z-10 flex flex-col">
+        <div className="w-64 bg-gray-100 h-screen fixed left-0 p-4 z-30 flex flex-col">
           <div className="flex items-start justify-between mb-4">
             {isEditingScreenName ? (
               <div className="flex flex-col">
@@ -322,17 +321,15 @@ export default function CanvasDesigner() {
         {/* Main content area with top components bar and canvas */}
         <div className="ml-64 flex-1 w-auto mr-64 relative">
           {/* Components bar now on top */}
-          <div className="fixed top-0 left-64 right-64 z-20 bg-white border-b shadow-sm">
-            <div className="min-w-max">
+          <div className="fixed top-0 w-full h-[128px] p-5 left-0 right-64 z-20 bg-white border-b shadow-sm">
               <ComponentsSidebar
                 availableComponents={DEFAULT_COMPONENTS}
                 onComponentClick={addComponentToCanvas}
               />
-            </div>
           </div>
 
           {/* Canvas and properties section */}
-          <div className="flex gap-6 z-10 pt-28">
+          <div className="flex gap-6 z-10 pt-32">
             {/* Canvas area */}
             <div className="flex-1 overflow-auto relative h-[calc(100vh-80px)]">
               <DroppableArea id="canvas">
@@ -343,7 +340,7 @@ export default function CanvasDesigner() {
                     width: `${CANVAS_DIMENSIONS.width}px`,
                     height: `${CANVAS_DIMENSIONS.height}px`,
                   }}
-                  className="relative rounded-lg transition-colors cursor-move"
+                  className="relative transition-colors cursor-move"
                 >                 
                   {canvasComponents.map((component) => (
                     <MoveableDesignComponent
