@@ -24,7 +24,7 @@ export function ComponentsSidebar({ availableComponents, onComponentClick }) {
           </div>
         ))}
       </div>
-      <p className=" pt-1 text-base font-normal leading-none tracking-normal flex justify-center text-[rgba(18,49,50,1)]">
+      <p className="pt-1 text-base font-normal leading-none tracking-normal flex justify-center text-[rgba(18,49,50,1)]">
         Componentes
       </p>
     </div>

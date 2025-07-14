@@ -14,6 +14,7 @@ import {
   useSensors,
   PointerSensor,
 } from '@dnd-kit/core';
+import { ChevronRight } from 'lucide-react';
 import { MoveableDesignComponent } from './MoveableDesignComponent';
 import { DroppableArea } from "../components/DroppableArea";
 import { useState, useEffect, } from "react";
@@ -90,7 +91,7 @@ export default function CanvasDesigner() {
       setInitialLoadComplete(true);
     }
   }, [initialLoadComplete]);
-  
+
   // Configurar o evento de unload para mostrar popup de confirmação
   useEffect(() => {
     const handleBeforeUnload = (event) => {
@@ -134,7 +135,7 @@ export default function CanvasDesigner() {
     );
     addComponent(newComponent);
   };
-  
+
   const handleSaveCanvas = async () => {
     try {
       const canvasData = JSON.stringify(canvasComponents);
@@ -220,13 +221,18 @@ export default function CanvasDesigner() {
   };
 
   const startEditingScreenName = () => {
-    const selectedScreen = availableScreens.find(
-      (screen) => screen.tela === currentScreenId
-    );
-    setIsEditingScreenName(true);
-    setTemporaryScreenName(
-      selectedScreen?.nomeTela ?? `Tela ${currentScreenId}`
-    );
+    if (!isEditingScreenName) {
+      const selectedScreen = availableScreens.find(
+        (screen) => screen.tela === currentScreenId
+      );
+      setIsEditingScreenName(true);
+      setTemporaryScreenName(
+        selectedScreen?.nomeTela ?? `Tela ${currentScreenId}`
+      );
+    }
+    else {
+      setIsEditingScreenName(false);
+    }
   };
 
   const handleScreenNameSubmit = () => {
@@ -244,59 +250,58 @@ export default function CanvasDesigner() {
           />
         )}
         {/* New fixed left sidebar */}
-        <div className="w-64 bg-gray-100 h-screen fixed left-0 p-4 z-30 flex flex-col">
-          <div className="flex items-start justify-between mb-4">
+        <div className="w-64 bg-[rgba(254,254,254,1)] h-screen fixed left-0 p-5 z-30 flex flex-col shadow-[0_4px_20px_rgba(0,0,0,0.1)]">
+          <div className="flex items-center justify-between mb-4">
             {isEditingScreenName ? (
               <div className="flex flex-col">
                 <input
-                  className="border px-2 py-1 text-sm rounded"
+                  className="w-48 border border-gray-300 px-3 py-2 text-[20px] font-bold text-[rgba(18,49,50,0.73)] rounded 
+                  focus:border-[rgba(253,86,42,1)] focus:ring-1 focus:ring-[rgba(253,86,42,1)] focus:outline-none"
+                  type="text"
                   value={temporaryScreenName}
                   onChange={(e) => setTemporaryScreenName(e.target.value)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") handleScreenNameSubmit();
                   }}
                 />
-                <button
-                  className="text-blue-600 text-sm self-start"
-                  onClick={handleScreenNameSubmit}
-                >
-                  Salvar
-                </button>
               </div>
             ) : (
-              <h2 className="text-lg text-black font-semibold">
+              <p className="text-[20px] font-bold text-[rgba(18,49,50,1)]">
                 {currentScreenName ?? `Tela ${currentScreenId}`}
-              </h2>
+              </p>
             )}
             {availableScreens.length > 0 && (
-            <button
-              className="ml-1 text-xs text-gray-500 hover:text-gray-800"
-              onClick={startEditingScreenName}
-            >
-              ✏️
-            </button>
+              <button
+                className="ml-1 text-xs text-gray-500 hover:text-gray-800"
+                onClick={startEditingScreenName}
+
+              >
+                <img src="/icons/edit.png" className="w-4 h-4"></img>
+              </button>
             )}
           </div>
           {/* Component List */}
-          <div className="flex-1 overflow-y-auto">
-            <div className="space-y-2">
+          <div className="flex-1 pt-9 overflow-y-auto pb-5">
+            <div className="space-y-5">
               {canvasComponents.map((component) => (
                 <div
                   key={component.id}
                   onClick={() => selectComponent(component)}
-                  className={`p-2 rounded cursor-pointer transition-colors ${
-                    selectedComponent?.id === component.id
-                      ? "bg-blue-500 text-white"
-                      : "bg-black hover:bg-gray-200"
-                  }`}
+                  className={`h-10 w-48 flex justify-between items-center  py-1 px-3 leading-none font-semibold text-[16px] 
+                    rounded cursor-pointer ${selectedComponent?.id === component.id
+                      ? "bg-[rgba(18,49,50,1)] text-white"
+                      : "bg-[rgba(18,49,50,0.15)] text-[rgba(18,49,50,1)] hover:bg-gray-200"
+                    }`}
                 >
-                  {component.type} - {component.name}
+                  {component.name}
+                  <ChevronRight className={`${selectedComponent?.id === component.id ? "text-white" : "text-[rgba(18,49,50,1)]"}`} />
                 </div>
               ))}
             </div>
           </div>
           <button
-            className=" cursor-pointer bg-blue-500 text-white px-4 py-2 rounded-md mb-4"
+            className="h-9 leading-none cursor-pointer text-[20px] font-semibold bg-[rgba(18,49,50,1)] hover:bg-[rgba(28,66,67,1)]
+             text-white px-3 py-1 rounded-3xl mb-4 mt-4"
             onClick={async () => {
               if (currentScreenId) {
                 await handleSaveCanvas();
@@ -312,20 +317,21 @@ export default function CanvasDesigner() {
           </button>
           <button
             onClick={handleClearCanvas}
-            className=" bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-md transition-colors"
+            className="h-9 leading-none cursor-pointer text-[20px] font-semibold bg-white hover:bg-[rgba(245,245,245,1)]
+             text-[rgba(18,49,50,1)] px-3 py-1 rounded-3xl border border-[rgba(18,49,50,1)] mb-6"
           >
-            Limpar Canvas
+            Limpar Tela
           </button>
         </div>
 
         {/* Main content area with top components bar and canvas */}
         <div className="ml-64 flex-1 w-auto mr-64 relative">
           {/* Components bar now on top */}
-          <div className="fixed top-0 w-full h-[128px] p-5 left-0 right-64 z-20 bg-white border-b shadow-sm">
-              <ComponentsSidebar
-                availableComponents={DEFAULT_COMPONENTS}
-                onComponentClick={addComponentToCanvas}
-              />
+          <div className="fixed top-0 w-full h-[128px] p-5 left-0 right-64 z-20 bg-white border-b shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
+            <ComponentsSidebar
+              availableComponents={DEFAULT_COMPONENTS}
+              onComponentClick={addComponentToCanvas}
+            />
           </div>
 
           {/* Canvas and properties section */}
@@ -341,7 +347,7 @@ export default function CanvasDesigner() {
                     height: `${CANVAS_DIMENSIONS.height}px`,
                   }}
                   className="relative transition-colors cursor-move"
-                >                 
+                >
                   {canvasComponents.map((component) => (
                     <MoveableDesignComponent
                       key={component.id}
@@ -370,9 +376,8 @@ export default function CanvasDesigner() {
             {availableScreens.map((screen) => (
               <div
                 key={screen.tela}
-                className={`relative pl-4 pr-6 py-2 ${
-                  currentScreenId === screen.tela ? `bg-amber-700` : `bg-white`
-                }  border rounded shadow-sm text-gray-800 hover:bg-blue-100 cursor-pointer flex items-center space-x-2`}
+                className={`relative pl-4 pr-6 py-2 ${currentScreenId === screen.tela ? `bg-amber-700` : `bg-white`
+                  }  border rounded shadow-sm text-gray-800 hover:bg-blue-100 cursor-pointer flex items-center space-x-2`}
               >
                 {/* Botão X no canto superior direito */}
                 <button
