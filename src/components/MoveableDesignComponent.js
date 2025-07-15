@@ -14,7 +14,7 @@ import { useState } from "react";
  * @param {string} [props.colorComponent] - A cor a ser aplicada ao componente (pode variar dependendo do tipo).
  * @returns {JSX.Element} Renderiza um componente individual com funcionalidade de arrastar.
  */
-export function MoveableDesignComponent({ id, children, position = { x: 0, y: 0 }, inCanvas = false, onClick, size, colorComponent }) {
+export function MoveableDesignComponent({ id, children, position = { x: 0, y: 0 }, inCanvas = false, onClick, size, colorComponent,isSelected = false, }) {
   const [localSize, setLocalSize] = useState(size);
   
   
@@ -38,6 +38,7 @@ export function MoveableDesignComponent({ id, children, position = { x: 0, y: 0 
     zIndex: inCanvas ? 1 : 100,
     //backgroundColor: colorComponent || undefined,
   };
+
 
   switch (id.split('-')[0]) {
     case 'button':
@@ -103,7 +104,8 @@ export function MoveableDesignComponent({ id, children, position = { x: 0, y: 0 
       suppressHydrationWarning
       ref={setNodeRef}
       style={style}
-      className="flex flex-col m-2"
+      className={`flex flex-col m-2 ${
+      isSelected ? 'border-2 border-[rgba(253,101,43,0.75)] shadow-md shadow-orange-300':``}`}
       onClick={onClick}
       { ...listeners }
       { ...attributes }

@@ -362,10 +362,11 @@ export default function CanvasDesigner() {
                       }}
                       content={component.content}
                       colorComponent={component.colorComponent}
+                      isSelected={selectedComponent?.id === component.id}
                     >
                       {renderComponent(
                         component,
-                        selectedComponent
+                        
                       )}
                     </MoveableDesignComponent>
                   ))}

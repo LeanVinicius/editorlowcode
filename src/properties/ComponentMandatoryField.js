@@ -8,8 +8,8 @@ export function ComponentMandatoryField({ mandatory, onMandatoryChange }) {
   ];
 
   return (
-    <div className="mt-4">
-      <label className="block mb-2 text-white">Obrigatoriedade:</label>
+    <div className="flex flex-col space-y-3">
+      <label className="font-semibold text-[rgba(18,49,50,0.5)]">Obrigatoriedade:</label>
       <div className="space-y-2">
         {mandatoryOptions.map(option => (
           <label key={option.value} className="flex items-center space-x-2">
@@ -17,11 +17,11 @@ export function ComponentMandatoryField({ mandatory, onMandatoryChange }) {
               type="radio"
               name="obrigatoriedade"
               value={option.value}
-              className="form-radio h-4 w-4 text-blue-600 focus:ring-blue-500"
+              className="form-radio h-4 w-4 accent-[rgba(18,49,50,1)] focus:ring-[rgba(18,49,50,0.5)]"
               onChange={(e) => onMandatoryChange(e.target.value)}
               checked={mandatory === option.value}
             />
-            <span className="text-white">{option.label}</span>
+            <span className="font-semibold text-[rgba(18,49,50,0.5)]">{option.label}</span>
           </label>
         ))}
       </div>

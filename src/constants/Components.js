@@ -49,7 +49,7 @@ export const DEFAULT_COMPONENTS = [
     content: "Campo",
     type: "input",
     width: 175,
-    height: 64,
+    height: 71,
     colorComponent: "#000000",
     mandatory: "opcional",
     rules:[],

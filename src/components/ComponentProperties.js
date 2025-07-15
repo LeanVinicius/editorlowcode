@@ -89,9 +89,9 @@ export function ComponentProperties({
 
 
   return (
-    <div className="w-64 bg-amber-800 p-4 rounded-lg z-30 overflow-auto h-screen fixed right-0">
-      <div className="pb-16">
-        <h2 className="text-lg font-semibold mb-4 text-white">
+    <div className="bg-[rgba(254,254,254,1)] p-5 shadow-[0_4px_20px_rgba(0,0,0,0.1)] w-64 rounded-lg z-30 overflow-auto h-screen fixed right-0">
+      <div className="pb-16 flex flex-col space-y-5">
+        <h2 className="text-[20px] font-bold text-[rgba(18,49,50,1)] pb-6">
           Propriedades do Componente
         </h2>
 
@@ -99,10 +99,7 @@ export function ComponentProperties({
           name={formData.name}
           componentType={component.type}
           content={formData.content}
-          isEditingName={isEditingName}
-          onNameClick={() => setIsEditingName(true)}
           onNameChange={handleNameChange}
-          onNameEditComplete={() => setIsEditingName(false)}
           onContentChange={handleContentChange}
         />
 
