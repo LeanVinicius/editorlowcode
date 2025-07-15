@@ -2,7 +2,7 @@ import React from "react";
 
 export function ComponentRoleField({ role, onRoleChange }) {
     return <div className="flex flex-col space-y-3">
-        <label className="font-semibold text-[rgba(18,49,50,0.5)]">Função:</label>
+        <label className="font-semibold text-[rgba(18,49,50,0.5)]">Função</label>
         <input
             type="text"
             value={role}

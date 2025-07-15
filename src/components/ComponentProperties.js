@@ -9,6 +9,7 @@ import { ComponentMandatoryField } from "@/properties/ComponentMandatoryField";
 import { ComponentActions } from "@/properties/ComponentActions";
 import { ComponentRoleField } from "@/properties/ComponentRoleField";
 import { ComponentRulesField } from "@/properties/ComponentRulesField";
+import { ComponentInputFields } from "@/properties/ComponentInputFields";
 
 /**
  * @param {object} props - As propriedades do componente.
@@ -40,7 +41,7 @@ export function ComponentProperties({
   onUpdateRole,
   onUpdateRules
 }) {
-  const { formData, updateField, isEditingName, setIsEditingName } =
+  const { formData, updateField } =
     useComponentProperties(component);
 
   if (!component) {
@@ -86,11 +87,12 @@ export function ComponentProperties({
   const isInteractiveComponent = INTERACTIVE_COMPONENT_TYPES.includes(component.type);
   const isOptionComponent = OPTION_COMPONENT_TYPES.includes(component.type);
   const isButtonComponent = component.type === "button";
+  const isInputComponent = component.type === "input";
 
 
   return (
-    <div className="bg-[rgba(254,254,254,1)] p-5 shadow-[0_4px_20px_rgba(0,0,0,0.1)] w-64 rounded-lg z-30 overflow-auto h-screen fixed right-0">
-      <div className="pb-16 flex flex-col space-y-5">
+    <div className="bg-[rgba(254,254,254,1)] p-5 shadow-[0_4px_20px_rgba(0,0,0,0.1)] w-64 rounded-lg z-30 h-screen fixed right-0 flex flex-col justify-between overflow-auto items-center">
+      <div className="flex flex-col space-y-5">
         <h2 className="text-[20px] font-bold text-[rgba(18,49,50,1)] pb-6">
           Propriedades do Componente
         </h2>
@@ -126,6 +128,10 @@ export function ComponentProperties({
           <ComponentMandatoryField
             mandatory={formData.mandatory}
             onMandatoryChange={handleMandatoryChange}
+          />
+        )}
+        {isInputComponent && (
+          <ComponentInputFields
           />
         )}
         <ComponentRulesField

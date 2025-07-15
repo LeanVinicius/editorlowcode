@@ -5,11 +5,12 @@ export function ComponentRulesField({ rules, onRuleChange }) {
 
     return (
         <>
-            <div className="mt-4">
-                <label className="block mb-2 text-white">Regras de Negócios:</label>
+            <div className="flex flex-col space-y-3">
+                <label className="font-semibold text-[rgba(18,49,50,0.5)]">Regras de Negócios</label>
                 <button
                     onClick={() => setShowModal(true)}
-                    className="px-4 py-2 bg-blue-600 text-white rounded"
+                    className="h-9 leading-none cursor-pointer text-[16px] font-semibold bg-[rgba(18,49,50,1)] hover:bg-[rgba(28,66,67,1)]
+                             text-white px-3 py-1 rounded-3xl"
                 >
                     Abrir
                 </button>
@@ -17,7 +18,7 @@ export function ComponentRulesField({ rules, onRuleChange }) {
 
             {showModal && (
                 <div className="fixed inset-0 bg-transparent bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-amber-600 p-6 rounded shadow-lg w-96 relative">
+                    <div className="bg-[rgba(18,49,50,1)] p-6 rounded shadow-lg w-96 relative">
                         <button
                             onClick={() => setShowModal(false)}
                             className="absolute top-2 right-2 text-gray-500 hover:text-black text-xl font-bold"

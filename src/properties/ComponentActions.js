@@ -2,10 +2,11 @@ import React from 'react';
 
 export function ComponentActions({ onDelete }) {
   return (
-    <div className="fixed bottom-4 right-4 w-56">
+    <div className="w-56 flex justify-center mb-2 mt-5">
       <button
         onClick={onDelete}
-        className="w-full bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-md transition-colors duration-200 font-medium"
+        className="h-9 w-52 leading-none cursor-pointer text-[16px] font-semibold bg-red-600 hover:bg-red-500
+                    text-white px-3 py-1 rounded-3xl"
       >
         Deletar Componente
       </button>

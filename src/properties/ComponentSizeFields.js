@@ -4,7 +4,7 @@ export function ComponentSizeFields({ width, height, onSizeChange }) {
   return (
     <div className='flex flex-col space-y-5'>
       <div className="flex flex-col space-y-3">
-        <label className="font-semibold text-[rgba(18,49,50,0.5)]">Largura (px):</label>
+        <label className="font-semibold text-[rgba(18,49,50,0.5)]">Largura (px)</label>
         <input
           type="number"
           value={width}
@@ -16,7 +16,7 @@ export function ComponentSizeFields({ width, height, onSizeChange }) {
       </div>
 
       <div className="flex flex-col space-y-3">
-        <label className="font-semibold text-[rgba(18,49,50,0.5)]">Altura (px):</label>
+        <label className="font-semibold text-[rgba(18,49,50,0.5)]">Altura (px)</label>
         <input
           type="number"
           value={height}

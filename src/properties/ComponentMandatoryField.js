@@ -9,7 +9,7 @@ export function ComponentMandatoryField({ mandatory, onMandatoryChange }) {
 
   return (
     <div className="flex flex-col space-y-3">
-      <label className="font-semibold text-[rgba(18,49,50,0.5)]">Obrigatoriedade:</label>
+      <label className="font-semibold text-[rgba(18,49,50,0.5)]">Obrigatoriedade</label>
       <div className="space-y-2">
         {mandatoryOptions.map(option => (
           <label key={option.value} className="flex items-center space-x-2">
