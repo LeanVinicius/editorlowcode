@@ -14,7 +14,7 @@ import {
   useSensors,
   PointerSensor,
 } from '@dnd-kit/core';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, X, Plus } from 'lucide-react';
 import { MoveableDesignComponent } from './MoveableDesignComponent';
 import { DroppableArea } from "../components/DroppableArea";
 import { useState, useEffect, } from "react";
@@ -372,23 +372,16 @@ export default function CanvasDesigner() {
             </div>
           </div>
           {/* Bottom Screen Tabs */}
-          <div className="fixed bottom-0 left-64 right-0 bg-gray-100 border-t border-gray-300 shadow-inner h-16 flex items-center px-4 space-x-4 z-10">
+          <div className="fixed bottom-0 left-64 right-0 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.25)] h-16 flex items-center px-5 space-x-3 z-10">
             {availableScreens.map((screen) => (
               <div
                 key={screen.tela}
-                className={`relative pl-4 pr-6 py-2 ${currentScreenId === screen.tela ? `bg-amber-700` : `bg-white`
-                  }  border rounded shadow-sm text-gray-800 hover:bg-blue-100 cursor-pointer flex items-center space-x-2`}
+                className={` font-semibold  text-[20px] pl-3 pr-2 py-2 ${currentScreenId === screen.tela ? `bg-[rgba(18,49,50,1)] text-white hover:bg-[rgba(28,66,67,1)]`
+                  : `bg-white text-[rgba(18,49,50,1)] border border-[rgba(130,130,130,0.5)] hover:bg-[rgba(245,245,245,1)]`
+                  } rounded-[5px] cursor-pointer flex items-center space-x-2`}
               >
                 {/* Botão X no canto superior direito */}
-                <button
-                  className="absolute top-[-3px] right-0 text-gray-400 hover:text-red-500 mr-0 flex items-center justify-center text-lg leading-none"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDeleteScreen(screen.tela);
-                  }}
-                >
-                  x
-                </button>
+
                 <span
                   onClick={() => {
                     handleScreenSelect(screen.tela);
@@ -396,14 +389,24 @@ export default function CanvasDesigner() {
                 >
                   {screen.nomeTela ?? `Tela ${screen.tela}`}
                 </span>
+                <X
+                  className={` h-[15px] w-[15px] ${currentScreenId === screen.tela ? `text-white hover:text-gray-400` : `text-[rgba(18,49,50,1)] hover:text-[#6aaeb1]`} self-start`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDeleteScreen(screen.tela);
+                  }}
+                >
+
+                </X>
               </div>
             ))}
-            <button
-              className="px-4 py-2 bg-green-500 text-white text-base rounded-full shadow-sm hover:bg-green-600 transition"
+            <div
+              className=" w-36 pl-3 pr-2 py-2 gap-2 bg-[rgba(18,49,50,0.15)] text-[rgba(18,49,50,1)] hover:bg-gray-200 border border-[rgba(130,130,130,0.5)] rounded-[5px] cursor-pointer flex items-center"
               onClick={createNewScreen}
             >
-              +
-            </button>
+              <Plus className='w-[18px] h-[18px]'></Plus>
+              <p className='font-semibold text-[20px]'>Nova Tela</p>
+            </div>
           </div>
         </div>
         {/* Properties panel */}
