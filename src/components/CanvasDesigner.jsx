@@ -134,6 +134,7 @@ export default function CanvasDesigner() {
       componentIdCounter
     );
     addComponent(newComponent);
+    selectComponent(newComponent);
   };
 
   const handleSaveCanvas = async () => {
@@ -363,7 +364,8 @@ export default function CanvasDesigner() {
                       colorComponent={component.colorComponent}
                     >
                       {renderComponent(
-                        component
+                        component,
+                        selectedComponent
                       )}
                     </MoveableDesignComponent>
                   ))}
