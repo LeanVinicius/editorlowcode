@@ -14,10 +14,10 @@ import { useState } from "react";
  * @param {string} [props.colorComponent] - A cor a ser aplicada ao componente (pode variar dependendo do tipo).
  * @returns {JSX.Element} Renderiza um componente individual com funcionalidade de arrastar.
  */
-export function MoveableDesignComponent({ id, children, position = { x: 0, y: 0 }, inCanvas = false, onClick, size, colorComponent,isSelected = false, }) {
+export function MoveableDesignComponent({ id, children, position = { x: 0, y: 0 }, inCanvas = false, onClick, size, colorComponent, isSelected = false, }) {
   const [localSize, setLocalSize] = useState(size);
-  
-  
+
+
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: id,
     data: {
@@ -32,7 +32,7 @@ export function MoveableDesignComponent({ id, children, position = { x: 0, y: 0 
     position: inCanvas ? 'absolute' : 'relative',
     left: inCanvas ? `${position.x}px` : undefined,
     top: inCanvas ? `${position.y}px` : undefined,
-    
+
     display: 'flex',
     cursor: 'move',
     zIndex: inCanvas ? 1 : 100,
@@ -48,9 +48,9 @@ export function MoveableDesignComponent({ id, children, position = { x: 0, y: 0 
       style.height = size?.height ? `${size.height}px` : `${localSize.height}px`;
       break;
     case 'text':
-     style.color = colorComponent || undefined;
-     style.backgroundColor = undefined;
-     break;
+      style.color = colorComponent || undefined;
+      style.backgroundColor = undefined;
+      break;
     case 'neutral':
       style.backgroundColor = 'gray';
       style.borderRadius = '0px';
@@ -59,14 +59,16 @@ export function MoveableDesignComponent({ id, children, position = { x: 0, y: 0 
       style.backgroundColor = '#ffffff80';
       style.color = colorComponent || undefined;
       style.borderRadius = '8px';
-      style.width = size?.width ? `${size.width}px` : `${localSize.width}px`;
       break;
-    
-    
-    default:
+    case 'kanbam':
       style.backgroundColor = '#ffffff80';
       style.color = colorComponent || undefined;
       style.borderRadius = '8px';
+      break;
+
+    default:
+      style.backgroundColor = '#ffffff80';
+      style.color = colorComponent || undefined;
       style.width = size?.width ? `${size.width}px` : `${localSize.width}px`;
       style.height = size?.height ? `${size.height}px` : `${localSize.height}px`;
   }
@@ -104,11 +106,10 @@ export function MoveableDesignComponent({ id, children, position = { x: 0, y: 0 
       suppressHydrationWarning
       ref={setNodeRef}
       style={style}
-      className={`flex flex-col m-2 ${
-      isSelected ? 'border-2 border-[rgba(253,101,43,0.75)] shadow-md shadow-orange-300':``}`}
+      className={`flex flex-col m-2 ${isSelected ? 'border-2 border-[rgba(253,101,43,0.75)] shadow-md shadow-orange-300' : ``}`}
       onClick={onClick}
-      { ...listeners }
-      { ...attributes }
+      {...listeners}
+      {...attributes}
     >
       {children}
 

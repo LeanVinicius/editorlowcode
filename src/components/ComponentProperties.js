@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useComponentProperties } from "@/hooks/useComponentProperties";
 import { INTERACTIVE_COMPONENT_TYPES } from "@/constants/Components";
+import { DATE_COMPONENT_TYPES } from "@/constants/Components";
 import { OPTION_COMPONENT_TYPES } from "@/constants/Components";
 import { ComponentBasicFields } from "@/properties/ComponentBasicFields";
 import { ComponentSizeFields } from "@/properties/ComponentSizeFields";
@@ -39,7 +40,9 @@ export function ComponentProperties({
   onUpdateMulti,
   onUpdateOptions,
   onUpdateRole,
-  onUpdateRules
+  onUpdateRules,
+  onUpdateInformation,
+  onUpdateRestriction
 }) {
   const { formData, updateField } =
     useComponentProperties(component);
@@ -83,9 +86,19 @@ export function ComponentProperties({
     updateField("rules", value);
     onUpdateRules(component.id, value);
   }
+  const handleInformationChange = (value) => {
+    updateField("information", value);
+    onUpdateInformation(component.id, value);
+  }
+  const handleRestrictionChange = (value) => {
+    updateField("restriction", value);
+    onUpdateRestriction(component.id, value);
+  }
+
 
   const isInteractiveComponent = INTERACTIVE_COMPONENT_TYPES.includes(component.type);
   const isOptionComponent = OPTION_COMPONENT_TYPES.includes(component.type);
+  const isDateComponent = !DATE_COMPONENT_TYPES.includes(component.type);
   const isButtonComponent = component.type === "button";
   const isInputComponent = component.type === "input";
 
@@ -105,11 +118,11 @@ export function ComponentProperties({
           onContentChange={handleContentChange}
         />
 
-        <ComponentSizeFields
+        {isDateComponent && (<ComponentSizeFields
           width={formData.width}
           height={formData.height}
           onSizeChange={handleSizeChange}
-        />
+        />)}
 
         <ComponentColorField
           color={formData.color}
@@ -132,6 +145,10 @@ export function ComponentProperties({
         )}
         {isInputComponent && (
           <ComponentInputFields
+            information={formData.information}
+            restriction={formData.restriction}
+            onInformationChange={handleInformationChange}
+            onRestrictionChange={handleRestrictionChange}
           />
         )}
         <ComponentRulesField

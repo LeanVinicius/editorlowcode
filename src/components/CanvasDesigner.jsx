@@ -55,6 +55,8 @@ export default function CanvasDesigner() {
     updateComponentPosition,
     updateComponentRole,
     updateComponentRules,
+    updateComponentImformation,
+    updateComponentRestriction,
     addComponent,
     removeComponent,
     clearCanvas,
@@ -424,6 +426,8 @@ export default function CanvasDesigner() {
           onUpdateMandatory={updateComponentMandatory}
           onUpdateRole={updateComponentRole}
           onUpdateRules={updateComponentRules}
+          onUpdateInformation={updateComponentImformation}
+          onUpdateRestriction={updateComponentRestriction}
         />
         {/* Add your new sidebar content here */}
       </div>

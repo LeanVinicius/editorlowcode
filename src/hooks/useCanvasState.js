@@ -79,9 +79,25 @@ export const useCanvasState = () => {
     );
   }, []);
 
-  const udpateComponentImformation = useCallback((componentId, newInformation) => {
+  /**
+    * Atualiza o tipo de informação de um componente.
+    * @param {string} componentId - O ID do componente a ser atualizado.
+    * @param {string} newInformation - A nova informação para o componente.
+    */
+  const updateComponentImformation = useCallback((componentId, newInformation) => {
     setCanvasComponents(prevComponents =>
       ComponentHelpers.updateComponentProperty(prevComponents, componentId, 'information', newInformation)
+    );
+  }, []);
+
+  /**
+    * Atualiza a restrição de um componente.
+    * @param {string} componentId - O ID do componente a ser atualizado.
+    * @param {string} newRestriction - A nova restrição para o componente.
+    */
+  const updateComponentRestriction = useCallback((componentId, newRestriction) => {
+    setCanvasComponents(prevComponents =>
+      ComponentHelpers.updateComponentProperty(prevComponents, componentId, 'restriction', newRestriction)
     );
   }, []);
 
@@ -169,7 +185,8 @@ export const useCanvasState = () => {
     updateComponentMandatory,
     updateComponentRole,
     updateComponentRules,
-    udpateComponentImformation,
+    updateComponentImformation,
+    updateComponentRestriction,
     updateComponentPosition,
     addComponent,
     removeComponent,

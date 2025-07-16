@@ -33,7 +33,7 @@ export const DEFAULT_COMPONENTS = [
     height: 41,
     colorComponent: "#000000",
     role: "",
-    rules : ["teste"]
+    rules: ["teste"]
   },
   {
     id: "text",
@@ -42,7 +42,7 @@ export const DEFAULT_COMPONENTS = [
     width: 175,
     height: 41,
     colorComponent: "#000000",
-    rules:[]
+    rules: []
   },
   {
     id: "input",
@@ -52,7 +52,7 @@ export const DEFAULT_COMPONENTS = [
     height: 71,
     colorComponent: "#000000",
     mandatory: "opcional",
-    rules:[],
+    rules: [],
     information: "Texto Livre",
     restriction: "Nenhuma"
   },
@@ -61,8 +61,8 @@ export const DEFAULT_COMPONENTS = [
     width: 175, height: 64, colorComponent: "#000000",
     mandatory: "opcional",
     multi: true,
-    rules:[],
-    options :[],
+    rules: [],
+    options: [],
     source: "Alimentação Direta"
   },
   {
@@ -70,13 +70,13 @@ export const DEFAULT_COMPONENTS = [
     width: 175, height: 64, colorComponent: "#000000",
     mandatory: "opcional",
     options: ["Opção 1", "Opção 2", "Opção 3"],
-    rules:[]
+    rules: []
   },
   {
     id: "calendar", content: "Data", type: "calendar",
-    width: 175, height: 64, colorComponent: "#000000",
+    width: 175, height: 82, colorComponent: "#000000",
     mandatory: "opcional",
-    rules:[],
+    rules: [],
     default: ""
   },
   {
@@ -84,7 +84,7 @@ export const DEFAULT_COMPONENTS = [
     width: 175, height: 64, colorComponent: "#000000",
     mandatory: "opcional",
     options: ["Opção 1", "Opção 2", "Opção 3"],
-    rules:[]
+    rules: []
   },
   {
     id: "table", content: "Galeria", type: "table",
@@ -94,25 +94,46 @@ export const DEFAULT_COMPONENTS = [
       "id": 1,
       "matricula": "001",
       "nome": "João",
-      "mes": "Agosto",
       "ano": "2023",
       "status": "Não enviado",
     }, {
       "id": 2,
       "matricula": "002",
       "nome": "Pedro",
-      "mes": "Outubro",
       "ano": "2025",
       "status": "Não enviado",
-    }],
-    rules:[]
+    },
+    {
+      "id": 3,
+      "matricula": "003",
+      "nome": "Maria",
+      "ano": "2024",
+      "status": "Não enviado",
+    },
+    {
+      "id": 4,
+      "matricula": "004",
+      "nome": "Ana",
+      "ano": "2023",
+      "status": "Não enviado",
+    },
+    {
+      "id": 5,
+      "matricula": "005",
+      "nome": "Carlos",
+      "ano": "2025",
+      "status": "Não enviado",
+    },
+    ],
+    rules: []
   },
-  { id: "kanbam", content: "Kanbam", type: "kanbam",
+  {
+    id: "kanbam", content: "Kanbam", type: "kanbam",
     width: 229, height: 110,
     colorComponent: "#000000",
-    rules:[],
-    buckets:[]
-   },
+    rules: [],
+    buckets: []
+  },
 ];
 /**
   * Objeto que define as dimensões (largura e altura) da área do canvas de design.
@@ -135,6 +156,11 @@ export const DRAG_ACTIVATION_DISTANCE = 5;
 export const INTERACTIVE_COMPONENT_TYPES = [
   'input', 'select', 'checkbox', 'toggle', 'calendar'
 ];
+
+export const DATE_COMPONENT_TYPES = [
+  'table', 'kanbam'
+]
+
 /**
   * Array de strings contendo os tipos de componentes que podem ter opções (como select e checkbox).
   * @type {Array<string>}
@@ -151,14 +177,14 @@ export const MANDATORY_OPTIONS = {
   OPTIONAL: 'opcional'
 };
 
-export const IMFORMATION_TYPE =[
+export const IMFORMATION_TYPE = [
   'Texto Livre', 'Dinheiro', 'CPF/CNPJ', 'Outro'
 ]
 
-export const RESTRICTION_TYPE =[
+export const RESTRICTION_TYPE = [
   'Nenhuma', 'Texto', 'Número'
 ]
 
-export const SOURCE_TYPE =[
+export const SOURCE_TYPE = [
   'Alimentação Direta', 'Fonte Externa', 'Fonte externa com inserção'
 ]

@@ -75,7 +75,7 @@ export const renderComponent = (component) => {
       );
     case 'calendar':
       return (
-        <div className={`flex h-full flex-col `}>
+        <div className={`flex h-full flex-col space-y-3 `}>
           <div className="bg-transparent ">{content ?? "Data"}</div>
 
           <input
@@ -87,9 +87,7 @@ export const renderComponent = (component) => {
       );
     case 'table':
       return (
-
-        <div className={`border-1 rounded-[20px] bg-transparent sgrow border-gray-300`}
-        >
+        <div className={`border-1 rounded-[20px] bg-transparent sgrow border-gray-300`}>
           <table className="min-w-full mb-[12px]">
             {data.length > 0 ? (
               <thead>

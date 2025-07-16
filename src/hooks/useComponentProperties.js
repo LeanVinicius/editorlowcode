@@ -28,6 +28,8 @@ export const useComponentProperties = (component) => {
     options: [],
     role: '',
     rules: [],
+    information: 'Texto Livre',
+    restriction: 'Nenhuma'
   });
 
   const [isEditingName, setIsEditingName] = useState(false);
@@ -45,6 +47,8 @@ export const useComponentProperties = (component) => {
         options: component.options || [],
         role: component.role || '',
         rules: component.rules || [],
+        information: component.information || 'Texto Livre',
+        restriction: component.restriction || 'Nenhuma'
       });
     }
   }, [component]); // Dependência: Sincroniza quando o componente selecionado muda.
