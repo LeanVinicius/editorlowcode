@@ -67,9 +67,9 @@ export const DEFAULT_COMPONENTS = [
   },
   {
     id: "checkbox", content: "Checkbox", type: "checkbox",
-    width: 175, height: 64, colorComponent: "#000000",
+    width: 186, height: 64, colorComponent: "#000000",
     mandatory: "opcional",
-    options: ["Opção 1", "Opção 2", "Opção 3"],
+    options: ["Opção 1", "Opção 2"],
     rules: []
   },
   {

@@ -11,6 +11,7 @@ import { ComponentActions } from "@/properties/ComponentActions";
 import { ComponentRoleField } from "@/properties/ComponentRoleField";
 import { ComponentRulesField } from "@/properties/ComponentRulesField";
 import { ComponentInputFields } from "@/properties/ComponentInputFields";
+import { ComponentOptionsField } from "@/properties/ComponentOptionsField";
 
 /**
  * @param {object} props - As propriedades do componente.
@@ -25,6 +26,8 @@ import { ComponentInputFields } from "@/properties/ComponentInputFields";
  * @param {(componentId: string, newOptions: string[]) => void} [props.onUpdateOptions] - Função opcional chamada quando as opções do componente são alteradas (para selects/checkboxes).
  * @param {(componentId: string, newRole: string) => void} [props.onUpdateRole] - Função opcional chamada quando a propriedade 'role' do componente é alterada (para botões).
  * @param {(componentId: string, newRules: string) => void} [props.onUpdateRules] - Função opcional chamada quando a propriedade 'rules' do componente é alterada (para inputs).
+* @param {(componentId: string, newInformation: string) => void} [props.onUpdateInformation] - Função opcional chamada quando a propriedade 'information' do componente é alterada (para inputs).
+* @param {(componentId: string, newRestriction: string) => void} [props.onUpdateRestriction] - Função opcional chamada quando a propriedade 'restriction' do componente é alterada (para inputs).
 * @returns {JSX.Element | null} Renderiza o painel lateral para visualizar e editar as propriedades de um componente selecionado, ou `null` se nenhum componente estiver selecionado.
  *
  * Este componente utiliza o hook `useComponentProperties` para gerenciar o estado local do formulário de propriedades e sincronizá-lo com o componente selecionado. Ele renderiza condicionalmente diferentes campos de propriedade com base no tipo do componente.
@@ -112,7 +115,7 @@ export function ComponentProperties({
 
         <ComponentBasicFields
           name={formData.name}
-          componentType={component.type}
+          
           content={formData.content}
           onNameChange={handleNameChange}
           onContentChange={handleContentChange}
@@ -149,6 +152,11 @@ export function ComponentProperties({
             restriction={formData.restriction}
             onInformationChange={handleInformationChange}
             onRestrictionChange={handleRestrictionChange}
+          />
+        )}
+        {isOptionComponent && (
+          <ComponentOptionsField
+            options={formData.options}
           />
         )}
         <ComponentRulesField

@@ -59,9 +59,17 @@ export const renderComponent = (component) => {
       );
     case 'checkbox':
       return (
-        <div className={`flex items-center gap-2 `}>
-          <input type="checkbox" className="w-4 h-4" />
+        <div className="flex flex-col space-y-3">
           <label className="text-black">{content ?? "CheckBox"}</label>
+          <div className={`flex items-center gap-2 `}>
+            {options.map((opt, idx) => (
+              <div className={`flex items-center gap-2 `} key={idx}>
+                <input type="checkbox" className="w-4 h-4" />
+                <label className="text-black">{opt}</label>
+              </div>
+            ))}
+
+          </div>
         </div>
       );
     case "toggle":

@@ -2,7 +2,6 @@ import React from 'react';
 
 export function ComponentBasicFields({
   name,
-  componentType,
   content,
   onNameChange,
   onContentChange
@@ -20,12 +19,7 @@ export function ComponentBasicFields({
         />
       </div>
 
-      {/* <div className="mt-4">
-        <label className="block mb-2 text-white">Tipo:</label>
-        <div className="px-3 py-2 ">
-          {componentType}
-        </div>
-      </div> */}
+      
 
       <div className="flex flex-col space-y-3">
         <label className="font-semibold text-[rgba(18,49,50,0.5)]">Texto</label>
