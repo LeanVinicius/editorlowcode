@@ -54,6 +54,8 @@ export default function CanvasDesigner() {
     updateComponentMandatory,
     updateComponentPosition,
     updateComponentRole,
+    updateComponentSource,
+    updateComponentMulti,
     updateComponentRules,
     updateComponentImformation,
     updateComponentRestriction,
@@ -385,8 +387,6 @@ export default function CanvasDesigner() {
                   : `bg-white text-[rgba(18,49,50,1)] border border-[rgba(130,130,130,0.5)] hover:bg-[rgba(245,245,245,1)]`
                   } rounded-[5px] cursor-pointer flex items-center space-x-2`}
               >
-                {/* Botão X no canto superior direito */}
-
                 <span
                   onClick={() => {
                     handleScreenSelect(screen.tela);
@@ -429,6 +429,8 @@ export default function CanvasDesigner() {
           onUpdateInformation={updateComponentImformation}
           onUpdateRestriction={updateComponentRestriction}
           onUpdateOptions={updateComponentOptions}
+          onUpdateSource={updateComponentSource}
+          onUpdateMulti={updateComponentMulti}
         />
         {/* Add your new sidebar content here */}
       </div>

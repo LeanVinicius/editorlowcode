@@ -29,7 +29,8 @@ export const useComponentProperties = (component) => {
     role: '',
     rules: [],
     information: 'Texto Livre',
-    restriction: 'Nenhuma'
+    restriction: 'Nenhuma',
+    source: 'Alimentação Direta'
   });
 
   const [isEditingName, setIsEditingName] = useState(false);
@@ -48,7 +49,8 @@ export const useComponentProperties = (component) => {
         role: component.role || '',
         rules: component.rules || [],
         information: component.information || 'Texto Livre',
-        restriction: component.restriction || 'Nenhuma'
+        restriction: component.restriction || 'Nenhuma',
+        source: component.source || 'Alimentação Direta'
       });
     }
   }, [component]); // Dependência: Sincroniza quando o componente selecionado muda.

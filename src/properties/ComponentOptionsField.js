@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Plus } from 'lucide-react';
+import { X } from 'lucide-react';
 
 export function ComponentOptionsField({ options, onOptionsChange }) {
-  
+
   const [newOption, setNewOption] = React.useState('');
 
   const handleAddOption = () => {
@@ -22,6 +22,14 @@ export function ComponentOptionsField({ options, onOptionsChange }) {
     onOptionsChange(updated);
   };
 
+  const handleDeleteOption = (id) => {
+    const confirm = window.confirm("Tem certeza que deseja excluir esta opção?");
+    if (!confirm) return;
+
+    const updated = options.filter(o => o.id !== id);
+    onOptionsChange(updated);
+  };
+
 
 
   return (
@@ -29,17 +37,21 @@ export function ComponentOptionsField({ options, onOptionsChange }) {
       <label className='font-semibold text-[rgba(18,49,50,0.5)]'>Opções</label>
       <div className='space-y-2 overflow-y-auto'>
         {options.map((opt) => (
-          <input
-          key={opt.id}
-          type="text"
-          value={opt.Opcao}
-          onChange={(e) => handleEditOption(opt.id,e.target.value)}
-          className="w-full px-3 py-1 font-semibold rounded border border-[rgba(18,49,50,0.5)] cursor-pointer hover:bg-gray-200 text-[rgba(18,49,50,1)] focus:outline-none focus:ring-2 focus:ring-[rgba(18,49,50,1)]"
-          placeholder="Digite a opção"
-        />
+          <div key={opt.id} className='flex justify-between w-full pl-3 pr-1 py-1 font-semibold rounded border border-[rgba(18,49,50,0.5)] cursor-pointer hover:bg-gray-200 text-[rgba(18,49,50,1)] focus:outline-none focus:ring-2 focus:ring-[rgba(18,49,50,1)]'>
+            <input
+              type="text"
+              value={opt.Opcao}
+              onChange={(e) => handleEditOption(opt.id, e.target.value)}
+              className=""
+              placeholder="Edite a opção"
+            />
+            <X className='h-[15px] w-[15px] text-[rgba(18,49,50,1)] hover:text-[#6aaeb1] self-start'
+              onClick={() => handleDeleteOption(opt.id)}
+            ></X>
+          </div>
         ))}
       </div>
-      <div>
+      <div className='flex flex-col justify-center space-y-2'>
         <input
           type="text"
           value={newOption}

@@ -62,7 +62,7 @@ export const DEFAULT_COMPONENTS = [
     mandatory: "opcional",
     multi: true,
     rules: [],
-    options: [],
+    options: [{"id": 1, "Opcao": "Opção 1"}, {"id": 2, "Opcao": "Opção 2"}, {"id": 3,"Opcao":"Opção 3"}],
     source: "Alimentação Direta"
   },
   {
@@ -166,7 +166,7 @@ export const DATE_COMPONENT_TYPES = [
   * @type {Array<string>}
   */
 export const OPTION_COMPONENT_TYPES = [
-  'select', 'checkbox'
+  'select', 'checkbox','toggle'
 ]
 /**
   * Objeto com constantes para as opções de status de obrigatoriedade de um componente.

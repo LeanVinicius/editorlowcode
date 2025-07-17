@@ -124,6 +124,28 @@ export const useCanvasState = () => {
   }, []);
 
   /**
+    * Atualiza a fonte de um componente.
+    * @param {string} componentId - O ID do componente a ser atualizado.
+    * @param {string} newSource - A nova fonte para o componente.
+    */
+  const updateComponentSource = useCallback((componentId, newSource) => {
+    setCanvasComponents(prevComponents =>
+      ComponentHelpers.updateComponentProperty(prevComponents, componentId, 'source', newSource)
+    );
+  }, []);
+
+  /**
+    * Atualiza a propriedade 'multi' de um componente.
+    * @param {string} componentId - O ID do componente a ser atualizado.
+    * @param {boolean} newMulti - O novo valor para a propriedade 'multi'.
+    */
+  const updateComponentMulti = useCallback((componentId, newMulti) => {
+    setCanvasComponents(prevComponents =>
+      ComponentHelpers.updateComponentProperty(prevComponents, componentId, 'multi', newMulti)
+    );
+  }, []);
+
+  /**
     * Atualiza a posição de um componente específico no canvas.
     * @param {string} componentId - O ID do componente a ser atualizado.
     * @param {object} newPosition - A nova posição para o componente (e.g., { x, y }).
@@ -199,6 +221,8 @@ export const useCanvasState = () => {
     updateComponentImformation,
     updateComponentRestriction,
     updateComponentOptions,
+    updateComponentSource,
+    updateComponentMulti,
     updateComponentPosition,
     addComponent,
     removeComponent,

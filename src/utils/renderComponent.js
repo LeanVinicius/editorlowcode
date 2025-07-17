@@ -43,9 +43,9 @@ export const renderComponent = (component) => {
             className="border h-full bg-transparent border-gray-300 text-black rounded px-3 py-2"
           >
             {options.length > 0 ? (
-              options.map((opt, idx) => (
-                <option key={idx} value={opt}>
-                  {opt}
+              options.map((opt) => (
+                <option key={opt.id} value={opt.Opcao}>
+                  {opt.Opcao}
                 </option>
               ))
             ) : (

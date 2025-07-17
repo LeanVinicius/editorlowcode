@@ -17,6 +17,28 @@
     --foreground: #ededed;
   }
 }
+@layer utilities {
+  .scrollbar-custom {
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: #f97316 #f3f4f6; /* Firefox: thumb, track */
+  }
+
+  .scrollbar-custom::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar-track {
+    background: #f3f4f6; /* cinza claro */
+  }
+
+  .scrollbar-custom::-webkit-scrollbar-thumb {
+    background-color: #f97316; /* laranja (Tailwind: orange-500) */
+    border-radius: 8px;
+    border: 2px solid #f3f4f6;
+  }
+}
+
 
 body {
   @apply font-sans;
