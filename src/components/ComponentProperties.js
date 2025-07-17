@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback } from "react";
 import { useComponentProperties } from "@/hooks/useComponentProperties";
 import { INTERACTIVE_COMPONENT_TYPES } from "@/constants/Components";
 import { DATE_COMPONENT_TYPES } from "@/constants/Components";
@@ -97,6 +97,10 @@ export function ComponentProperties({
     updateField("restriction", value);
     onUpdateRestriction(component.id, value);
   }
+  const handleOptionsChange = (value) => {
+    updateField("options", value);
+    onUpdateOptions(component.id, value);
+  }
 
 
   const isInteractiveComponent = INTERACTIVE_COMPONENT_TYPES.includes(component.type);
@@ -157,6 +161,7 @@ export function ComponentProperties({
         {isOptionComponent && (
           <ComponentOptionsField
             options={formData.options}
+            onOptionsChange={handleOptionsChange}
           />
         )}
         <ComponentRulesField

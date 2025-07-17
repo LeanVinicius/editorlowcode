@@ -30,7 +30,7 @@ export const DEFAULT_COMPONENTS = [
     content: "Botão",
     type: "button",
     width: 175,
-    height: 41,
+    height: 44,
     colorComponent: "#000000",
     role: "",
     rules: ["teste"]
@@ -69,7 +69,7 @@ export const DEFAULT_COMPONENTS = [
     id: "checkbox", content: "Checkbox", type: "checkbox",
     width: 186, height: 64, colorComponent: "#000000",
     mandatory: "opcional",
-    options: ["Opção 1", "Opção 2"],
+    options: [{"id": 1, "Opcao": "Opção 1"}, {"id": 2, "Opcao": "Opção 2"}, {"id": 3,"Opcao":"Opção 3"}],
     rules: []
   },
   {
@@ -83,7 +83,7 @@ export const DEFAULT_COMPONENTS = [
     id: "toggle", content: "Opção", type: "toggle",
     width: 175, height: 64, colorComponent: "#000000",
     mandatory: "opcional",
-    options: ["Opção 1", "Opção 2", "Opção 3"],
+    options: [{"id": 1, "Opcao": "Opção 1"}, {"id": 2, "Opcao": "Opção 2"}, {"id": 3,"Opcao":"Opção 3"}],
     rules: []
   },
   {
@@ -158,7 +158,7 @@ export const INTERACTIVE_COMPONENT_TYPES = [
 ];
 
 export const DATE_COMPONENT_TYPES = [
-  'table', 'kanbam'
+  'table', 'kanbam','checkbox'
 ]
 
 /**

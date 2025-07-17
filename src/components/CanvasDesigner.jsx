@@ -57,6 +57,7 @@ export default function CanvasDesigner() {
     updateComponentRules,
     updateComponentImformation,
     updateComponentRestriction,
+    updateComponentOptions,
     addComponent,
     removeComponent,
     clearCanvas,
@@ -70,7 +71,6 @@ export default function CanvasDesigner() {
     isEditingScreenName,
     temporaryScreenName,
     setAvailableScreens,
-    setCurrentScreenId,
     setIsEditingScreenName,
     setTemporaryScreenName,
     createNewScreen,
@@ -428,6 +428,7 @@ export default function CanvasDesigner() {
           onUpdateRules={updateComponentRules}
           onUpdateInformation={updateComponentImformation}
           onUpdateRestriction={updateComponentRestriction}
+          onUpdateOptions={updateComponentOptions}
         />
         {/* Add your new sidebar content here */}
       </div>

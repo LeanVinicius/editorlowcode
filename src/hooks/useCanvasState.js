@@ -113,6 +113,17 @@ export const useCanvasState = () => {
   }, []);
 
   /**
+    * Atualiza as opções de um componente.
+    * @param {string} componentId - O ID do componente a ser atualizado.
+    * @param {object} newOptions - As novas opções para o componente.
+    */
+  const updateComponentOptions = useCallback((componentId, newOptions) => {
+    setCanvasComponents(prevComponents =>
+      ComponentHelpers.updateComponentProperty(prevComponents, componentId, 'options', newOptions)
+    );
+  }, []);
+
+  /**
     * Atualiza a posição de um componente específico no canvas.
     * @param {string} componentId - O ID do componente a ser atualizado.
     * @param {object} newPosition - A nova posição para o componente (e.g., { x, y }).
@@ -187,6 +198,7 @@ export const useCanvasState = () => {
     updateComponentRules,
     updateComponentImformation,
     updateComponentRestriction,
+    updateComponentOptions,
     updateComponentPosition,
     addComponent,
     removeComponent,

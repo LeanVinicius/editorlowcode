@@ -51,9 +51,7 @@ export function MoveableDesignComponent({ id, children, position = { x: 0, y: 0 
       style.color = colorComponent || undefined;
       style.backgroundColor = undefined;
       break;
-    case 'neutral':
-      style.backgroundColor = 'gray';
-      style.borderRadius = '0px';
+    case 'checkbox':
       break;
     case 'table':
       style.backgroundColor = '#ffffff80';

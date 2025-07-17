@@ -62,13 +62,13 @@ export const renderComponent = (component) => {
         <div className="flex flex-col space-y-3">
           <label className="text-black">{content ?? "CheckBox"}</label>
           <div className={`flex items-center gap-2 `}>
-            {options.map((opt, idx) => (
-              <div className={`flex items-center gap-2 `} key={idx}>
+            
+            {options.map((opt) => (
+              <div className={`flex items-center gap-2 `} key={opt.id}>
                 <input type="checkbox" className="w-4 h-4" />
-                <label className="text-black">{opt}</label>
+                <label className="text-black">{opt.Opcao}</label>
               </div>
             ))}
-
           </div>
         </div>
       );
@@ -138,14 +138,43 @@ export const renderComponent = (component) => {
       );
     case 'kanbam':
       return (
+        <div className="flex flex-row">
         <div className={`flex flex-col space-y-3 h-full p-3 border-1 rounded-[20px] bg-transparent border-gray-300`}
         >
-          <div className="bg-[RGBA(130,130,130,0.08)] text-gray-700 font-bold w-min rounded-[20px] pt-1 pb-1 pr-3 pl-3">Titulo</div>
+          <div className="bg-[RGBA(130,130,130,0.08)] text-gray-700 font-bold rounded-[20px] pt-1 pb-1 pr-3 pl-3">Backlog</div>
           <div className="flex flex-col p-3 border-1 rounded-[20px] bg-transparent border-gray-300"
           >
             <div className="bg-[RGBA(130,130,130,0.08)] rounded-[20px] pt-1 pb-1 pr-3 pl-3">Titulo</div>
             <div>ghghgh</div>
           </div>
+        </div>
+        <div className={`flex flex-col space-y-3 h-full p-3 border-1 rounded-[20px] bg-transparent border-gray-300`}
+        >
+          <div className="bg-[RGBA(130,130,130,0.08)] text-gray-700 font-bold rounded-[20px] pt-1 pb-1 pr-3 pl-3">To Do</div>
+          <div className="flex flex-col p-3 border-1 rounded-[20px] bg-transparent border-gray-300"
+          >
+            <div className="bg-[RGBA(130,130,130,0.08)] rounded-[20px] pt-1 pb-1 pr-3 pl-3">Titulo</div>
+            <div>ghghgh</div>
+          </div>
+        </div>
+        <div className={`flex flex-col space-y-3 h-full p-3 border-1 rounded-[20px] bg-transparent border-gray-300`}
+        >
+          <div className="bg-[RGBA(130,130,130,0.08)] text-gray-700 font-bold rounded-[20px] pt-1 pb-1 pr-3 pl-3">Doing</div>
+          <div className="flex flex-col p-3 border-1 rounded-[20px] bg-transparent border-gray-300"
+          >
+            <div className="bg-[RGBA(130,130,130,0.08)] rounded-[20px] pt-1 pb-1 pr-3 pl-3">Titulo</div>
+            <div>ghghgh</div>
+          </div>
+        </div>
+        <div className={`flex flex-col space-y-3 h-full p-3 border-1 rounded-[20px] bg-transparent border-gray-300`}
+        >
+          <div className="bg-[RGBA(130,130,130,0.08)] text-gray-700 font-bold rounded-[20px] pt-1 pb-1 pr-3 pl-3">Done</div>
+          <div className="flex flex-col p-3 border-1 rounded-[20px] bg-transparent border-gray-300"
+          >
+            <div className="bg-[RGBA(130,130,130,0.08)] rounded-[20px] pt-1 pb-1 pr-3 pl-3">Titulo</div>
+            <div>ghghgh</div>
+          </div>
+        </div>
         </div>
       );
     case 'heading':
