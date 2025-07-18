@@ -36,7 +36,6 @@ export function MoveableDesignComponent({ id, children, position = { x: 0, y: 0 
     display: 'flex',
     cursor: 'move',
     zIndex: inCanvas ? 1 : 100,
-    //backgroundColor: colorComponent || undefined,
   };
 
 
@@ -52,6 +51,9 @@ export function MoveableDesignComponent({ id, children, position = { x: 0, y: 0 
       style.backgroundColor = undefined;
       break;
     case 'checkbox':
+      break;
+    case 'toggle':
+      style.color = colorComponent || undefined;
       break;
     case 'table':
       style.backgroundColor = '#ffffff80';

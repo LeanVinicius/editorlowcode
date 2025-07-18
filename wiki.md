@@ -184,8 +184,6 @@ Este hook customizado (`useComponentProperties`) é responsável por gerenciar o
 
 *   `formData`: Um objeto que armazena os valores atuais dos campos do formulário de propriedades do componente. É sincronizado com as propriedades do `component` passado.
 *   `updateField(field, value)`: Função utilizada para atualizar o valor de um campo específico (`field`) dentro do `formData` com o novo `value`.
-*   `isEditingName`: Estado booleano que indica se o campo de edição do nome do componente está ativo.
-*   `setIsEditingName(boolean)`: Função para atualizar o estado `isEditingName`.
 
 Este hook é fundamental para a funcionalidade do painel de propriedades, garantindo que as informações do componente selecionado sejam exibidas corretamente e possam ser modificadas.
 

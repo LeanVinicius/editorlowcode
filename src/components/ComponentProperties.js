@@ -1,8 +1,5 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { useComponentProperties } from "@/hooks/useComponentProperties";
-import { INTERACTIVE_COMPONENT_TYPES } from "@/constants/Components";
-import { DATE_COMPONENT_TYPES } from "@/constants/Components";
-import { OPTION_COMPONENT_TYPES } from "@/constants/Components";
 import { ComponentBasicFields } from "@/properties/ComponentBasicFields";
 import { ComponentSizeFields } from "@/properties/ComponentSizeFields";
 import { ComponentColorField } from "@/properties/ComponentColorField";
@@ -13,7 +10,7 @@ import { ComponentRulesField } from "@/properties/ComponentRulesField";
 import { ComponentInputFields } from "@/properties/ComponentInputFields";
 import { ComponentOptionsField } from "@/properties/ComponentOptionsField";
 import { ComponentSelectFields } from "@/properties/ComponentSelectFields";
-
+import { ComponentDateFields } from "@/properties/ComponentDateFields";
 
 
 /**
@@ -29,10 +26,11 @@ import { ComponentSelectFields } from "@/properties/ComponentSelectFields";
  * @param {(componentId: string, newOptions: string[]) => void} [props.onUpdateOptions] - Função chamada quando as opções do componente são alteradas (para selects/checkboxes).
  * @param {(componentId: string, newRole: string) => void} [props.onUpdateRole] - Função chamada quando a propriedade 'role' do componente é alterada (para botões).
  * @param {(componentId: string, newRules: string) => void} [props.onUpdateRules] - Função chamada quando a propriedade 'rules' do componente é alterada (para inputs).
-* @param {(componentId: string, newInformation: string) => void} [props.onUpdateInformation] - Função chamada quando a propriedade 'information' do componente é alterada (para inputs).
-* @param {(componentId: string, newRestriction: string) => void} [props.onUpdateRestriction] - Função chamada quando a propriedade 'restriction' do componente é alterada (para inputs).
-* @param {(componentId: string, newSource: string) => void} [props.onUpdateSource] - Função opcional chamada quando a propriedade 'source' do componente é alterada (para inputs).
-* @returns {JSX.Element | null} Renderiza o painel lateral para visualizar e editar as propriedades de um componente selecionado, ou `null` se nenhum componente estiver selecionado.
+ * @param {(componentId: string, newInformation: string) => void} [props.onUpdateInformation] - Função chamada quando a propriedade 'information' do componente é alterada (para inputs).
+ * @param {(componentId: string, newRestriction: string) => void} [props.onUpdateRestriction] - Função chamada quando a propriedade 'restriction' do componente é alterada (para inputs).
+ * @param {(componentId: string, newSource: string) => void} [props.onUpdateSource] - Função opcional chamada quando a propriedade 'source' do componente é alterada (para inputs).
+ * @param {(componentId: string, newDefaultDate: string) => void} [props.onUpdateDefaultDate] - Função opcional chamada quando a propriedade 'defaultDate' do componente é alterada (para inputs).
+ * @returns {JSX.Element | null} Renderiza o painel lateral para visualizar e editar as propriedades de um componente selecionado, ou `null` se nenhum componente estiver selecionado.
  *
  * Este componente utiliza o hook `useComponentProperties` para gerenciar o estado local do formulário de propriedades e sincronizá-lo com o componente selecionado. Ele renderiza condicionalmente diferentes campos de propriedade com base no tipo do componente.
  */
@@ -50,7 +48,8 @@ export function ComponentProperties({
   onUpdateRules,
   onUpdateInformation,
   onUpdateRestriction,
-  onUpdateSource
+  onUpdateSource,
+  onUpdateDefaultDate
 }) {
   const { formData, updateField } =
     useComponentProperties(component);
@@ -106,7 +105,7 @@ export function ComponentProperties({
     updateField("options", value);
     onUpdateOptions(component.id, value);
   }
-  const handleSourceChange =(value) => {
+  const handleSourceChange = (value) => {
     updateField("source", value);
     onUpdateSource(component.id, value);
   }
@@ -114,90 +113,274 @@ export function ComponentProperties({
     updateField("multi", value);
     onUpdateMulti(component.id, value);
   }
+  const handleDefaultDateChange = (value) => {
+    updateField("defaultDate", value);
+    onUpdateDefaultDate(component.id, value);
+  }
 
+  function renderProperties(type) {
+    switch (type) {
+      case 'button':
+        return (
+          <div className="flex flex-col space-y-5">
+            <h2 className="text-[20px] font-bold text-[rgba(18,49,50,1)] pb-6">
+              Propriedades do Componente
+            </h2>
+            <ComponentBasicFields
+              name={formData.name}
+              content={formData.content}
+              onNameChange={handleNameChange}
+              onContentChange={handleContentChange}
+            />
+            <ComponentSizeFields
+              width={formData.width}
+              height={formData.height}
+              onSizeChange={handleSizeChange}
+            />
+            <ComponentColorField
+              color={formData.color}
+              onColorChange={handleColorChange}
+            />
+            <ComponentRoleField
+              role={formData.role}
+              onRoleChange={handleRoleChange}
+            />
+            <ComponentRulesField
+              rules={formData.rules}
+              onRulesChange={handleRulesChange}
+            />
+          </div>);
+      case 'heading':
+        return (
+          <div className="flex flex-col space-y-5">
+            <h2 className="text-[20px] font-bold text-[rgba(18,49,50,1)] pb-6">
+              Propriedades do Componente
+            </h2>
+            <ComponentBasicFields
+              name={formData.name}
+              content={formData.content}
+              onNameChange={handleNameChange}
+              onContentChange={handleContentChange}
+            />
+            <ComponentColorField
+              color={formData.color}
+              onColorChange={handleColorChange}
+            />
+            <ComponentRulesField
+              rules={formData.rules}
+              onRulesChange={handleRulesChange}
+            />
 
-  const isInteractiveComponent = INTERACTIVE_COMPONENT_TYPES.includes(component.type);
-  const isOptionComponent = OPTION_COMPONENT_TYPES.includes(component.type);
-  const isDateComponent = !DATE_COMPONENT_TYPES.includes(component.type);
-  const isButtonComponent = component.type === "button";
-  const isInputComponent = component.type === "input";
-  const isSelectComponent = component.type === "select";
-
+          </div>
+        );
+      case 'input':
+        return (
+          <div className="flex flex-col space-y-5">
+            <h2 className="text-[20px] font-bold text-[rgba(18,49,50,1)] pb-6">
+              Propriedades do Componente
+            </h2>
+            <ComponentBasicFields
+              name={formData.name}
+              content={formData.content}
+              onNameChange={handleNameChange}
+              onContentChange={handleContentChange}
+            />
+            <ComponentSizeFields
+              width={formData.width}
+              height={formData.height}
+              onSizeChange={handleSizeChange}
+            />
+            <ComponentColorField
+              color={formData.color}
+              onColorChange={handleColorChange}
+            />
+            <ComponentMandatoryField
+              mandatory={formData.mandatory}
+              onMandatoryChange={handleMandatoryChange}
+            />
+            <ComponentInputFields
+              information={formData.information}
+              restriction={formData.restriction}
+              onInformationChange={handleInformationChange}
+              onRestrictionChange={handleRestrictionChange}
+            />
+            <ComponentRulesField
+              rules={formData.rules}
+              onRulesChange={handleRulesChange}
+            />
+          </div>
+        );
+      case 'select':
+        return (
+          <div className="flex flex-col space-y-5">
+            <h2 className="text-[20px] font-bold text-[rgba(18,49,50,1)] pb-6">
+              Propriedades do Componente
+            </h2>
+            <ComponentBasicFields
+              name={formData.name}
+              content={formData.content}
+              onNameChange={handleNameChange}
+              onContentChange={handleContentChange}
+            />
+            <ComponentColorField
+              color={formData.color}
+              onColorChange={handleColorChange}
+            />
+            <ComponentMandatoryField
+              mandatory={formData.mandatory}
+              onMandatoryChange={handleMandatoryChange}
+            />
+            <ComponentOptionsField
+              options={formData.options}
+              onOptionsChange={handleOptionsChange}
+            />
+            <ComponentSelectFields
+              source={formData.source}
+              onSourceChange={handleSourceChange}
+              multi={formData.multi}
+              onMultiChange={handleMultiChange}
+            />
+            <ComponentRulesField
+              rules={formData.rules}
+              onRulesChange={handleRulesChange}
+            />
+          </div>
+        );
+      case 'checkbox':
+        return (
+          <div className="flex flex-col space-y-5">
+            <h2 className="text-[20px] font-bold text-[rgba(18,49,50,1)] pb-6">
+              Propriedades do Componente
+            </h2>
+            <ComponentBasicFields
+              name={formData.name}
+              content={formData.content}
+              onNameChange={handleNameChange}
+              onContentChange={handleContentChange}
+            />
+            <ComponentColorField
+              color={formData.color}
+              onColorChange={handleColorChange}
+            />
+            <ComponentMandatoryField
+              mandatory={formData.mandatory}
+              onMandatoryChange={handleMandatoryChange}
+            />
+            <ComponentOptionsField
+              options={formData.options}
+              onOptionsChange={handleOptionsChange}
+            />
+            <ComponentRulesField
+              rules={formData.rules}
+              onRulesChange={handleRulesChange}
+            />
+          </div>
+        );
+      case 'calendar':
+        return (
+          <div className="flex flex-col space-y-5">
+            <h2 className="text-[20px] font-bold text-[rgba(18,49,50,1)] pb-6">
+              Propriedades do Componente
+            </h2>
+            <ComponentBasicFields
+              name={formData.name}
+              content={formData.content}
+              onNameChange={handleNameChange}
+              onContentChange={handleContentChange}
+            />
+            <ComponentColorField
+              color={formData.color}
+              onColorChange={handleColorChange}
+            />
+            <ComponentMandatoryField
+              mandatory={formData.mandatory}
+              onMandatoryChange={handleMandatoryChange}
+            />
+            <ComponentDateFields
+              defaultDate={formData.defaultDate}
+              onDefaultDateChange={handleDefaultDateChange}
+            />
+            <ComponentRulesField
+              rules={formData.rules}
+              onRulesChange={handleRulesChange}
+            />
+          </div>
+        );
+      case 'toggle':
+        return (
+          <div className="flex flex-col space-y-5">
+            <h2 className="text-[20px] font-bold text-[rgba(18,49,50,1)] pb-6">
+              Propriedades do Componente
+            </h2>
+            <ComponentBasicFields
+              name={formData.name}
+              content={formData.content}
+              onNameChange={handleNameChange}
+              onContentChange={handleContentChange}
+            />
+            <ComponentColorField
+              color={formData.color}
+              onColorChange={handleColorChange}
+            />
+            <ComponentMandatoryField
+              mandatory={formData.mandatory}
+              onMandatoryChange={handleMandatoryChange}
+            />
+            <ComponentOptionsField
+              options={formData.options}
+              onOptionsChange={handleOptionsChange}
+            />
+            <ComponentRulesField
+              rules={formData.rules}
+              onRulesChange={handleRulesChange}
+            />
+          </div>
+        );
+      case 'table':
+        return (
+          <div className="flex flex-col space-y-5">
+            <h2 className="text-[20px] font-bold text-[rgba(18,49,50,1)] pb-6">
+              Propriedades do Componente
+            </h2>
+            <ComponentBasicFields
+              name={formData.name}
+              content={formData.content}
+              onNameChange={handleNameChange}
+              onContentChange={handleContentChange}
+            />
+            <ComponentRulesField
+              rules={formData.rules}
+              onRulesChange={handleRulesChange}
+            />
+          </div>
+        );
+      case 'kanbam':
+        return (
+          <div className="flex flex-col space-y-5">
+            <h2 className="text-[20px] font-bold text-[rgba(18,49,50,1)] pb-6">
+              Propriedades do Componente
+            </h2>
+            <ComponentBasicFields
+              name={formData.name}
+              content={formData.content}
+              onNameChange={handleNameChange}
+              onContentChange={handleContentChange}
+            />
+            <ComponentRulesField
+              rules={formData.rules}
+              onRulesChange={handleRulesChange}
+            />
+          </div>
+        );
+      default:
+        return <div>Tipo desconhecido</div>;
+    }
+  }
 
   return (
     <div className="bg-[rgba(254,254,254,1)] p-5 shadow-[0_4px_20px_rgba(0,0,0,0.1)] w-68 rounded-lg z-30 h-screen fixed right-0 flex flex-col justify-between overflow-auto items-center
                     scrollbar-custom">
-      <div className="flex flex-col space-y-5">
-        <h2 className="text-[20px] font-bold text-[rgba(18,49,50,1)] pb-6">
-          Propriedades do Componente
-        </h2>
-
-        <ComponentBasicFields
-          name={formData.name}
-
-          content={formData.content}
-          onNameChange={handleNameChange}
-          onContentChange={handleContentChange}
-        />
-
-        {isDateComponent && (<ComponentSizeFields
-          width={formData.width}
-          height={formData.height}
-          onSizeChange={handleSizeChange}
-        />)}
-
-        <ComponentColorField
-          color={formData.color}
-          onColorChange={handleColorChange}
-        />
-
-        {isButtonComponent && (
-          <ComponentRoleField
-            role={formData.role}
-            onRoleChange={handleRoleChange}
-          />
-        )}
-
-
-        {isInteractiveComponent && (
-          <ComponentMandatoryField
-            mandatory={formData.mandatory}
-            onMandatoryChange={handleMandatoryChange}
-          />
-        )}
-        {isInputComponent && (
-          <ComponentInputFields
-            information={formData.information}
-            restriction={formData.restriction}
-            onInformationChange={handleInformationChange}
-            onRestrictionChange={handleRestrictionChange}
-          />
-        )}
-        {isOptionComponent && (
-          <ComponentOptionsField
-            options={formData.options}
-            onOptionsChange={handleOptionsChange}
-          />
-        )}
-        {isSelectComponent && (
-          <ComponentSelectFields
-            source={formData.source}
-            onSourceChange={handleSourceChange}
-            multi={formData.multi}
-            onMultiChange={handleMultiChange}
-          />
-        )}
-
-        <ComponentRulesField
-          rules={formData.rules}
-          onRulesChange={handleRulesChange}
-        />
-
-      </div>
-
-
-
-
+      {renderProperties(component.type)}
       <ComponentActions onDelete={() => onDelete(component.id)} />
     </div>
   );

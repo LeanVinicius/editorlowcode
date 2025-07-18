@@ -4,8 +4,6 @@ import { useState, useEffect } from 'react';
   * @typedef {object} ComponentPropertiesState
   * @property {object} formData - O estado atual do formulário de propriedades.
   * @property {function(string, any): void} updateField - Função para atualizar um campo específico no formData.
-  * @property {boolean} isEditingName - Estado booleano indicando se o nome do componente está sendo editado.
-  * @property {function(boolean): void} setIsEditingName - Função para definir o estado de edição do nome.
   */
 
 /**
@@ -30,10 +28,9 @@ export const useComponentProperties = (component) => {
     rules: [],
     information: 'Texto Livre',
     restriction: 'Nenhuma',
-    source: 'Alimentação Direta'
+    source: 'Alimentação Direta',
+    defaultDate: ''
   });
-
-  const [isEditingName, setIsEditingName] = useState(false);
 
   useEffect(() => {
     if (component) {
@@ -50,7 +47,8 @@ export const useComponentProperties = (component) => {
         rules: component.rules || [],
         information: component.information || 'Texto Livre',
         restriction: component.restriction || 'Nenhuma',
-        source: component.source || 'Alimentação Direta'
+        source: component.source || 'Alimentação Direta',
+        defaultDate: component.defaultDate || ''
       });
     }
   }, [component]); // Dependência: Sincroniza quando o componente selecionado muda.
@@ -77,13 +75,5 @@ export const useComponentProperties = (component) => {
      * Função para atualizar um campo específico no `formData`.
      */
     updateField,
-    /**
-     * Estado booleano que indica se o nome do componente está sendo editado.
-     */
-    isEditingName,
-    /**
-     * Função para definir o estado de edição do nome (`isEditingName`).
-     */
-    setIsEditingName
   };
 };

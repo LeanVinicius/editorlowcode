@@ -19,6 +19,13 @@
   * @property {Array<object>} [data] - Dados para componentes de lista/tabela.
   */
 
+const today = new Date();
+const day = String(today.getDate()).padStart(2, '0');
+const month = String(today.getMonth() + 1).padStart(2, '0');
+const year = today.getFullYear();
+
+const formatDate = `${year}-${month}-${day}`;
+
 /**
   * Array contendo as definições padrão para cada tipo de componente disponível na paleta.
   * Essas definições incluem propriedades iniciais como ID, tipo, dimensões, conteúdo, etc.
@@ -70,6 +77,7 @@ export const DEFAULT_COMPONENTS = [
     width: 186, height: 64, colorComponent: "#000000",
     mandatory: "opcional",
     options: [{"id": 1, "Opcao": "Opção 1"}, {"id": 2, "Opcao": "Opção 2"}, {"id": 3,"Opcao":"Opção 3"}],
+    direction : "vertical",
     rules: []
   },
   {
@@ -77,14 +85,15 @@ export const DEFAULT_COMPONENTS = [
     width: 175, height: 82, colorComponent: "#000000",
     mandatory: "opcional",
     rules: [],
-    default: ""
+    defaultDate: formatDate
   },
   {
     id: "toggle", content: "Opção", type: "toggle",
     width: 175, height: 64, colorComponent: "#000000",
     mandatory: "opcional",
     options: [{"id": 1, "Opcao": "Opção 1"}, {"id": 2, "Opcao": "Opção 2"}, {"id": 3,"Opcao":"Opção 3"}],
-    rules: []
+    rules: [],
+    direction : "vertical"
   },
   {
     id: "table", content: "Galeria", type: "table",
@@ -135,6 +144,8 @@ export const DEFAULT_COMPONENTS = [
     buckets: []
   },
 ];
+
+
 /**
   * Objeto que define as dimensões (largura e altura) da área do canvas de design.
   * @type {{width: number, height: number}}
@@ -148,26 +159,6 @@ export const CANVAS_DIMENSIONS = { width: 2000, height: 2000 };
   */
 export const DRAG_ACTIVATION_DISTANCE = 5;
 
-/**
-  * Array de strings contendo os tipos de componentes considerados interativos (campos de formulário, etc.).
-  * Usado para lógica relacionada à edição de propriedades ou validação.
-  * @type {Array<string>}
-  */
-export const INTERACTIVE_COMPONENT_TYPES = [
-  'input', 'select', 'checkbox', 'toggle', 'calendar'
-];
-
-export const DATE_COMPONENT_TYPES = [
-  'table', 'kanbam','checkbox'
-]
-
-/**
-  * Array de strings contendo os tipos de componentes que podem ter opções (como select e checkbox).
-  * @type {Array<string>}
-  */
-export const OPTION_COMPONENT_TYPES = [
-  'select', 'checkbox','toggle'
-]
 /**
   * Objeto com constantes para as opções de status de obrigatoriedade de um componente.
   * @type {{REQUIRED: string, OPTIONAL: string}}

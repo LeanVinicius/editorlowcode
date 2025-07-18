@@ -146,6 +146,17 @@ export const useCanvasState = () => {
   }, []);
 
   /**
+    * Atualiza a propriedade 'defaultDate' de um componente.
+    * @param {string} componentId - O ID do componente a ser atualizado.
+    * @param {string} newDefaultDate - O novo valor para a propriedade 'defaultDate'.
+    */
+  const updateComponentDefaultDate = useCallback((componentId, newDefaultDate) => {
+    setCanvasComponents(prevComponents =>
+      ComponentHelpers.updateComponentProperty(prevComponents, componentId, 'defaultDate', newDefaultDate)
+    );
+  }, []);
+
+  /**
     * Atualiza a posição de um componente específico no canvas.
     * @param {string} componentId - O ID do componente a ser atualizado.
     * @param {object} newPosition - A nova posição para o componente (e.g., { x, y }).
@@ -223,6 +234,7 @@ export const useCanvasState = () => {
     updateComponentOptions,
     updateComponentSource,
     updateComponentMulti,
+    updateComponentDefaultDate,
     updateComponentPosition,
     addComponent,
     removeComponent,
