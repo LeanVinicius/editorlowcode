@@ -40,7 +40,7 @@ export const DEFAULT_COMPONENTS = [
     height: 44,
     colorComponent: "#000000",
     role: "",
-    rules: ["teste"]
+    rules: [{"id": 1, "regra": "Regra 1"}, {"id": 2, "regra": "Regra 2"}, {"id": 3,"regra":"Regra 3"}]
   },
   {
     id: "text",
