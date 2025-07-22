@@ -61,6 +61,7 @@ export default function CanvasDesigner() {
     updateComponentRestriction,
     updateComponentOptions,
     updateComponentDefaultDate,
+    updateComponentData,
     addComponent,
     removeComponent,
     clearCanvas,
@@ -433,6 +434,7 @@ export default function CanvasDesigner() {
           onUpdateSource={updateComponentSource}
           onUpdateMulti={updateComponentMulti}
           onUpdateDefaultDate={updateComponentDefaultDate}
+          onUpdateData={updateComponentData}
         />
         {/* Add your new sidebar content here */}
       </div>

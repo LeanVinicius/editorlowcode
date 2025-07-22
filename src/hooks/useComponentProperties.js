@@ -29,7 +29,8 @@ export const useComponentProperties = (component) => {
     information: 'Texto Livre',
     restriction: 'Nenhuma',
     source: 'Alimentação Direta',
-    defaultDate: ''
+    defaultDate: '',
+    data: []
   });
 
   useEffect(() => {
@@ -48,7 +49,8 @@ export const useComponentProperties = (component) => {
         information: component.information || 'Texto Livre',
         restriction: component.restriction || 'Nenhuma',
         source: component.source || 'Alimentação Direta',
-        defaultDate: component.defaultDate || ''
+        defaultDate: component.defaultDate || '',
+        data: component.data || []
       });
     }
   }, [component]); // Dependência: Sincroniza quando o componente selecionado muda.

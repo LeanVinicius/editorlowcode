@@ -157,6 +157,17 @@ export const useCanvasState = () => {
   }, []);
 
   /**
+    * Atualiza os dados de um componente.
+    * @param {string} componentId - O ID do componente a ser atualizado.
+    * @param {object} newData - Os novos dados para o componente.
+    */
+  const updateComponentData = useCallback((componentId, newData) => {
+    setCanvasComponents(prevComponents =>
+      ComponentHelpers.updateComponentProperty(prevComponents, componentId, 'data', newData)
+    );
+  }, []);
+
+  /**
     * Atualiza a posição de um componente específico no canvas.
     * @param {string} componentId - O ID do componente a ser atualizado.
     * @param {object} newPosition - A nova posição para o componente (e.g., { x, y }).
@@ -235,6 +246,7 @@ export const useCanvasState = () => {
     updateComponentSource,
     updateComponentMulti,
     updateComponentDefaultDate,
+    updateComponentData,
     updateComponentPosition,
     addComponent,
     removeComponent,

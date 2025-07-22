@@ -63,9 +63,9 @@ export const renderComponent = (component) => {
       );
     case 'checkbox':
       return (
-        <div className="flex flex-col space-y-3">
+        <div className={"flex flex-col space-y-3"}>
           <label className="text-black">{content ?? "CheckBox"}</label>
-          <div className={`flex items-center gap-2 `}>
+          <div className={`flex ${styleDirection} items-center gap-2 `}>
 
             {options.map((opt) => (
               <div className={`flex items-center gap-2 `} key={opt.id}>
@@ -106,7 +106,9 @@ export const renderComponent = (component) => {
             {data.length > 0 ? (
               <thead>
                 <tr>
-                  {Object.keys(data[0]).map((key, idx) => (
+                  {Object.keys(data[0])
+                  .filter((key) => key !== "id")
+                  .map((key, idx) => (
                     <th key={idx} className="p-[12px]  h-[40px] border-b text-left capitalize">
                       {key}
                     </th>
@@ -126,7 +128,9 @@ export const renderComponent = (component) => {
               {data.length > 0 ? (
                 data.map((item, i) => (
                   <tr key={item.id ?? i} className="hover:bg-gray-50">
-                    {Object.values(item).map((val, j) => (
+                    {Object.entries(item)
+                    .filter(([key]) => key !== "id")
+                    .map(([_,val], j) => (
                       <td key={j} className="p-[12px] h-[40px] border-b">
                         {val}
                       </td>

@@ -67,8 +67,6 @@ export function ComponentOptionsField({ options, onOptionsChange }) {
         </button>
       </div>
     </div>
-
-
   );
 
 }
