@@ -15,7 +15,7 @@ export const renderComponent = (component) => {
     options = [],
     data = [],
     direction = "vertical",
-    
+    buckets = []
   } = component;
 
   const styleDirection = direction === "vertical" ? "flex-col" : "flex-row";
@@ -93,7 +93,7 @@ export const renderComponent = (component) => {
           <div className="bg-transparent ">{content ?? "Data"}</div>
           <input
             type="date"
-            defaultValue = {defaultDate}
+            defaultValue={defaultDate}
             className="border h-full bg-transparent sgrow flex-1 border-gray-300 text-black rounded px-3 py-2"
           />
 
@@ -107,12 +107,12 @@ export const renderComponent = (component) => {
               <thead>
                 <tr>
                   {Object.keys(data[0])
-                  .filter((key) => key !== "id")
-                  .map((key, idx) => (
-                    <th key={idx} className="p-[12px]  h-[40px] border-b text-left capitalize">
-                      {key}
-                    </th>
-                  ))}
+                    .filter((key) => key !== "id")
+                    .map((key, idx) => (
+                      <th key={idx} className="p-[12px]  h-[40px] border-b text-left capitalize">
+                        {key}
+                      </th>
+                    ))}
                 </tr>
               </thead>
             ) : (
@@ -129,12 +129,12 @@ export const renderComponent = (component) => {
                 data.map((item, i) => (
                   <tr key={item.id ?? i} className="hover:bg-gray-50">
                     {Object.entries(item)
-                    .filter(([key]) => key !== "id")
-                    .map(([_,val], j) => (
-                      <td key={j} className="p-[12px] h-[40px] border-b">
-                        {val}
-                      </td>
-                    ))}
+                      .filter(([key]) => key !== "id")
+                      .map(([_, val], j) => (
+                        <td key={j} className="p-[12px] h-[40px] border-b">
+                          {val}
+                        </td>
+                      ))}
                   </tr>
                 ))
               ) : (
@@ -148,44 +148,28 @@ export const renderComponent = (component) => {
       );
     case 'kanbam':
       return (
-        <div className="flex flex-row">
-          <div className={`flex flex-col space-y-3 h-full p-3 border-1 rounded-[20px] bg-transparent border-gray-300`}
-          >
-            <div className="bg-[RGBA(130,130,130,0.08)] text-gray-700 font-bold rounded-[20px] pt-1 pb-1 pr-3 pl-3">Backlog</div>
-            <div className="flex flex-col p-3 border-1 rounded-[20px] bg-transparent border-gray-300"
+        <div className="flex flex-row space-x-3">
+          {buckets.map((bucket) => (
+            <div key={bucket.id}
+              className={`flex flex-col space-y-3 h-full p-3 border-1 rounded-[20px] bg-transparent border-gray-300`}
             >
-              <div className="bg-[RGBA(130,130,130,0.08)] rounded-[20px] pt-1 pb-1 pr-3 pl-3">Titulo</div>
-              <div>ghghgh</div>
-            </div>
-          </div>
-          <div className={`flex flex-col space-y-3 h-full p-3 border-1 rounded-[20px] bg-transparent border-gray-300`}
-          >
-            <div className="bg-[RGBA(130,130,130,0.08)] text-gray-700 font-bold rounded-[20px] pt-1 pb-1 pr-3 pl-3">To Do</div>
-            <div className="flex flex-col p-3 border-1 rounded-[20px] bg-transparent border-gray-300"
-            >
-              <div className="bg-[RGBA(130,130,130,0.08)] rounded-[20px] pt-1 pb-1 pr-3 pl-3">Titulo</div>
-              <div>ghghgh</div>
-            </div>
-          </div>
-          <div className={`flex flex-col space-y-3 h-full p-3 border-1 rounded-[20px] bg-transparent border-gray-300`}
-          >
-            <div className="bg-[RGBA(130,130,130,0.08)] text-gray-700 font-bold rounded-[20px] pt-1 pb-1 pr-3 pl-3">Doing</div>
-            <div className="flex flex-col p-3 border-1 rounded-[20px] bg-transparent border-gray-300"
-            >
-              <div className="bg-[RGBA(130,130,130,0.08)] rounded-[20px] pt-1 pb-1 pr-3 pl-3">Titulo</div>
-              <div>ghghgh</div>
-            </div>
-          </div>
-          <div className={`flex flex-col space-y-3 h-full p-3 border-1 rounded-[20px] bg-transparent border-gray-300`}
-          >
-            <div className="bg-[RGBA(130,130,130,0.08)] text-gray-700 font-bold rounded-[20px] pt-1 pb-1 pr-3 pl-3">Done</div>
-            <div className="flex flex-col p-3 border-1 rounded-[20px] bg-transparent border-gray-300"
-            >
-              <div className="bg-[RGBA(130,130,130,0.08)] rounded-[20px] pt-1 pb-1 pr-3 pl-3">Titulo</div>
-              <div>ghghgh</div>
-            </div>
-          </div>
-        </div>
+              <div className="bg-[RGBA(130,130,130,0.08)] text-gray-700 font-bold rounded-[20px] pt-1 pb-1 pr-3 pl-3">{bucket.bucket}</div>
+
+              {bucket.tasks.map((task) => (
+                <div key={task.id}
+                  className="flex flex-col p-3 border-1 rounded-[20px] bg-transparent border-gray-300"
+                >
+                  <div
+                    className="bg-[RGBA(130,130,130,0.08)] rounded-[20px] pt-1 pb-1 pr-3 pl-3"
+                  >
+                    {task.task}
+                  </div>
+                  <div>{task.inf}</div>
+                </div>
+              ))}
+            </div >
+          ))}
+        </div >
       );
     case 'heading':
       return <h2 className={`text-xl font-bold`}>{content ?? "Texto"}</h2>;

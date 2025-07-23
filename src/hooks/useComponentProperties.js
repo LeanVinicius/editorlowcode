@@ -30,7 +30,8 @@ export const useComponentProperties = (component) => {
     restriction: 'Nenhuma',
     source: 'Alimentação Direta',
     defaultDate: '',
-    data: []
+    data: [],
+    buckets: []
   });
 
   useEffect(() => {
@@ -50,7 +51,8 @@ export const useComponentProperties = (component) => {
         restriction: component.restriction || 'Nenhuma',
         source: component.source || 'Alimentação Direta',
         defaultDate: component.defaultDate || '',
-        data: component.data || []
+        data: component.data || [],
+        buckets: component.buckets || []
       });
     }
   }, [component]); // Dependência: Sincroniza quando o componente selecionado muda.

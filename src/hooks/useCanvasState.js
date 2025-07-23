@@ -167,6 +167,12 @@ export const useCanvasState = () => {
     );
   }, []);
 
+  const updateComponentBucket = useCallback((componentId, newBucket) => {
+    setCanvasComponents(prevComponents =>
+      ComponentHelpers.updateComponentProperty(prevComponents, componentId, 'buckets', newBucket)
+    );
+  }, []);
+
   /**
     * Atualiza a posição de um componente específico no canvas.
     * @param {string} componentId - O ID do componente a ser atualizado.
@@ -247,6 +253,7 @@ export const useCanvasState = () => {
     updateComponentMulti,
     updateComponentDefaultDate,
     updateComponentData,
+    updateComponentBucket,
     updateComponentPosition,
     addComponent,
     removeComponent,

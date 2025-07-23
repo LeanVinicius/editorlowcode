@@ -40,7 +40,7 @@ export const DEFAULT_COMPONENTS = [
     height: 44,
     colorComponent: "#000000",
     role: "",
-    rules: [{"id": 1, "regra": "Regra 1"}, {"id": 2, "regra": "Regra 2"}, {"id": 3,"regra":"Regra 3"}]
+    rules: [{ "id": 1, "regra": "Regra 1" }, { "id": 2, "regra": "Regra 2" }, { "id": 3, "regra": "Regra 3" }]
   },
   {
     id: "text",
@@ -69,15 +69,15 @@ export const DEFAULT_COMPONENTS = [
     mandatory: "opcional",
     multi: true,
     rules: [],
-    options: [{"id": 1, "Opcao": "Opção 1"}, {"id": 2, "Opcao": "Opção 2"}, {"id": 3,"Opcao":"Opção 3"}],
+    options: [{ "id": 1, "Opcao": "Opção 1" }, { "id": 2, "Opcao": "Opção 2" }, { "id": 3, "Opcao": "Opção 3" }],
     source: "Alimentação Direta"
   },
   {
     id: "checkbox", content: "Checkbox", type: "checkbox",
     width: 186, height: 64, colorComponent: "#000000",
     mandatory: "opcional",
-    options: [{"id": 1, "Opcao": "Opção 1"}, {"id": 2, "Opcao": "Opção 2"}, {"id": 3,"Opcao":"Opção 3"}],
-    direction : "vertical",
+    options: [{ "id": 1, "Opcao": "Opção 1" }, { "id": 2, "Opcao": "Opção 2" }, { "id": 3, "Opcao": "Opção 3" }],
+    direction: "vertical",
     rules: []
   },
   {
@@ -91,9 +91,9 @@ export const DEFAULT_COMPONENTS = [
     id: "toggle", content: "Opção", type: "toggle",
     width: 175, height: 64, colorComponent: "#000000",
     mandatory: "opcional",
-    options: [{"id": 1, "Opcao": "Opção 1"}, {"id": 2, "Opcao": "Opção 2"}, {"id": 3,"Opcao":"Opção 3"}],
+    options: [{ "id": 1, "Opcao": "Opção 1" }, { "id": 2, "Opcao": "Opção 2" }, { "id": 3, "Opcao": "Opção 3" }],
     rules: [],
-    direction : "vertical"
+    direction: "vertical"
   },
   {
     id: "table", content: "Galeria", type: "table",
@@ -146,7 +146,10 @@ export const DEFAULT_COMPONENTS = [
     width: 229, height: 110,
     colorComponent: "#000000",
     rules: [],
-    buckets: []
+    buckets: [{ "id": 1, "bucket": "Backlog", "tasks": [{ "id": 1, "task": "Task 1", "inf": "teste" }, { "id": 2, "task": "Task 2", "inf": "teste" }, { "id": 3, "task": "Task 3", "inf": "teste" }] },
+    { "id": 2, "bucket": "To Do", "tasks": [{ "id": 1, "task": "Task 1", "inf": "teste"}, { "id": 2, "task": "Task 2", "inf": "teste" }, { "id": 3, "task": "Task 3", "inf": "teste" }] },
+    { "id": 3, "bucket": "Doing", "tasks": [{ "id": 1, "task": "Task 1", "inf": "teste" }, { "id": 2, "task": "Task 2", "inf": "teste" }, { "id": 3, "task": "Task 3", "inf": "teste" }] },
+    { "id": 4, "bucket": "Done", "tasks": [{ "id": 1, "task": "Task 1", "inf": "teste" }, { "id": 2, "task": "Task 2", "inf": "teste" }, { "id": 3, "task": "Task 3", "inf": "teste" }] }]
   },
 ];
 

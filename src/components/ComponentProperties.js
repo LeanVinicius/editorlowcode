@@ -12,6 +12,7 @@ import { ComponentOptionsField } from "@/properties/ComponentOptionsField";
 import { ComponentSelectFields } from "@/properties/ComponentSelectFields";
 import { ComponentDateFields } from "@/properties/ComponentDateFields";
 import { ComponentTableFields } from "@/properties/ComponentTableFields";
+import { ComponentKanbamFields } from "@/properties/ComponentKanbamFields";
 
 
 /**
@@ -29,10 +30,11 @@ import { ComponentTableFields } from "@/properties/ComponentTableFields";
  * @param {(componentId: string, newRules: string) => void} [props.onUpdateRules] - Função chamada quando a propriedade 'rules' do componente é alterada (para inputs).
  * @param {(componentId: string, newInformation: string) => void} [props.onUpdateInformation] - Função chamada quando a propriedade 'information' do componente é alterada (para inputs).
  * @param {(componentId: string, newRestriction: string) => void} [props.onUpdateRestriction] - Função chamada quando a propriedade 'restriction' do componente é alterada (para inputs).
- * @param {(componentId: string, newSource: string) => void} [props.onUpdateSource] - Função opcional chamada quando a propriedade 'source' do componente é alterada (para inputs).
- * @param {(componentId: string, newDefaultDate: string) => void} [props.onUpdateDefaultDate] - Função opcional chamada quando a propriedade 'defaultDate' do componente é alterada (para inputs).
- * @param {(componentId: string, newData: object[]) => void} [props.onUpdateData] - Função opcional chamada quando a propriedade 'data' do componente é alterada (para tabelas). 
- * @returns {JSX.Element | null} Renderiza o painel lateral para visualizar e editar as propriedades de um componente selecionado, ou `null` se nenhum componente estiver selecionado.
+ * @param {(componentId: string, newSource: string) => void} [props.onUpdateSource] - Função chamada quando a propriedade 'source' do componente é alterada (para inputs).
+ * @param {(componentId: string, newDefaultDate: string) => void} [props.onUpdateDefaultDate] - Função chamada quando a propriedade 'defaultDate' do componente é alterada (para inputs).
+ * @param {(componentId: string, newData: object[]) => void} [props.onUpdateData] - Função chamada quando a propriedade 'data' do componente é alterada (para tabelas). 
+ * @param {(componentId: string, newBuckets: object[]) => void} [props.onUpdateBucket] - Função chamada quando a propriedade 'buckets' do componente é alterada (para kanbam).
+* @returns {JSX.Element | null} Renderiza o painel lateral para visualizar e editar as propriedades de um componente selecionado, ou `null` se nenhum componente estiver selecionado.
  *
  * Este componente utiliza o hook `useComponentProperties` para gerenciar o estado local do formulário de propriedades e sincronizá-lo com o componente selecionado. Ele renderiza condicionalmente diferentes campos de propriedade com base no tipo do componente.
  */
@@ -52,7 +54,8 @@ export function ComponentProperties({
   onUpdateRestriction,
   onUpdateSource,
   onUpdateDefaultDate,
-  onUpdateData
+  onUpdateData,
+  onUpdateBucket,
 }) {
   const { formData, updateField } =
     useComponentProperties(component);
@@ -123,6 +126,10 @@ export function ComponentProperties({
   const handleDataChange = (value) => {
     updateField("data", value);
     onUpdateData(component.id, value);
+  }
+  const handleBucketChange = (value) => {
+    updateField("buckets", value);
+    onUpdateBucket(component.id, value);
   }
 
   function renderProperties(type) {
@@ -376,6 +383,10 @@ export function ComponentProperties({
               content={formData.content}
               onNameChange={handleNameChange}
               onContentChange={handleContentChange}
+            />
+            <ComponentKanbamFields
+              buckets={formData.buckets}
+              onBucketChange={handleBucketChange}
             />
             <ComponentRulesField
               rules={formData.rules}
