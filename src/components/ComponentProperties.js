@@ -176,10 +176,6 @@ export function ComponentProperties({
               onNameChange={handleNameChange}
               onContentChange={handleContentChange}
             />
-            <ComponentColorField
-              color={formData.color}
-              onColorChange={handleColorChange}
-            />
             <ComponentRulesField
               rules={formData.rules}
               onRulesChange={handleRulesChange}
@@ -203,10 +199,6 @@ export function ComponentProperties({
               width={formData.width}
               height={formData.height}
               onSizeChange={handleSizeChange}
-            />
-            <ComponentColorField
-              color={formData.color}
-              onColorChange={handleColorChange}
             />
             <ComponentMandatoryField
               mandatory={formData.mandatory}
@@ -236,9 +228,10 @@ export function ComponentProperties({
               onNameChange={handleNameChange}
               onContentChange={handleContentChange}
             />
-            <ComponentColorField
-              color={formData.color}
-              onColorChange={handleColorChange}
+            <ComponentSizeFields
+              width={formData.width}
+              height={formData.height}
+              onSizeChange={handleSizeChange}
             />
             <ComponentMandatoryField
               mandatory={formData.mandatory}
@@ -272,10 +265,6 @@ export function ComponentProperties({
               onNameChange={handleNameChange}
               onContentChange={handleContentChange}
             />
-            <ComponentColorField
-              color={formData.color}
-              onColorChange={handleColorChange}
-            />
             <ComponentMandatoryField
               mandatory={formData.mandatory}
               onMandatoryChange={handleMandatoryChange}
@@ -302,9 +291,10 @@ export function ComponentProperties({
               onNameChange={handleNameChange}
               onContentChange={handleContentChange}
             />
-            <ComponentColorField
-              color={formData.color}
-              onColorChange={handleColorChange}
+            <ComponentSizeFields
+              width={formData.width}
+              height={formData.height}
+              onSizeChange={handleSizeChange}
             />
             <ComponentMandatoryField
               mandatory={formData.mandatory}
@@ -332,10 +322,6 @@ export function ComponentProperties({
               onNameChange={handleNameChange}
               onContentChange={handleContentChange}
             />
-            <ComponentColorField
-              color={formData.color}
-              onColorChange={handleColorChange}
-            />
             <ComponentMandatoryField
               mandatory={formData.mandatory}
               onMandatoryChange={handleMandatoryChange}
@@ -356,15 +342,11 @@ export function ComponentProperties({
             <h2 className="text-[20px] font-bold text-[rgba(18,49,50,1)] pb-6">
               Propriedades do Componente
             </h2>
-            <ComponentBasicFields
-              name={formData.name}
-              content={formData.content}
-              onNameChange={handleNameChange}
-              onContentChange={handleContentChange}
-            />
             <ComponentTableFields
               data={formData.data}
               onDataChange={handleDataChange}
+              name={formData.name}
+              onNameChange={handleNameChange}
             />
             <ComponentRulesField
               rules={formData.rules}
@@ -378,15 +360,11 @@ export function ComponentProperties({
             <h2 className="text-[20px] font-bold text-[rgba(18,49,50,1)] pb-6">
               Propriedades do Componente
             </h2>
-            <ComponentBasicFields
-              name={formData.name}
-              content={formData.content}
-              onNameChange={handleNameChange}
-              onContentChange={handleContentChange}
-            />
             <ComponentKanbamFields
               buckets={formData.buckets}
               onBucketChange={handleBucketChange}
+              name={formData.name}
+              onNameChange={handleNameChange}
             />
             <ComponentRulesField
               rules={formData.rules}
@@ -400,10 +378,13 @@ export function ComponentProperties({
   }
 
   return (
-    <div className="bg-[rgba(254,254,254,1)] p-5 shadow-[0_4px_20px_rgba(0,0,0,0.1)] w-68 rounded-lg z-30 h-screen fixed right-0 flex flex-col justify-between overflow-auto items-center
-                    scrollbar-custom">
-      {renderProperties(component.type)}
-      <ComponentActions onDelete={() => onDelete(component.id)} />
+    <div className="bg-[rgba(254,254,254,1)] p-5 shadow-[0_4px_20px_rgba(0,0,0,0.1)] w-68 rounded-lg z-30 h-screen fixed right-0 flex flex-col justify-between items-center">
+      <div className="flex-1 overflow-auto w-full pr-1 scrollbar-custom">
+        {renderProperties(component.type)}
+      </div>;
+      <div className="w-full pr-1">
+        <ComponentActions onDelete={() => onDelete(component.id)} />
+      </div>
     </div>
   );
 }

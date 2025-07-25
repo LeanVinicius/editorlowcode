@@ -11,7 +11,6 @@ export const renderComponent = (component) => {
   const {
     type,
     content,
-    defaultDate,
     options = [],
     data = [],
     direction = "vertical",
@@ -78,13 +77,16 @@ export const renderComponent = (component) => {
       );
     case "toggle":
       return (
-        <div className={`${styleDirection} flex`}>
-          {options.map((opt) => (
-            <div className={`flex items-center gap-2 `} key={opt.id}>
-              <label className="text-sm">{opt.Opcao}</label>
-              <input type="radio" name="radio" className="w-6 h-3 rounded-full" />
-            </div>
-          ))}
+        <div className="flex flex-col space-y-2">
+          <label className="text-black">{content ?? "Toggle"}</label>
+          <div className={`${styleDirection} flex`}>
+            {options.map((opt) => (
+              <div className={`flex items-center gap-2 `} key={opt.id}>
+                <label className="text-sm">{opt.Opcao}</label>
+                <input type="radio" name="radio" className="w-6 h-3 rounded-full" />
+              </div>
+            ))}
+          </div>
         </div>
       );
     case 'calendar':
@@ -93,7 +95,6 @@ export const renderComponent = (component) => {
           <div className="bg-transparent ">{content ?? "Data"}</div>
           <input
             type="date"
-            defaultValue={defaultDate}
             className="border h-full bg-transparent sgrow flex-1 border-gray-300 text-black rounded px-3 py-2"
           />
 

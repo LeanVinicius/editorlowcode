@@ -1,7 +1,7 @@
 import React from 'react';
 import Chance from 'chance';
 
-export function ComponentTableFields({ data, onDataChange }) {
+export function ComponentTableFields({ data, onDataChange, name, onNameChange }) {
     const newChance = new Chance();
 
     const headers = data.length > 0 ? Object.keys(data[0]) : [];
@@ -55,25 +55,34 @@ export function ComponentTableFields({ data, onDataChange }) {
     }
 
     return (
-        <div className='flex flex-col space-y-3'>
-            <label className='font-semibold text-[rgba(18,49,50,0.5)]'>Dados</label>
-            <div className='space-y-2 overflow-y-auto'>
-
+        <div className='flex flex-col space-y-5'>
+            <div className="flex flex-col space-y-3">
+                <label className="font-semibold text-[rgba(18,49,50,0.5)]">Nome</label>
+                <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => onNameChange(e.target.value)}
+                    className="w-full px-3 py-1 font-semibold rounded border border-[rgba(18,49,50,0.5)] cursor-pointer hover:bg-gray-200 text-[rgba(18,49,50,1)] focus:outline-none focus:ring-2 focus:ring-[rgba(18,49,50,1)]"
+                    placeholder="Digite o nome do componente"
+                />
             </div>
-            <div className='flex flex-col justify-center space-y-2'>
+            <div className='flex flex-col space-y-3'>
+                <label className='font-semibold text-[rgba(18,49,50,0.5)]'>Dados</label>
+                <div className='flex flex-col justify-center space-y-2'>
 
-                <button className='h-9 leading-none cursor-pointer text-[16px] font-semibold bg-[rgba(18,49,50,1)] hover:bg-[rgba(28,66,67,1)]
+                    <button className='h-9 leading-none cursor-pointer text-[16px] font-semibold bg-[rgba(18,49,50,1)] hover:bg-[rgba(28,66,67,1)]
                                text-white px-3 py-1 rounded-3xl'
-                    onClick={handleAddData}
-                >
-                    Adicionar dado aleatório
-                </button>
-                <button className='h-9 leading-none cursor-pointer text-[16px] font-semibold bg-red-600 hover:bg-red-500
+                        onClick={handleAddData}
+                    >
+                        Adicionar dado aleatório
+                    </button>
+                    <button className='h-9 leading-none cursor-pointer text-[16px] font-semibold bg-red-600 hover:bg-red-500
                                text-white px-3 py-1 rounded-3xl'
-                    onClick={handleDeleteData}
-                >
-                    Deletar último dado
-                </button>
+                        onClick={handleDeleteData}
+                    >
+                        Deletar último dado
+                    </button>
+                </div>
             </div>
         </div>
     );

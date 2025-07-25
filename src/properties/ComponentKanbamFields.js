@@ -1,7 +1,7 @@
 import React from 'react';
 import { X } from 'lucide-react';
 
-export function ComponentKanbamFields({ buckets, onBucketChange }) {
+export function ComponentKanbamFields({ buckets, onBucketChange, name, onNameChange }) {
 
     const handleAddTask = (bucketId) => {
         const updatedBuckets = buckets.map((bucket) => {
@@ -68,49 +68,58 @@ export function ComponentKanbamFields({ buckets, onBucketChange }) {
     };
 
     return (
-        <div className='flex flex-col space-y-3'>
-            <label className='font-semibold text-[rgba(18,49,50,0.5)]'>Cards</label>
-            <div className='space-y-2 overflow-y-auto'>
-
+        <div className='flex flex-col space-y-5'>
+            <div className="flex flex-col space-y-3">
+                <label className="font-semibold text-[rgba(18,49,50,0.5)]">Nome</label>
+                <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => onNameChange(e.target.value)}
+                    className="w-full px-3 py-1 font-semibold rounded border border-[rgba(18,49,50,0.5)] cursor-pointer hover:bg-gray-200 text-[rgba(18,49,50,1)] focus:outline-none focus:ring-2 focus:ring-[rgba(18,49,50,1)]"
+                    placeholder="Digite o nome do componente"
+                />
             </div>
-            <div className='flex flex-col justify-center space-y-2'>
-                {buckets.map((bucket) => (
-                    <div key={bucket.id} className='flex flex-col space-y-3'>
-                        <div className='flex justify-between w-full pl-3 pr-1 py-1 font-semibold rounded border border-[rgba(18,49,50,0.5)] cursor-pointer hover:bg-gray-200 text-[rgba(18,49,50,1)] focus:outline-none focus:ring-2 focus:ring-[rgba(18,49,50,1)]'>
-                            <input
-                                type="text"
-                                value={bucket.bucket}
-                                onChange={(e) => handleEditBucket(bucket.id, e.target.value)}
-                                className=""
-                                placeholder="Edite o nome"
-                            />
-                            <X className='h-[15px] w-[15px] text-[rgba(18,49,50,1)] hover:text-[#6aaeb1] self-start'
-                                onClick={() => handleDeleteBucket(bucket.id)}
-                            ></X>
-                        </div>
-                        <div className='flex flex-row'>
-                            <button className='h-9 leading-none cursor-pointer text-[16px] font-semibold bg-[rgba(18,49,50,1)] hover:bg-[rgba(28,66,67,1)]
+            <div className='flex flex-col space-y-3'>
+                <label className='font-semibold text-[rgba(18,49,50,0.5)]'>Buckets</label>
+                <div className='flex flex-col justify-center space-y-3'>
+                    {buckets.map((bucket) => (
+                        <div key={bucket.id} className='flex flex-col space-y-3'>
+                            <div className='flex justify-between w-full pl-3 pr-1 py-1 font-semibold rounded border border-[rgba(18,49,50,0.5)] cursor-pointer hover:bg-gray-200 text-[rgba(18,49,50,1)] focus:outline-none focus:ring-2 focus:ring-[rgba(18,49,50,1)]'>
+                                <input
+                                    type="text"
+                                    value={bucket.bucket}
+                                    onChange={(e) => handleEditBucket(bucket.id, e.target.value)}
+                                    className=""
+                                    placeholder="Edite o nome"
+                                />
+                                <X className='h-[15px] w-[15px] text-[rgba(18,49,50,1)] hover:text-[#6aaeb1] self-start'
+                                    onClick={() => handleDeleteBucket(bucket.id)}
+                                ></X>
+                            </div>
+                            <div className='flex flex-row space-x-2 mb-1'>
+                                <button className='h-10 leading-none cursor-pointer text-[16px] font-semibold bg-[rgba(18,49,50,1)] hover:bg-[rgba(28,66,67,1)]
                                text-white px-3 py-1 rounded-3xl'
-                                onClick={() => handleAddTask(bucket.id)}
-                            >
-                                Adicionar tarefa
-                            </button>
-                            <button
-                                onClick={() => handleDeleteTask(bucket.id)}
-                                className="h-9 leading-none cursor-pointer text-[16px] font-semibold bg-red-600 hover:bg-red-500
+                                    onClick={() => handleAddTask(bucket.id)}
+                                >
+                                    Adicionar Tarefa
+                                </button>
+                                <button
+                                    onClick={() => handleDeleteTask(bucket.id)}
+                                    className="h-10 leading-none cursor-pointer text-[16px] font-semibold bg-red-600 hover:bg-red-500
                                          text-white px-3 py-1 rounded-3xl"
-                            >
-                                Deletar tarefa
-                            </button>
+                                >
+                                    Deletar Tarefa
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                ))}
-                <button className='h-9 leading-none cursor-pointer text-[16px] font-semibold bg-[rgba(18,49,50,1)] hover:bg-[rgba(28,66,67,1)]
-                               text-white px-3 py-1 rounded-3xl'
-                                onClick={() => handleAddBucket()}
-                            >
-                                Adicionar card
-                            </button>
+                    ))}
+                    <button className='h-9 leading-none cursor-pointer text-[16px] font-semibold bg-[rgba(18,49,50,1)] hover:bg-[rgba(28,66,67,1)]
+                               text-white px-3 py-1 mt-3 rounded-3xl'
+                        onClick={() => handleAddBucket()}
+                    >
+                        Adicionar Bucket
+                    </button>
+                </div>
             </div>
         </div>
     );

@@ -40,7 +40,7 @@ export const DEFAULT_COMPONENTS = [
     height: 44,
     colorComponent: "#000000",
     role: "",
-    rules: [{ "id": 1, "regra": "Regra 1" }, { "id": 2, "regra": "Regra 2" }, { "id": 3, "regra": "Regra 3" }]
+    rules: []
   },
   {
     id: "text",
@@ -181,9 +181,9 @@ export const IMFORMATION_TYPE = [
 ]
 
 export const RESTRICTION_TYPE = [
-  'Nenhuma', 'Texto', 'Número'
+  'Nenhuma', 'Apenas Texto', 'Apenas Número'
 ]
 
 export const SOURCE_TYPE = [
-  'Alimentação Direta', 'Fonte Externa', 'Fonte externa com inserção'
+  'Alimentação Direta', 'Fonte Externa', 'Fonte Externa com Inserção'
 ]

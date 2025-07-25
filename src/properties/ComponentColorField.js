@@ -9,7 +9,7 @@ export function ComponentColorField({ color, onColorChange }) {
           type="text"
           value={color}
           onChange={(e) => onColorChange(e.target.value)}
-          className="w-48 px-3 py-1 font-semibold rounded border border-[rgba(18,49,50,0.5)] cursor-pointer hover:bg-gray-200 text-[rgba(18,49,50,1)] focus:outline-none focus:ring-2 focus:ring-[rgba(18,49,50,1)]"
+          className="w-44 px-3 py-1 font-semibold rounded border border-[rgba(18,49,50,0.5)] cursor-pointer hover:bg-gray-200 text-[rgba(18,49,50,1)] focus:outline-none focus:ring-2 focus:ring-[rgba(18,49,50,1)]"
           placeholder="#000000 ou rgb(0,0,0)"
         />
         <input

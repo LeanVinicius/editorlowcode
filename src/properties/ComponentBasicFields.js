@@ -19,8 +19,6 @@ export function ComponentBasicFields({
         />
       </div>
 
-      
-
       <div className="flex flex-col space-y-3">
         <label className="font-semibold text-[rgba(18,49,50,0.5)]">Texto</label>
         <input
