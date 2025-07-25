@@ -19,13 +19,6 @@
   * @property {Array<object>} [data] - Dados para componentes de lista/tabela.
   */
 
-const today = new Date();
-const day = String(today.getDate()).padStart(2, '0');
-const month = String(today.getMonth() + 1).padStart(2, '0');
-const year = today.getFullYear();
-
-const formatDate = `${year}-${month}-${day}`;
-
 /**
   * Array contendo as definições padrão para cada tipo de componente disponível na paleta.
   * Essas definições incluem propriedades iniciais como ID, tipo, dimensões, conteúdo, etc.
@@ -85,7 +78,8 @@ export const DEFAULT_COMPONENTS = [
     width: 175, height: 82, colorComponent: "#000000",
     mandatory: "opcional",
     rules: [],
-    defaultDate: formatDate
+    defaultDate: "Sem Data",
+
   },
   {
     id: "toggle", content: "Opção", type: "toggle",
@@ -186,4 +180,8 @@ export const RESTRICTION_TYPE = [
 
 export const SOURCE_TYPE = [
   'Alimentação Direta', 'Fonte Externa', 'Fonte Externa com Inserção'
+]
+
+export const DATE_DEFAULT = [
+  'Sem Data', 'Data Fixa', 'Data de Hoje'
 ]
