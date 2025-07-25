@@ -47,6 +47,15 @@ export function ComponentKanbamFields({ buckets, onBucketChange }) {
         onBucketChange(updatedBuckets);
     }
 
+    const handleAddBucket = () => {
+        const newBucket = {
+            id: Date.now().toString(),
+            bucket: "Novo card",
+            tasks: []
+        };
+        onBucketChange([...buckets, newBucket]);
+    };
+
     const handleEditBucket = (id, newValue) => {
         const updated = buckets.map(o => o.id === id ? { ...o, bucket: newValue } : o);
         console.log('Novo buckets:', updated);
@@ -96,14 +105,12 @@ export function ComponentKanbamFields({ buckets, onBucketChange }) {
                         </div>
                     </div>
                 ))}
-
-
-                {/* <button className='h-9 leading-none cursor-pointer text-[16px] font-semibold bg-red-600 hover:bg-red-500
+                <button className='h-9 leading-none cursor-pointer text-[16px] font-semibold bg-[rgba(18,49,50,1)] hover:bg-[rgba(28,66,67,1)]
                                text-white px-3 py-1 rounded-3xl'
-                    onClick={handleDeleteData}
-                >
-                    Deletar último dado
-                </button> */}
+                                onClick={() => handleAddBucket()}
+                            >
+                                Adicionar card
+                            </button>
             </div>
         </div>
     );
