@@ -34,6 +34,7 @@ import { ComponentKanbamFields } from "@/properties/ComponentKanbamFields";
  * @param {(componentId: string, newDefaultDate: string) => void} [props.onUpdateDefaultDate] - Função chamada quando a propriedade 'defaultDate' do componente é alterada (para inputs).
  * @param {(componentId: string, newData: object[]) => void} [props.onUpdateData] - Função chamada quando a propriedade 'data' do componente é alterada (para tabelas). 
  * @param {(componentId: string, newBuckets: object[]) => void} [props.onUpdateBucket] - Função chamada quando a propriedade 'buckets' do componente é alterada (para kanbam).
+ * @param {(componentId: string, newExtern: string) => void} [props.onUpdateExtern] - Função chamada quando a propriedade 'extern' do componente é alterada (para inputs).
 * @returns {JSX.Element | null} Renderiza o painel lateral para visualizar e editar as propriedades de um componente selecionado, ou `null` se nenhum componente estiver selecionado.
  *
  * Este componente utiliza o hook `useComponentProperties` para gerenciar o estado local do formulário de propriedades e sincronizá-lo com o componente selecionado. Ele renderiza condicionalmente diferentes campos de propriedade com base no tipo do componente.
@@ -56,6 +57,7 @@ export function ComponentProperties({
   onUpdateDefaultDate,
   onUpdateData,
   onUpdateBucket,
+  onUpdateExtern,
 }) {
   const { formData, updateField } =
     useComponentProperties(component);
@@ -130,6 +132,10 @@ export function ComponentProperties({
   const handleBucketChange = (value) => {
     updateField("buckets", value);
     onUpdateBucket(component.id, value);
+  }
+  const handleExternChange = (value) => {
+    updateField("extern", value);
+    onUpdateExtern(component.id, value);
   }
 
   function renderProperties(type) {
@@ -246,6 +252,8 @@ export function ComponentProperties({
               onSourceChange={handleSourceChange}
               multi={formData.multi}
               onMultiChange={handleMultiChange}
+              extern={formData.extern}
+              onExternChange={handleExternChange}
             />
             <ComponentRulesField
               rules={formData.rules}

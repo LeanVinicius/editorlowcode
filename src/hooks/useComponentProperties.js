@@ -31,7 +31,8 @@ export const useComponentProperties = (component) => {
     source: 'Alimentação Direta',
     defaultDate: '',
     data: [],
-    buckets: []
+    buckets: [],
+    extern: ''
   });
 
   useEffect(() => {
@@ -52,7 +53,8 @@ export const useComponentProperties = (component) => {
         source: component.source || 'Alimentação Direta',
         defaultDate: component.defaultDate || '',
         data: component.data || [],
-        buckets: component.buckets || []
+        buckets: component.buckets || [],
+        extern: component.extern || ''
       });
     }
   }, [component]); // Dependência: Sincroniza quando o componente selecionado muda.

@@ -63,7 +63,8 @@ export const DEFAULT_COMPONENTS = [
     multi: true,
     rules: [],
     options: [{ "id": 1, "Opcao": "Opção 1" }, { "id": 2, "Opcao": "Opção 2" }, { "id": 3, "Opcao": "Opção 3" }],
-    source: "Alimentação Direta"
+    source: "Alimentação Direta",
+    extern: ""
   },
   {
     id: "checkbox", content: "Checkbox", type: "checkbox",

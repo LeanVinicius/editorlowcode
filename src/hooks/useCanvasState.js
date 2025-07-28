@@ -174,6 +174,17 @@ export const useCanvasState = () => {
   }, []);
 
   /**
+   * Atualiza a propriedade 'extern' de um componente.
+   * @param {string} componentId - O ID do componente a ser atualizado.
+   * @param {string} newExternal - O novo valor para a propriedade 'extern'.
+   */
+  const updateComponentExtern = useCallback((componentId, newExternal) => {
+    setCanvasComponents(prevComponents =>
+      ComponentHelpers.updateComponentProperty(prevComponents, componentId, 'extern', newExternal)
+    );
+  }, []);
+
+  /**
     * Atualiza a posição de um componente específico no canvas.
     * @param {string} componentId - O ID do componente a ser atualizado.
     * @param {object} newPosition - A nova posição para o componente (e.g., { x, y }).
@@ -254,6 +265,7 @@ export const useCanvasState = () => {
     updateComponentDefaultDate,
     updateComponentData,
     updateComponentBucket,
+    updateComponentExtern,
     updateComponentPosition,
     addComponent,
     removeComponent,
