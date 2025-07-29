@@ -184,5 +184,5 @@ export const SOURCE_TYPE = [
 ]
 
 export const DATE_DEFAULT = [
-  'Sem Data', 'Data Fixa', 'Data de Hoje'
+  'Sem Data', 'Data de Hoje'
 ]

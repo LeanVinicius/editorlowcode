@@ -32,12 +32,12 @@ export function ComponentDateFields({
                     <input
                         type="radio"
                         name="defaultDate"
-                        value="Exemplo: hoje menos 60 dias"
+                        value="Ex: hoje + 60 dias; a data desejada"
                         className="form-radio h-4 w-4 accent-[rgba(18,49,50,1)] focus:ring-[rgba(18,49,50,0.5)]"
                         onChange={(e) =>  onDefaultDateChange(e.target.value)}
                         checked={otherDate}
                     />
-                    <span className="font-semibold text-[rgba(18,49,50,0.5)]">Regra</span>
+                    <span className="font-semibold text-[rgba(18,49,50,0.5)]">Regra ou data fixa</span>
                 </label>
             </div>
             {otherDate && (

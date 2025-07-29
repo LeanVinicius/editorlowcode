@@ -97,18 +97,18 @@ export function ComponentKanbamFields({ buckets, onBucketChange, name, onNameCha
                                 ></X>
                             </div>
                             <div className='flex flex-row space-x-2 mb-1'>
-                                <button className='h-10 leading-none cursor-pointer text-[16px] font-semibold bg-[rgba(18,49,50,1)] hover:bg-[rgba(28,66,67,1)]
+                                <button className='h-9 leading-none cursor-pointer text-[13px] font-semibold bg-[rgba(18,49,50,1)] hover:bg-[rgba(28,66,67,1)]
                                text-white px-3 py-1 rounded-3xl'
                                     onClick={() => handleAddTask(bucket.id)}
                                 >
-                                    Adicionar Tarefa
+                                    Adicionar tarefa
                                 </button>
                                 <button
                                     onClick={() => handleDeleteTask(bucket.id)}
-                                    className="h-10 leading-none cursor-pointer text-[16px] font-semibold bg-red-600 hover:bg-red-500
+                                    className="h-9 leading-none cursor-pointer text-[13px] font-semibold bg-red-600 hover:bg-red-500
                                          text-white px-3 py-1 rounded-3xl"
                                 >
-                                    Deletar Tarefa
+                                    Deletar tarefa
                                 </button>
                             </div>
                         </div>
@@ -117,7 +117,7 @@ export function ComponentKanbamFields({ buckets, onBucketChange, name, onNameCha
                                text-white px-3 py-1 mt-3 rounded-3xl'
                         onClick={() => handleAddBucket()}
                     >
-                        Adicionar Bucket
+                        Adicionar bucket
                     </button>
                 </div>
             </div>
