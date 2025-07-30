@@ -3,7 +3,6 @@
 
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
-
 import { CanvasApi } from "@/services/CanvasApi";
 
 /**
@@ -21,8 +20,8 @@ export function UserCanvasLoader({
   screens,
 }) {
   const searchParams = useSearchParams();
-  const userId = searchParams.get("userId");
-  const projectId = searchParams.get("projectId");
+  const userId = searchParams.get("pusr");
+  const projectId = searchParams.get("ppjt");
 
   useEffect(() => {
     if (!userId || !shouldLoad || !projectId) return null;

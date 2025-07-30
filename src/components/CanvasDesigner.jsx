@@ -37,8 +37,8 @@ import {
 
 export default function CanvasDesigner() {
   const searchParams = useSearchParams();
-  const userId = searchParams.get("userId");
-  const projectId = searchParams.get("projectId");
+  const userId = searchParams.get("pusr");
+  const projectId = searchParams.get("ppjt");
 
   const [initialLoadComplete, setInitialLoadComplete] = useState(false);
   // Custom hooks para gerenciar estado
