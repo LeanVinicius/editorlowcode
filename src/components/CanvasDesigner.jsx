@@ -64,6 +64,7 @@ export default function CanvasDesigner() {
     updateComponentData,
     updateComponentBucket,
     updateComponentExtern,
+    updateComponentDirection,
     addComponent,
     removeComponent,
     clearCanvas,
@@ -374,7 +375,7 @@ export default function CanvasDesigner() {
                     >
                       {renderComponent(
                         component,
-                        
+
                       )}
                     </MoveableDesignComponent>
                   ))}
@@ -439,8 +440,8 @@ export default function CanvasDesigner() {
           onUpdateData={updateComponentData}
           onUpdateBucket={updateComponentBucket}
           onUpdateExtern={updateComponentExtern}
+          onUpdateDirection={updateComponentDirection}
         />
-        {/* Add your new sidebar content here */}
       </div>
     </DndContext>
   );

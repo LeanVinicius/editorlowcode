@@ -13,6 +13,7 @@ import { ComponentSelectFields } from "@/properties/ComponentSelectFields";
 import { ComponentDateFields } from "@/properties/ComponentDateFields";
 import { ComponentTableFields } from "@/properties/ComponentTableFields";
 import { ComponentKanbamFields } from "@/properties/ComponentKanbamFields";
+import { ComponentDirectionField } from "@/properties/ComponentDirectionField";
 
 
 /**
@@ -35,6 +36,7 @@ import { ComponentKanbamFields } from "@/properties/ComponentKanbamFields";
  * @param {(componentId: string, newData: object[]) => void} [props.onUpdateData] - Função chamada quando a propriedade 'data' do componente é alterada (para tabelas). 
  * @param {(componentId: string, newBuckets: object[]) => void} [props.onUpdateBucket] - Função chamada quando a propriedade 'buckets' do componente é alterada (para kanbam).
  * @param {(componentId: string, newExtern: string) => void} [props.onUpdateExtern] - Função chamada quando a propriedade 'extern' do componente é alterada (para inputs).
+ * @param {(componentId: string, newDirection: string) => void} [props.onUpdateDirection] - Função chamada quando a propriedade 'direction' do componente é alterada (para inputs).
 * @returns {JSX.Element | null} Renderiza o painel lateral para visualizar e editar as propriedades de um componente selecionado, ou `null` se nenhum componente estiver selecionado.
  *
  * Este componente utiliza o hook `useComponentProperties` para gerenciar o estado local do formulário de propriedades e sincronizá-lo com o componente selecionado. Ele renderiza condicionalmente diferentes campos de propriedade com base no tipo do componente.
@@ -58,6 +60,7 @@ export function ComponentProperties({
   onUpdateData,
   onUpdateBucket,
   onUpdateExtern,
+  onUpdateDirection
 }) {
   const { formData, updateField } =
     useComponentProperties(component);
@@ -136,6 +139,10 @@ export function ComponentProperties({
   const handleExternChange = (value) => {
     updateField("extern", value);
     onUpdateExtern(component.id, value);
+  }
+  const handleDirectionChange = (value) => {
+    updateField("direction", value);
+    onUpdateDirection(component.id, value);
   }
 
   function renderProperties(type) {
@@ -281,6 +288,10 @@ export function ComponentProperties({
               options={formData.options}
               onOptionsChange={handleOptionsChange}
             />
+            <ComponentDirectionField
+              direction={formData.direction}
+              onDirectionChange={handleDirectionChange}
+            />
             <ComponentRulesField
               rules={formData.rules}
               onRulesChange={handleRulesChange}
@@ -337,6 +348,10 @@ export function ComponentProperties({
             <ComponentOptionsField
               options={formData.options}
               onOptionsChange={handleOptionsChange}
+            />
+            <ComponentDirectionField
+              direction={formData.direction}
+              onDirectionChange={handleDirectionChange}
             />
             <ComponentRulesField
               rules={formData.rules}

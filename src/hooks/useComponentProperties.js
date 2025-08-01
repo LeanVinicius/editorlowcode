@@ -32,7 +32,8 @@ export const useComponentProperties = (component) => {
     defaultDate: '',
     data: [],
     buckets: [],
-    extern: ''
+    extern: '',
+    direction: 'vertical'
   });
 
   useEffect(() => {
@@ -54,7 +55,8 @@ export const useComponentProperties = (component) => {
         defaultDate: component.defaultDate || '',
         data: component.data || [],
         buckets: component.buckets || [],
-        extern: component.extern || ''
+        extern: component.extern || '',
+        direction: component.direction || 'vertical'
       });
     }
   }, [component]); // Dependência: Sincroniza quando o componente selecionado muda.

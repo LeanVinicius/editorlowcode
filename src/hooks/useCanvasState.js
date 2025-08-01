@@ -100,6 +100,17 @@ export const useCanvasState = () => {
       ComponentHelpers.updateComponentProperty(prevComponents, componentId, 'restriction', newRestriction)
     );
   }, []);
+  
+  /**
+    * Atualiza a direção da flex de um componente.
+    * @param {string} componentId - O ID do componente a ser atualizado.
+    * @param {string} newDirection - A nova direção para o componente.
+    */
+  const updateComponentDirection = useCallback((componentId, newDirection) => {
+    setCanvasComponents(prevComponents =>
+      ComponentHelpers.updateComponentProperty(prevComponents, componentId, 'direction', newDirection)
+    );
+  }, []);
 
   /**
     * Atualiza as regras de negócio de um componente.
@@ -266,6 +277,7 @@ export const useCanvasState = () => {
     updateComponentData,
     updateComponentBucket,
     updateComponentExtern,
+    updateComponentDirection,
     updateComponentPosition,
     addComponent,
     removeComponent,
